@@ -1,0 +1,199 @@
+from __future__ import annotations
+
+import json
+from datetime import datetime
+from pathlib import Path
+from typing import Any
+
+
+ROOT = Path(__file__).resolve().parents[2]
+REGISTRY_PATH = ROOT / "milestone_registry.json"
+VALID_STATUSES = {"not_started", "in_progress", "blocked", "complete"}
+REQUIRED_MILESTONE_FIELDS = {
+    "id", "title", "delivery_type", "status", "capability_unblocked", "dependencies",
+    "risk_level", "review_requirements", "write_scope", "required_artifacts", "proof_artifact",
+    "verify", "execution_brief",
+}
+REQUIRED_BRIEF_FIELDS = {
+    "objective", "context", "non_goals", "required_outputs", "proof_requirements",
+    "verification_commands", "stop_conditions",
+}
+REQUIRED_PROOF_FIELDS = {
+    "milestone_id", "implementation_revision", "generated_at", "environment", "status", "verification", "observed_result",
+}
+
+
+def _load_json(path: Path) -> Any:
+    return json.loads(path.read_text(encoding="utf-8"))
+
+
+def _is_string_list(value: Any) -> bool:
+    return isinstance(value, list) and all(isinstance(item, str) and item.strip() for item in value)
+
+
+def _validate_brief(milestone: dict[str, Any], issues: list[str]) -> None:
+    brief = milestone.get("execution_brief")
+    label = milestone.get("id", "<unknown>")
+    if not isinstance(brief, dict):
+        issues.append(f"{label}: execution_brief must be an object")
+        return
+    missing = REQUIRED_BRIEF_FIELDS - set(brief)
+    if missing:
+        issues.append(f"{label}: execution_brief missing {', '.join(sorted(missing))}")
+        return
+    if not isinstance(brief["objective"], str) or not brief["objective"].strip():
+        issues.append(f"{label}: execution_brief.objective must be a non-empty string")
+    if not isinstance(brief["context"], dict):
+        issues.append(f"{label}: execution_brief.context must be an object")
+    for key in REQUIRED_BRIEF_FIELDS - {"objective", "context"}:
+        if not _is_string_list(brief[key]):
+            issues.append(f"{label}: execution_brief.{key} must be a non-empty string list")
+
+
+def validate_registry(root: Path = ROOT) -> list[str]:
+    issues: list[str] = []
+    try:
+        payload = _load_json(root / "milestone_registry.json")
+    except (OSError, json.JSONDecodeError) as error:
+        return [f"cannot load milestone registry: {error}"]
+    milestones = payload.get("milestones") if isinstance(payload, dict) else None
+    if not isinstance(milestones, list):
+        return ["milestone_registry.json must contain a milestones list"]
+    ids: set[str] = set()
+    records: dict[str, dict[str, Any]] = {}
+    for milestone in milestones:
+        if not isinstance(milestone, dict):
+            issues.append("milestone registry contains a non-object entry")
+            continue
+        identifier = str(milestone.get("id") or "").strip()
+        if not identifier or identifier in ids:
+            issues.append(f"duplicate or empty milestone id: {identifier or '<empty>'}")
+            continue
+        ids.add(identifier)
+        records[identifier] = milestone
+        missing = REQUIRED_MILESTONE_FIELDS - set(milestone)
+        if missing:
+            issues.append(f"{identifier}: missing fields {', '.join(sorted(missing))}")
+        if milestone.get("status") not in VALID_STATUSES:
+            issues.append(f"{identifier}: invalid status {milestone.get('status')!r}")
+        for key in ("dependencies", "write_scope", "required_artifacts", "verify"):
+            if not _is_string_list(milestone.get(key)):
+                issues.append(f"{identifier}: {key} must be a string list")
+        if any("<" in value or ">" in value for value in milestone.get("required_artifacts", [])):
+            issues.append(f"{identifier}: required_artifacts must use concrete paths, not placeholders")
+        if milestone.get("risk_level") not in {"low", "moderate", "high"}:
+            issues.append(f"{identifier}: risk_level must be low, moderate, or high")
+        review = milestone.get("review_requirements")
+        if not isinstance(review, dict) or not isinstance(review.get("required"), bool) or not _is_string_list(review.get("roles", [])):
+            issues.append(f"{identifier}: review_requirements must contain boolean required and string-list roles")
+        _validate_brief(milestone, issues)
+    for identifier, milestone in records.items():
+        for dependency in milestone.get("dependencies", []):
+            if dependency not in records:
+                issues.append(f"{identifier}: unknown dependency {dependency}")
+            elif dependency == identifier:
+                issues.append(f"{identifier}: cannot depend on itself")
+        if milestone.get("status") == "complete":
+            issues.extend(close_check(identifier, root=root, registry=records))
+    visiting: set[str] = set()
+    visited: set[str] = set()
+
+    def visit(identifier: str) -> None:
+        if identifier in visited:
+            return
+        if identifier in visiting:
+            issues.append(f"dependency cycle includes {identifier}")
+            return
+        visiting.add(identifier)
+        for dependency in records[identifier].get("dependencies", []):
+            if dependency in records:
+                visit(dependency)
+        visiting.remove(identifier)
+        visited.add(identifier)
+
+    for identifier in records:
+        visit(identifier)
+    return issues
+
+
+def _validate_proof(path: Path, identifier: str) -> list[str]:
+    try:
+        proof = _load_json(path)
+    except (OSError, json.JSONDecodeError) as error:
+        return [f"{identifier}: cannot load proof artifact {path}: {error}"]
+    if not isinstance(proof, dict):
+        return [f"{identifier}: proof artifact must be an object"]
+    missing = REQUIRED_PROOF_FIELDS - set(proof)
+    if missing:
+        return [f"{identifier}: proof artifact missing {', '.join(sorted(missing))}"]
+    issues: list[str] = []
+    if proof.get("milestone_id") != identifier:
+        issues.append(f"{identifier}: proof milestone_id does not match")
+    if proof.get("status") != "passed":
+        issues.append(f"{identifier}: proof status must be passed")
+    try:
+        datetime.fromisoformat(str(proof.get("generated_at")).replace("Z", "+00:00"))
+    except ValueError:
+        issues.append(f"{identifier}: proof generated_at must be ISO-8601")
+    checks = proof.get("verification")
+    if not isinstance(checks, list) or not checks:
+        issues.append(f"{identifier}: proof verification must be a non-empty list")
+    elif any(
+        not isinstance(item, dict)
+        or item.get("exit_code") != 0
+        or not str(item.get("command") or "").strip()
+        or not str(item.get("output_sha256") or "").strip()
+        for item in checks
+    ):
+        issues.append(f"{identifier}: proof verification must contain successful command records")
+    return issues
+
+
+def close_check(
+    identifier: str,
+    *,
+    root: Path = ROOT,
+    registry: dict[str, dict[str, Any]] | None = None,
+) -> list[str]:
+    records = registry
+    if records is None:
+        try:
+            payload = _load_json(root / "milestone_registry.json")
+            records = {str(item.get("id")): item for item in payload["milestones"] if isinstance(item, dict)}
+        except (OSError, ValueError, KeyError, json.JSONDecodeError) as error:
+            return [f"cannot load milestone registry: {error}"]
+    milestone = records.get(identifier)
+    if milestone is None:
+        return [f"unknown milestone {identifier}"]
+    issues: list[str] = []
+    for dependency in milestone.get("dependencies", []):
+        if records.get(dependency, {}).get("status") != "complete":
+            issues.append(f"{identifier}: dependency {dependency} is not complete")
+    for relative_path in milestone.get("required_artifacts", []):
+        if not (root / relative_path).exists():
+            issues.append(f"{identifier}: required artifact missing {relative_path}")
+    proof_path = root / str(milestone.get("proof_artifact") or "")
+    if not proof_path.exists():
+        issues.append(f"{identifier}: proof artifact missing {milestone.get('proof_artifact')}")
+    else:
+        proof_issues = _validate_proof(proof_path, identifier)
+        issues.extend(proof_issues)
+        if proof_issues:
+            return issues
+        proof = _load_json(proof_path)
+        expected = milestone["execution_brief"]["verification_commands"]
+        recorded = {str(item.get("command") or "") for item in proof.get("verification", []) if isinstance(item, dict)}
+        for command in expected:
+            if command not in recorded:
+                issues.append(f"{identifier}: proof is missing verification record for {command}")
+        review = milestone["review_requirements"]
+        if review["required"]:
+            completed_roles = {
+                str(item.get("role") or "")
+                for item in proof.get("reviews", [])
+                if isinstance(item, dict) and item.get("status") == "passed"
+            }
+            for role in review["roles"]:
+                if role not in completed_roles:
+                    issues.append(f"{identifier}: required review missing or failed for {role}")
+    return issues

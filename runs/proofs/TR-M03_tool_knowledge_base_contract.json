@@ -1,0 +1,37 @@
+{
+  "milestone_id": "TR-M03",
+  "implementation_revision": "uncommitted",
+  "generated_at": "2026-08-19T00:03:29.449838Z",
+  "environment": {
+    "python": "3.12.3",
+    "platform": "Linux-6.6.87.2-microsoft-standard-WSL2-x86_64-with-glibc2.39"
+  },
+  "status": "passed",
+  "verification": [
+    {
+      "command": "PYTHONPATH=src python3 -m tool_repository validate --require-knowledge",
+      "exit_code": 0,
+      "output": "OK\n",
+      "output_sha256": "a12b7cb43c9d9134b5bb1b35e9096b66775d9e92e7611d1cc92b02edd6782a87"
+    },
+    {
+      "command": "python3 -m unittest tests.test_knowledge_base_validation",
+      "exit_code": 0,
+      "output": ".......\n----------------------------------------------------------------------\nRan 7 tests in 0.338s\n\nOK\n",
+      "output_sha256": "795d872cd929a9c778595fe5bb0368176418a847ce99e47b854ceef902d89d85"
+    }
+  ],
+  "reviews": [
+    {
+      "role": "solution_architect",
+      "status": "passed",
+      "reference": "reviews/TR-M03_solution_architect.md"
+    },
+    {
+      "role": "developer",
+      "status": "passed",
+      "reference": "reviews/TR-M03_developer.md"
+    }
+  ],
+  "observed_result": "Knowledge records distinguish validated evidence from suggested use and validate without credentials or network access."
+}

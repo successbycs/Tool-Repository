@@ -1,0 +1,25 @@
+{
+  "milestone_id": "TR-M00",
+  "implementation_revision": "uncommitted",
+  "generated_at": "2026-08-19T00:03:28.017850Z",
+  "environment": {
+    "python": "3.12.3",
+    "platform": "Linux-6.6.87.2-microsoft-standard-WSL2-x86_64-with-glibc2.39"
+  },
+  "status": "passed",
+  "verification": [
+    {
+      "command": "python3 scripts/validate_policy_docs.py",
+      "exit_code": 0,
+      "output": "OK\n",
+      "output_sha256": "a12b7cb43c9d9134b5bb1b35e9096b66775d9e92e7611d1cc92b02edd6782a87"
+    },
+    {
+      "command": "python3 -m unittest tests.test_policy_enforcement tests.test_milestone_governance",
+      "exit_code": 0,
+      "output": ".....\n----------------------------------------------------------------------\nRan 5 tests in 0.002s\n\nOK\n",
+      "output_sha256": "d03ce458f2a6cd2b4f27522f3aacad03ce1872c028853507c3ad02ca621bdcad"
+    }
+  ],
+  "observed_result": "Policy metadata and the milestone contract validate; the governance baseline tests pass."
+}

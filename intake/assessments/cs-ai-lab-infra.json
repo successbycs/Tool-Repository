@@ -1,0 +1,13 @@
+{
+  "source": "/home/chris/projects/cs-ai-lab-infra",
+  "revision": "551f1afe972172ba9eee707a81a12072c8473ee0",
+  "inspection_mode": "read_only_static_plus_governed_preflight",
+  "license": "unresolved_no_license_file_found",
+  "candidates": [
+    {"id": "t480_wsl_lab", "category": "adapter_tool", "decision": "extract", "target": "adapters/t480", "blockers": ["licence/provenance", "transport isolation", "conformance tests"]},
+    {"id": "ollama_local", "category": "adapter_tool", "decision": "rewrite", "target": "adapters/ollama", "blockers": ["new portable implementation", "schemas", "fake and opt-in live tests"]},
+    {"id": "n8n_t480", "category": "workflow_integration", "decision": "defer", "target": "adapters/n8n"},
+    {"id": "postgres_pgvector_t480", "category": "adapter_tool", "decision": "defer", "target": "adapters/postgres-pgvector"},
+    {"id": "t480_core", "category": "schema_or_contract", "decision": "reference_only"}
+  ]
+}

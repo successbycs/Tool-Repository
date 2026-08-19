@@ -1,0 +1,93 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tool-repository.local/schemas/adapter-1.0.0.schema.json",
+  "title": "Tool Repository Adapter Descriptor",
+  "description": "The canonical, static descriptor for one versioned reusable adapter. Discovery reads this file and never imports adapter code.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "adapter", "value", "provenance", "capabilities", "operations", "configuration", "safety", "health_check", "documentation"],
+  "properties": {
+    "schema_version": {"const": "1.0.0"},
+    "adapter": {
+      "type": "object", "additionalProperties": false,
+      "required": ["id", "version", "contract_version", "title", "summary", "status", "owner", "license"],
+      "properties": {
+        "id": {"type": "string", "pattern": "^[a-z][a-z0-9]*(?:[._-][a-z0-9]+)*$"},
+        "version": {"$ref": "#/$defs/semver"},
+        "contract_version": {"const": "1.0.0"},
+        "title": {"type": "string", "minLength": 3, "maxLength": 100},
+        "summary": {"type": "string", "minLength": 10, "maxLength": 500},
+        "status": {"enum": ["draft", "active", "deprecated", "archived"]},
+        "owner": {"type": "string", "minLength": 2},
+        "license": {"type": "string", "minLength": 2}
+      }
+    },
+    "value": {
+      "type": "object", "additionalProperties": false,
+      "required": ["use_cases", "fit_for", "not_for", "limitations"],
+      "properties": {
+        "use_cases": {"$ref": "#/$defs/nonemptyStrings"},
+        "fit_for": {"$ref": "#/$defs/nonemptyStrings"},
+        "not_for": {"$ref": "#/$defs/nonemptyStrings"},
+        "limitations": {"$ref": "#/$defs/nonemptyStrings"}
+      }
+    },
+    "provenance": {
+      "type": "object", "additionalProperties": false,
+      "required": ["origin", "changed_from"],
+      "properties": {
+        "origin": {
+          "type": "object", "additionalProperties": false,
+          "required": ["source", "revision", "license", "owner"],
+          "properties": {
+            "source": {"type": "string", "minLength": 3},
+            "revision": {"type": "string", "minLength": 1},
+            "license": {"type": "string", "minLength": 2},
+            "owner": {"type": "string", "minLength": 2}
+          }
+        },
+        "changed_from": {"type": "string"}
+      }
+    },
+    "capabilities": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/capability"}},
+    "operations": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/operation"}},
+    "configuration": {
+      "type": "object", "additionalProperties": false,
+      "required": ["schema", "secret_names"],
+      "properties": {
+        "schema": {"type": "object"},
+        "secret_names": {"type": "array", "items": {"type": "string", "pattern": "^[A-Z][A-Z0-9_]*$"}, "uniqueItems": true}
+      }
+    },
+    "safety": {
+      "type": "object", "additionalProperties": false,
+      "required": ["data_classification", "log_redaction", "destructive_opt_in"],
+      "properties": {
+        "data_classification": {"enum": ["public", "internal", "confidential", "restricted"]},
+        "log_redaction": {"type": "boolean"},
+        "destructive_opt_in": {"type": "boolean"}
+      }
+    },
+    "health_check": {"type": "object", "additionalProperties": false, "required": ["operation", "side_effect"], "properties": {"operation": {"type": "string", "minLength": 1}, "side_effect": {"const": "read_only"}}},
+    "documentation": {"type": "object", "additionalProperties": false, "required": ["user_guide", "knowledge_base"], "properties": {"user_guide": {"type": "string", "minLength": 1}, "knowledge_base": {"type": "string", "pattern": "\\.json$"}}}
+  },
+  "$defs": {
+    "semver": {"type": "string", "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$"},
+    "nonemptyStrings": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}},
+    "capability": {"type": "object", "additionalProperties": false, "required": ["name", "description"], "properties": {"name": {"type": "string", "pattern": "^[a-z][a-z0-9_-]*$"}, "description": {"type": "string", "minLength": 5}}},
+    "operation": {
+      "type": "object", "additionalProperties": false,
+      "required": ["name", "summary", "capability", "input_schema", "output_schema", "side_effect", "idempotency", "timeout_seconds", "retry_guidance"],
+      "properties": {
+        "name": {"type": "string", "pattern": "^[a-z][a-z0-9_]*$"},
+        "summary": {"type": "string", "minLength": 5},
+        "capability": {"type": "string", "pattern": "^[a-z][a-z0-9_-]*$"},
+        "input_schema": {"type": "object"}, "output_schema": {"type": "object"},
+        "side_effect": {"enum": ["read_only", "mutating", "destructive"]},
+        "idempotency": {"enum": ["idempotent", "non_idempotent", "unknown"]},
+        "timeout_seconds": {"type": "number", "exclusiveMinimum": 0},
+        "retry_guidance": {"type": "string", "minLength": 1}
+      }
+    }
+  }
+}

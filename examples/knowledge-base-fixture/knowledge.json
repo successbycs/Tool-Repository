@@ -1,0 +1,24 @@
+{
+  "schema_version": "1.0.0",
+  "adapter": {"id": "fixture-http", "version": "0.1.0"},
+  "records": [
+    {
+      "id": "fake-transport-contract",
+      "kind": "validated_usage",
+      "observed_on": "2026-08-17",
+      "context": "Isolated fixture with a fake HTTP transport and no credentials.",
+      "outcome": "The normalized success and error paths were validated without network access.",
+      "constraints_or_lessons": "This does not establish production-provider compatibility or rate-limit behaviour.",
+      "evidence_ref": "examples/knowledge-base-fixture/README.md",
+      "redaction_attestation": "sanitized_repository_evidence",
+      "reviewed_by": "tool-repository-maintainer"
+    },
+    {
+      "id": "health-probe-suggestion",
+      "kind": "suggested_use",
+      "use_case": "Use a read-only provider health probe before a solution workflow begins.",
+      "assumptions": ["The provider exposes a cheap read-only endpoint."],
+      "validation_required": ["Prove the endpoint has no side effects and is available to the solution account."]
+    }
+  ]
+}
