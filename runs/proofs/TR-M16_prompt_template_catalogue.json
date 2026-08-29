@@ -1,0 +1,59 @@
+{
+  "milestone_id": "TR-M16",
+  "implementation_revision": "13dee8d02f21439d428ff29f4245acb09f17e7bd",
+  "generated_at": "2026-08-29T07:12:31.520909Z",
+  "environment": {
+    "python": "3.12.3",
+    "platform": "Linux-6.6.87.2-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+    "host": "Piwakawaka",
+    "runtime": "static catalogue build"
+  },
+  "status": "passed",
+  "verification": [
+    {
+      "command": "PYTHONPATH=src python3 -m tool_repository prompts validate",
+      "exit_code": 0,
+      "output": "OK\n",
+      "output_sha256": "a12b7cb43c9d9134b5bb1b35e9096b66775d9e92e7611d1cc92b02edd6782a87"
+    },
+    {
+      "command": "PYTHONPATH=src python3 -m tool_repository milestones validate",
+      "exit_code": 0,
+      "output": "OK\n",
+      "output_sha256": "a12b7cb43c9d9134b5bb1b35e9096b66775d9e92e7611d1cc92b02edd6782a87"
+    },
+    {
+      "command": "python3 -m unittest tests.test_catalogue_api",
+      "exit_code": 0,
+      "output": "........\n----------------------------------------------------------------------\nRan 8 tests in 0.440s\n\nOK\n",
+      "output_sha256": "065a5458d88bd96b6350bcd80452dff497b4d6dc8e29b53b2f4c403d933bd5c2"
+    },
+    {
+      "command": "PYTHONPATH=src python3 -m tool_repository catalogue build",
+      "exit_code": 0,
+      "output": "OK\n",
+      "output_sha256": "a12b7cb43c9d9134b5bb1b35e9096b66775d9e92e7611d1cc92b02edd6782a87"
+    }
+  ],
+  "reviews": [
+    {
+      "role": "ai_engineer",
+      "status": "passed",
+      "reference": "reviews/TR-M16_ai_engineer.md",
+      "content_sha256": "7851013e4e2b6903e02b5560049a12d5e8fe4df1c5706c2c3b757a9dd5c47454"
+    },
+    {
+      "role": "solution_architect",
+      "status": "passed",
+      "reference": "reviews/TR-M16_solution_architect.md",
+      "content_sha256": "9ee2e636f9c858dfe5519a5b614e18ed4f645548e5ae05c00fd8de262dc66df5"
+    },
+    {
+      "role": "developer",
+      "status": "passed",
+      "reference": "reviews/TR-M16_developer.md",
+      "content_sha256": "37940e3d15988fa269380e00603c146f1a9ca8728b146d52d6006f19e1e11806"
+    }
+  ],
+  "observed_result": "The catalogue accepted two validated prompt definitions, one governed template, and one explicitly human-approved goal record while publishing only metadata and immutable source hashes."
+}
