@@ -1,0 +1,53 @@
+{
+  "milestone_id": "TR-M25",
+  "implementation_revision": "933131a055aed2899eadc06d1b9435d8ae0dc033",
+  "generated_at": "2026-08-29T22:55:20.936020Z",
+  "environment": {
+    "python": "3.12.3",
+    "platform": "Linux-6.6.87.2-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+    "host": "Piwakawaka",
+    "runtime": "static template and control-pattern validation"
+  },
+  "status": "passed",
+  "verification": [
+    {
+      "command": "PYTHONPATH=src python3 -m tool_repository catalogue build",
+      "exit_code": 0,
+      "output": "OK\n",
+      "output_sha256": "a12b7cb43c9d9134b5bb1b35e9096b66775d9e92e7611d1cc92b02edd6782a87"
+    },
+    {
+      "command": "python3 -m unittest tests.test_public_readonly_data_proxy_pattern",
+      "exit_code": 0,
+      "output": ".\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n",
+      "output_sha256": "fb184ea57734512b1f088f9181209901b9cd46df3eb7eaa2500ea9e48dde20b5"
+    },
+    {
+      "command": "python3 -m unittest tests.test_catalogue_api",
+      "exit_code": 0,
+      "output": "........\n----------------------------------------------------------------------\nRan 8 tests in 0.542s\n\nOK\n",
+      "output_sha256": "a6a6ce3d94c31d0b1f25d16890bb8e7d75f8b212864bd562a0e74c37c1ecd462"
+    }
+  ],
+  "reviews": [
+    {
+      "role": "ai_engineer",
+      "status": "passed",
+      "reference": "reviews/TR-M25_ai_engineer.md",
+      "content_sha256": "6cb74cde789f6637dcb2b598f1479da23560c7dff35a2ad4b56cf71944cb5f35"
+    },
+    {
+      "role": "solution_architect",
+      "status": "passed",
+      "reference": "reviews/TR-M25_solution_architect.md",
+      "content_sha256": "81ae4f9907a4698034121dd61337589cf1afdf6d163d9261815763704715e738"
+    },
+    {
+      "role": "developer",
+      "status": "passed",
+      "reference": "reviews/TR-M25_developer.md",
+      "content_sha256": "cfaa272cdefbf6a25ce0c6416ce0f0174518487b095a9d7fa4d375514879c58d"
+    }
+  ],
+  "observed_result": "The catalogue exposes a clean-room public-data proxy control template without publishing source proxy code, allowing arbitrary URLs, or centralising adapter execution."
+}

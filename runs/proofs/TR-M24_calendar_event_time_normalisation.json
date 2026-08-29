@@ -1,0 +1,53 @@
+{
+  "milestone_id": "TR-M24",
+  "implementation_revision": "933131a055aed2899eadc06d1b9435d8ae0dc033",
+  "generated_at": "2026-08-29T22:55:20.017079Z",
+  "environment": {
+    "python": "3.12.3",
+    "platform": "Linux-6.6.87.2-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+    "host": "Piwakawaka",
+    "runtime": "static template and synthetic-fixture validation"
+  },
+  "status": "passed",
+  "verification": [
+    {
+      "command": "PYTHONPATH=src python3 -m tool_repository catalogue build",
+      "exit_code": 0,
+      "output": "OK\n",
+      "output_sha256": "a12b7cb43c9d9134b5bb1b35e9096b66775d9e92e7611d1cc92b02edd6782a87"
+    },
+    {
+      "command": "python3 -m unittest tests.test_calendar_event_time_normalisation",
+      "exit_code": 0,
+      "output": ".\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n",
+      "output_sha256": "fb184ea57734512b1f088f9181209901b9cd46df3eb7eaa2500ea9e48dde20b5"
+    },
+    {
+      "command": "python3 -m unittest tests.test_catalogue_api",
+      "exit_code": 0,
+      "output": "........\n----------------------------------------------------------------------\nRan 8 tests in 0.545s\n\nOK\n",
+      "output_sha256": "4926e44db439c96eb43ca6f0d69d0577ea2cb35686cf34619cabd2a453b87421"
+    }
+  ],
+  "reviews": [
+    {
+      "role": "ai_engineer",
+      "status": "passed",
+      "reference": "reviews/TR-M24_ai_engineer.md",
+      "content_sha256": "976f8d811201250239e969f02b4c10d78f24f6ad778e27334c12e62a4f2d8c22"
+    },
+    {
+      "role": "solution_architect",
+      "status": "passed",
+      "reference": "reviews/TR-M24_solution_architect.md",
+      "content_sha256": "7fea6f92b88ae5ac3bdbd7d3a5c4344d4ed834f828f02dfaa2c3c24608818424"
+    },
+    {
+      "role": "developer",
+      "status": "passed",
+      "reference": "reviews/TR-M24_developer.md",
+      "content_sha256": "e0c6459915d36fb005b324c3f1101d38a1cf1ee16c4bf82c014cdee950365d4b"
+    }
+  ],
+  "observed_result": "The catalogue exposes a time-normalisation template and synthetic fixtures that keep provider instants distinct from explicitly selected title metadata."
+}
