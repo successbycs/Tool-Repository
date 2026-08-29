@@ -1,0 +1,71 @@
+{
+  "milestone_id": "TR-M01A",
+  "implementation_revision": "519652c6caadf749a09ec15868d337108d529f39",
+  "generated_at": "2026-08-29T02:30:22.724773Z",
+  "environment": {
+    "python": "3.12.3",
+    "platform": "Linux-6.6.87.2-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+    "host": "Piwakawaka",
+    "account": "chris"
+  },
+  "status": "passed",
+  "verification": [
+    {
+      "command": "python3 -m unittest tests.test_cs_ai_lab_deployment",
+      "exit_code": 0,
+      "output": "...\n----------------------------------------------------------------------\nRan 3 tests in 0.122s\n\nOK\n",
+      "output_sha256": "469176e9a6a49e8601392cc564c71969f50314cb0b638d747e095e482ec16049"
+    },
+    {
+      "command": "deploy/cs-ai-lab/rollback.sh --install-root /home/chris/.local/share/tool-repository --release-id v0.0.0-b2d9524a2a6c --account chris",
+      "exit_code": 0,
+      "output": "/home/chris/.local/share/tool-repository/releases/v0.0.0-b2d9524a2a6c/release.json\n",
+      "output_sha256": "5a2b428ac4c3597ec16f2e1ea3b74e5a749a63a584770adb508deaed363ca330"
+    },
+    {
+      "command": "python3 scripts/verify_cs_ai_lab_deploy.py --host Piwakawaka --account chris --release v0.0.0 --source /home/chris/Tool-Repository --install-root /home/chris/.local/share/tool-repository",
+      "exit_code": 0,
+      "output": "{\"actual_account\": \"chris\", \"actual_host\": \"Piwakawaka\", \"commit\": \"b2d9524a2a6c19f4955482a1612b6af9f82ac4ad\", \"expected_account\": \"chris\", \"expected_host\": \"Piwakawaka\", \"installed_release\": {\"commit\": \"b2d9524a2a6c19f4955482a1612b6af9f82ac4ad\", \"release_tag\": \"v0.0.0\", \"source\": \"/home/chris/Tool-Repository\"}, \"issues\": [], \"ready\": true, \"release\": \"v0.0.0\"}\n",
+      "output_sha256": "db7f1ff36cf753a5c3558c57d75eb38661317b818bfa92a61336dacfcf26d408"
+    },
+    {
+      "command": "deploy/cs-ai-lab/install.sh --source /home/chris/Tool-Repository --release v0.1.0 --install-root /home/chris/.local/share/tool-repository --account chris",
+      "exit_code": 0,
+      "output": "/home/chris/.local/share/tool-repository/releases/v0.1.0-ee92b26d407a/release.json\n",
+      "output_sha256": "22818730b3bafcf2f7bc547dae1ef958d09e582a9dc1ebd2a80ceca9164ca98e"
+    },
+    {
+      "command": "python3 scripts/verify_cs_ai_lab_deploy.py --host Piwakawaka --account chris --release v0.1.0 --source /home/chris/Tool-Repository --install-root /home/chris/.local/share/tool-repository",
+      "exit_code": 0,
+      "output": "{\"actual_account\": \"chris\", \"actual_host\": \"Piwakawaka\", \"commit\": \"ee92b26d407a49422560d0a3e98b0fb9764ee6a2\", \"expected_account\": \"chris\", \"expected_host\": \"Piwakawaka\", \"installed_release\": {\"commit\": \"ee92b26d407a49422560d0a3e98b0fb9764ee6a2\", \"release_tag\": \"v0.1.0\", \"source\": \"/home/chris/Tool-Repository\"}, \"issues\": [], \"ready\": true, \"release\": \"v0.1.0\"}\n",
+      "output_sha256": "8c4fc9bea6df19c1712d96c5b08b1ecedc1d6ec3d496f1933f61b11eec344c51"
+    }
+  ],
+  "reviews": [
+    {
+      "role": "solution_architect",
+      "status": "passed",
+      "reference": "reviews/TR-M01A_solution_architect.md",
+      "content_sha256": "52d3e5408fd0b341ab930fc7acc076d17cc38412a9e54d5c56e55763b7f4ee28"
+    },
+    {
+      "role": "developer",
+      "status": "passed",
+      "reference": "reviews/TR-M01A_developer.md",
+      "content_sha256": "dd929640cc41cc75ef92772cdee96e5939eeeed52cff2ee440dd4747351ed2f9"
+    }
+  ],
+  "deployment": {
+    "install_root": "/home/chris/.local/share/tool-repository",
+    "rollback_baseline": {
+      "release": "v0.0.0",
+      "release_id": "v0.0.0-b2d9524a2a6c"
+    },
+    "current_release": {
+      "release_tag": "v0.1.0",
+      "commit": "ee92b26d407a49422560d0a3e98b0fb9764ee6a2",
+      "source": "/home/chris/Tool-Repository"
+    }
+  },
+  "observed_result": "A non-root Piwakawaka installation resolves v0.1.0 to an exact commit, validates the installed release, rolls back to v0.0.0, and restores v0.1.0."
+}
