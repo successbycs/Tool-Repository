@@ -15,6 +15,7 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / "src"))
 COMMANDS = (
     ("PYTHONPATH=src python3 -m tool_repository validate", [sys.executable, "-m", "tool_repository", "validate"]),
     ("python3 -m unittest tests.test_conformance", [sys.executable, "-m", "unittest", "tests.test_conformance"]),
