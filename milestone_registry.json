@@ -1,56 +1,56 @@
 {
     "milestone_status_summary": [
         {
-            "id": "TR-M00",
-            "status": "complete"
+            "id": "TR-M00", "status": "complete",
+            "title": "Governance Policy Baseline"
         },
         {
-            "id": "TR-M01",
-            "status": "complete"
+            "id": "TR-M01", "status": "complete",
+            "title": "Repository Contract Foundation"
         },
         {
-            "id": "TR-M01A",
-            "status": "complete"
+            "id": "TR-M01A", "status": "complete",
+            "title": "CS AI Lab Deployable Release"
         },
         {
-            "id": "TR-M02",
-            "status": "complete"
+            "id": "TR-M02", "status": "complete",
+            "title": "Standard Tool Descriptor Schema"
         },
         {
-            "id": "TR-M03",
-            "status": "complete"
+            "id": "TR-M03", "status": "complete",
+            "title": "Tool Knowledge Base Contract"
         },
         {
-            "id": "TR-M04",
-            "status": "complete"
+            "id": "TR-M04", "status": "complete",
+            "title": "Machine Discovery and Catalogue API"
         },
         {
-            "id": "TR-M05",
-            "status": "complete"
+            "id": "TR-M05", "status": "complete",
+            "title": "Reference Adapters and AF Extraction"
         },
         {
-            "id": "TR-M06",
-            "status": "complete"
+            "id": "TR-M06", "status": "complete",
+            "title": "Solution Consumption and Contribution Loop"
         },
         {
-            "id": "TR-M07",
-            "status": "not_started"
+            "id": "TR-M07", "status": "not_started",
+            "title": "Prompt Library and Execution Provenance"
         },
         {
-            "id": "TR-M08",
-            "status": "not_started"
+            "id": "TR-M08", "status": "not_started",
+            "title": "Prompt Evaluation and Drift Correction"
         },
         {
-            "id": "TR-M09",
-            "status": "complete"
+            "id": "TR-M09", "status": "complete",
+            "title": "Repository Asset Intake and Curation"
         },
         {
-            "id": "TR-M10",
-            "status": "complete"
+            "id": "TR-M10", "status": "complete",
+            "title": "Proof and Review Integrity"
         },
         {
-            "id": "TR-M11",
-            "status": "complete"
+            "id": "TR-M11", "status": "complete",
+            "title": "Runtime Contract Enforcement"
         }
     ],
     "milestones": [

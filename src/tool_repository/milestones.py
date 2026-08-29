@@ -102,12 +102,16 @@ def validate_registry(root: Path = ROOT) -> list[str]:
     summary = payload.get("milestone_status_summary")
     if summary is not None:
         expected_summary = [
-            {"id": str(milestone.get("id") or ""), "status": milestone.get("status")}
+            {
+                "id": str(milestone.get("id") or ""),
+                "status": milestone.get("status"),
+                "title": milestone.get("title"),
+            }
             for milestone in milestones
             if isinstance(milestone, dict)
         ]
         if summary != expected_summary:
-            issues.append("milestone_status_summary must exactly match the ordered milestone IDs and statuses")
+            issues.append("milestone_status_summary must exactly match the ordered milestone IDs, titles, and statuses")
     visiting: set[str] = set()
     visited: set[str] = set()
 

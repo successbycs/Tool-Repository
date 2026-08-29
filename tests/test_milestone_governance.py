@@ -51,6 +51,6 @@ class MilestoneGovernanceTests(unittest.TestCase):
                 "review_requirements": {"required": False, "roles": []}, "write_scope": ["x"], "required_artifacts": ["x"], "proof_artifact": "x", "verify": ["true"],
                 "execution_brief": {"objective": "test", "context": {}, "non_goals": ["none"], "required_outputs": ["x"], "proof_requirements": ["proof"], "verification_commands": ["true"], "stop_conditions": ["stop"]},
             }
-            payload = {"milestone_status_summary": [{"id": "TR-M96", "status": "complete"}], "milestones": [milestone]}
+            payload = {"milestone_status_summary": [{"id": "TR-M96", "status": "complete", "title": "Summary"}], "milestones": [milestone]}
             (root / "milestone_registry.json").write_text(json.dumps(payload), encoding="utf-8")
             self.assertTrue(any("milestone_status_summary" in issue for issue in validate_registry(root)))
