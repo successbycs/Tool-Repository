@@ -1,0 +1,45 @@
+{
+  "milestone_id": "TR-M04",
+  "implementation_revision": "024e71b01f6c3410202acdf3f05167d9e469aea6",
+  "generated_at": "2026-08-29T02:49:54.072751Z",
+  "environment": {
+    "python": "3.12.3",
+    "platform": "Linux-6.6.87.2-microsoft-standard-WSL2-x86_64-with-glibc2.39"
+  },
+  "status": "passed",
+  "verification": [
+    {
+      "command": "PYTHONPATH=src python3 -m tool_repository catalogue build",
+      "exit_code": 0,
+      "output": "OK\n",
+      "output_sha256": "a12b7cb43c9d9134b5bb1b35e9096b66775d9e92e7611d1cc92b02edd6782a87"
+    },
+    {
+      "command": "python3 -m unittest tests.test_catalogue_api",
+      "exit_code": 0,
+      "output": "....\n----------------------------------------------------------------------\nRan 4 tests in 0.211s\n\nOK\n",
+      "output_sha256": "9605905bed40b25d2b1407f21be3394c6372dd8e877fd58bec8dfae842f51d68"
+    }
+  ],
+  "reviews": [
+    {
+      "role": "ai_engineer",
+      "status": "passed",
+      "reference": "reviews/TR-M04_ai_engineer.md",
+      "content_sha256": "b8370a20489931e7e6753d424158b5a845adc219a3f2db5ee3190523aae527cb"
+    },
+    {
+      "role": "solution_architect",
+      "status": "passed",
+      "reference": "reviews/TR-M04_solution_architect.md",
+      "content_sha256": "cbb80b44176ed4ed9c688e6453b5b2f2ad86daddf9467b611a3d1358f7d82204"
+    },
+    {
+      "role": "developer",
+      "status": "passed",
+      "reference": "reviews/TR-M04_developer.md",
+      "content_sha256": "981f6558e0d2cb2480365d1adac34753cc28023df41d4c220a96e57ac69a01f6"
+    }
+  ],
+  "observed_result": "The static catalogue is generated from trusted, checksum-bound descriptors and validates without importing or executing adapter code."
+}
