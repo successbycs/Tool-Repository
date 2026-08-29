@@ -83,3 +83,11 @@ TR-M08 evaluates versioned synthetic fixtures with explicit dimensions,
 thresholds, calibration metadata, and limitations. It reports candidate drift
 and a non-regression comparison for a proposed correction, but never
 auto-promotes a prompt definition or imports production prompt content.
+
+## 2026-08-29 — T480 model discovery is local, digest-pinned metadata
+
+TR-M12 records approved Ollama models installed on Piwakawaka with their full
+observed digest and hardware-fit metadata. The generated catalogue may expose
+those profiles for discovery, but it never exposes port 11434, proxies prompts,
+or turns a local model tag into a remote service. Remote inference, if needed,
+requires a separately reviewed authenticated gateway or job adapter.

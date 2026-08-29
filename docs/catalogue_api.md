@@ -24,6 +24,12 @@ operations, guide and knowledge paths, descriptor hash, and immutable Git
 release reference. It contains no adapter result, secret, host configuration,
 customer data, or execution endpoint.
 
+The document may also contain `model_profiles`: static, digest-pinned metadata
+for models installed only on the T480. These records help a T480-local
+consumer choose and verify a model; they do not provide a host, token, prompt
+API, proxy, or public inference service. See
+[`t480_ollama_model_profiles.md`](t480_ollama_model_profiles.md).
+
 ## Trust and publication
 
 The release index declares trusted publishers and binds every current

@@ -5,6 +5,7 @@ import subprocess
 import sys
 import tempfile
 import unittest
+from copy import deepcopy
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -17,6 +18,10 @@ def release_index() -> dict[str, object]:
     return json.loads((ROOT / "catalogue" / "release-index.json").read_text(encoding="utf-8"))
 
 
+def model_profiles() -> dict[str, object]:
+    return json.loads((ROOT / "catalogue" / "t480-ollama-model-profiles.json").read_text(encoding="utf-8"))
+
+
 class CatalogueApiTests(unittest.TestCase):
     def test_builds_sorted_static_catalogue_from_current_descriptors(self) -> None:
         payload, issues = build_catalogue(ROOT)
@@ -25,6 +30,27 @@ class CatalogueApiTests(unittest.TestCase):
         entries = payload["adapters"]
         self.assertEqual([(entry["adapter"]["id"], entry["adapter"]["version"]) for entry in entries], sorted((entry["adapter"]["id"], entry["adapter"]["version"]) for entry in entries))
         self.assertTrue(all(entry["release"]["release_tag"] == "v0.1.0" for entry in entries))
+
+    def test_includes_sorted_local_only_t480_model_profiles(self) -> None:
+        payload, issues = build_catalogue(ROOT)
+        self.assertEqual(issues, [])
+        assert payload is not None
+        profiles = payload["model_profiles"]
+        self.assertEqual([profile["id"] for profile in profiles], sorted(profile["id"] for profile in profiles))
+        self.assertTrue(all(profile["local_only"] for profile in profiles))
+        by_id = {profile["id"]: profile for profile in profiles}
+        self.assertEqual(by_id["qwen3-4b-q4"]["ollama_model"], "qwen3:4b")
+        self.assertEqual(by_id["gemma3-4b-q4"]["ollama_model"], "gemma3:4b")
+        self.assertTrue(all(len(profile["digest"]) == 64 for profile in profiles))
+
+    def test_rejects_a_model_profile_without_a_full_digest(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            path = Path(temp) / "t480-ollama-model-profiles.json"
+            profiles = deepcopy(model_profiles())
+            profiles["profiles"][0]["digest"] = "not-a-full-digest"  # type: ignore[index]
+            path.write_text(json.dumps(profiles), encoding="utf-8")
+            _, issues = build_catalogue(ROOT, model_profiles_path=path)
+            self.assertTrue(any("digest must be a full SHA-256" in issue for issue in issues))
 
     def test_rejects_untrusted_and_checksum_mismatched_release_entries(self) -> None:
         with tempfile.TemporaryDirectory() as temp:

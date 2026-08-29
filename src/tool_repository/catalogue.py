@@ -15,6 +15,7 @@ from tool_repository.manifest import discover_manifests, load_manifest
 ROOT = Path(__file__).resolve().parents[2]
 SCHEMA_PATH = ROOT / "schemas" / "catalogue.schema.json"
 RELEASE_INDEX_PATH = ROOT / "catalogue" / "release-index.json"
+MODEL_PROFILES_PATH = ROOT / "catalogue" / "t480-ollama-model-profiles.json"
 _IDENTIFIER = re.compile(r"^[a-z][a-z0-9]*(?:[._-][a-z0-9]+)*$")
 _SEMVER = re.compile(r"^(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)(?:-[0-9A-Za-z.-]+)?(?:\+[0-9A-Za-z.-]+)?$")
 _SHA256 = re.compile(r"^[a-f0-9]{64}$")
@@ -115,14 +116,72 @@ def _release_index_issues(index: Any) -> tuple[dict[tuple[str, str], dict[str, A
     return records, issues
 
 
-def build_catalogue(root: Path = ROOT, *, release_index_path: Path | None = None) -> tuple[dict[str, Any] | None, list[str]]:
+def _model_profile_issues(payload: Any) -> tuple[list[dict[str, Any]], list[str]]:
+    """Validate static T480 model profiles; no live Ollama connection is made."""
+
+    required = {"schema_version", "host_class", "observed_host", "runtime", "runtime_version", "endpoint_scope", "profiles"}
+    profile_fields = {"id", "title", "roles", "ollama_model", "digest", "size_bytes", "parameters", "quantization", "input_modalities", "status", "local_only", "limitations"}
+    if not isinstance(payload, dict) or set(payload) != required:
+        return [], ["model profiles must contain only the documented profile-set fields"]
+    issues: list[str] = []
+    if payload["schema_version"] != "1.0.0" or payload["host_class"] != "t480" or payload["runtime"] != "ollama" or payload["endpoint_scope"] != "loopback_only":
+        issues.append("model profiles must be a T480, loopback-only Ollama profile set at schema version 1.0.0")
+    profiles = payload.get("profiles")
+    if not isinstance(profiles, list) or not profiles:
+        return [], [*issues, "model profiles must be a non-empty list"]
+    identifiers: list[str] = []
+    valid: list[dict[str, Any]] = []
+    for index, profile in enumerate(profiles):
+        label = f"model profiles profiles[{index}]"
+        if not isinstance(profile, dict) or set(profile) != profile_fields:
+            issues.append(f"{label} has missing or unsupported fields")
+            continue
+        identifier = profile["id"]
+        if not isinstance(identifier, str) or not _IDENTIFIER.fullmatch(identifier):
+            issues.append(f"{label}.id is invalid")
+        else:
+            identifiers.append(identifier)
+        if not isinstance(profile["digest"], str) or not _SHA256.fullmatch(profile["digest"]):
+            issues.append(f"{label}.digest must be a full SHA-256")
+        if not isinstance(profile["ollama_model"], str) or ":" not in profile["ollama_model"]:
+            issues.append(f"{label}.ollama_model must be a tagged Ollama model name")
+        if not isinstance(profile["size_bytes"], int) or profile["size_bytes"] <= 0:
+            issues.append(f"{label}.size_bytes must be a positive integer")
+        for key in ("title", "parameters", "quantization"):
+            if not isinstance(profile[key], str) or not profile[key].strip():
+                issues.append(f"{label}.{key} must be a non-empty string")
+        if not isinstance(profile["roles"], list) or not profile["roles"] or any(not isinstance(role, str) or not _IDENTIFIER.fullmatch(role) for role in profile["roles"]):
+            issues.append(f"{label}.roles must be a non-empty identifier list")
+        if not isinstance(profile["input_modalities"], list) or not profile["input_modalities"] or any(modality not in {"text", "image"} for modality in profile["input_modalities"]):
+            issues.append(f"{label}.input_modalities must be a non-empty text/image list")
+        if profile["status"] != "active" or profile["local_only"] is not True:
+            issues.append(f"{label} must be active and local_only")
+        if not isinstance(profile["limitations"], list) or not profile["limitations"] or any(not isinstance(item, str) or not item.strip() for item in profile["limitations"]):
+            issues.append(f"{label}.limitations must be a non-empty string list")
+        if isinstance(identifier, str) and _IDENTIFIER.fullmatch(identifier):
+            valid.append(profile)
+    if len(identifiers) != len(set(identifiers)):
+        issues.append("model profile IDs must be unique")
+    if identifiers != sorted(identifiers):
+        issues.append("model profiles must be sorted by ID")
+    return valid, issues
+
+
+def build_catalogue(root: Path = ROOT, *, release_index_path: Path | None = None, model_profiles_path: Path | None = None) -> tuple[dict[str, Any] | None, list[str]]:
     """Build a deterministic catalogue from static descriptor bytes and a release index."""
 
     root = root.resolve()
     index_path = (release_index_path or root / "catalogue" / "release-index.json").resolve()
+    profiles_path = (model_profiles_path or root / "catalogue" / "t480-ollama-model-profiles.json").resolve()
     index, issues = _read_json(index_path)
     releases, index_issues = _release_index_issues(index)
     issues.extend(index_issues)
+    if issues:
+        return None, issues
+    profile_payload, profile_read_issues = _read_json(profiles_path)
+    profiles, profile_issues = _model_profile_issues(profile_payload)
+    issues.extend(profile_read_issues)
+    issues.extend(profile_issues)
     if issues:
         return None, issues
     entries: list[dict[str, Any]] = []
@@ -156,12 +215,12 @@ def build_catalogue(root: Path = ROOT, *, release_index_path: Path | None = None
         issues.append(f"release index contains no current descriptor for {adapter_id}@{version}")
     if issues:
         return None, issues
-    payload = {"schema_version": "1.0.0", "release_index_sha256": _sha256(index_path), "adapters": sorted(entries, key=lambda item: (item["adapter"]["id"], item["adapter"]["version"]))}
+    payload = {"schema_version": "1.0.0", "release_index_sha256": _sha256(index_path), "model_profiles_sha256": _sha256(profiles_path), "model_profiles": profiles, "adapters": sorted(entries, key=lambda item: (item["adapter"]["id"], item["adapter"]["version"]))}
     return payload, validate_catalogue(payload)
 
 
-def write_catalogue(output_path: Path, root: Path = ROOT, *, release_index_path: Path | None = None) -> list[str]:
-    payload, issues = build_catalogue(root, release_index_path=release_index_path)
+def write_catalogue(output_path: Path, root: Path = ROOT, *, release_index_path: Path | None = None, model_profiles_path: Path | None = None) -> list[str]:
+    payload, issues = build_catalogue(root, release_index_path=release_index_path, model_profiles_path=model_profiles_path)
     if issues or payload is None:
         return issues
     output_path.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")

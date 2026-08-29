@@ -51,6 +51,10 @@
         {
             "id": "TR-M11", "status": "complete",
             "title": "Runtime Contract Enforcement"
+        },
+        {
+            "id": "TR-M12", "status": "in_progress",
+            "title": "T480 Local Model Profiles"
         }
     ],
     "milestones": [
@@ -944,6 +948,21 @@
                     "Stop if validation requires importing code during discovery."
                 ]
             }
+        },
+        {
+            "id": "TR-M12", "status": "in_progress",
+            "title": "T480 Local Model Profiles",
+            "delivery_type": "capability_delivering",
+            "proof_integrity_version": "2.0",
+            "capability_unblocked": "Solutions can discover approved local T480 Ollama model profiles, their exact installed digests, intended roles, and local-only safety boundary without treating mutable tags as sufficient identity.",
+            "dependencies": ["TR-M04", "TR-M05", "TR-M10"],
+            "risk_level": "high",
+            "review_requirements": {"required": true, "roles": ["ai_engineer", "solution_architect", "developer"]},
+            "write_scope": ["catalogue", "schemas", "src/tool_repository", "tests", "docs", "reviews", "scripts", "runs/proofs", "milestone_registry.json"],
+            "required_artifacts": ["catalogue/t480-ollama-model-profiles.json", "catalogue/adapters.json", "schemas/catalogue.schema.json", "src/tool_repository/catalogue.py", "docs/t480_ollama_model_profiles.md", "tests/test_catalogue_api.py", "scripts/verify_t480_ollama_profiles.py"],
+            "proof_artifact": "runs/proofs/TR-M12_t480_local_model_profiles.json",
+            "verify": ["python3 scripts/verify_t480_ollama_profiles.py", "PYTHONPATH=src python3 -m tool_repository catalogue build", "python3 -m unittest tests.test_catalogue_api", "PYTHONPATH=src python3 -m tool_repository milestones close-check TR-M12"],
+            "execution_brief": {"objective": "Catalogue approved T480-local Ollama model profiles with exact installed digests and no remote execution endpoint.", "context": {"host": "Piwakawaka", "runtime": "Ollama local loopback service"}, "non_goals": ["Do not expose Ollama port 11434, proxy generation, store prompts, or represent a mutable tag without its digest."], "required_outputs": ["static profile set", "catalogue integration", "safe operating guide", "tests", "loopback inventory verifier"], "proof_requirements": ["Readback proves each published profile's exact local Ollama digest and local smoke evidence."], "verification_commands": ["python3 scripts/verify_t480_ollama_profiles.py", "PYTHONPATH=src python3 -m tool_repository catalogue build", "python3 -m unittest tests.test_catalogue_api"], "stop_conditions": ["Stop if a profile cannot be bound to an installed digest or the design requires exposing unauthenticated model execution."]}
         }
     ]
 }
