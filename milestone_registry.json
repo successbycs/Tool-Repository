@@ -73,7 +73,7 @@
             "title": "Prompt and Template Catalogue Ingestion"
         },
         {
-            "id": "TR-M17", "status": "in_progress",
+            "id": "TR-M17", "status": "complete",
             "title": "Target Operating Model and Hosted Delivery Roadmap"
         },
         {
@@ -1083,7 +1083,7 @@
             "execution_brief": {"objective": "Publish validated prompt, approved-goal, and operating-template metadata through the read-only catalogue.", "context": {"privacy": "No raw private execution content is catalogue data.", "approval_gate": "Only an explicitly human-approved goal record may be published."}, "non_goals": ["Do not execute prompts, store raw prompt executions, or ingest product-specific prompts without review.", "Do not publish a goal candidate before a human approval record exists."], "required_outputs": ["versioned goal prompt and template source", "human-approved goal record", "privacy-safe asset metadata", "catalogue integration", "tests and proof"], "proof_requirements": ["Build proves prompt definitions, templates, and approved goals are versioned, validated, and represented without raw execution content.", "A negative test proves an unapproved goal cannot be published."], "verification_commands": ["PYTHONPATH=src python3 -m tool_repository prompts validate", "PYTHONPATH=src python3 -m tool_repository milestones validate", "PYTHONPATH=src python3 -m tool_repository catalogue build"], "stop_conditions": ["Stop if a catalogue entry would contain raw inputs, outputs, hidden reasoning, credentials, or customer content.", "Stop if explicit human approval cannot be validated."]}
         },
         {
-            "id": "TR-M17", "status": "in_progress",
+            "id": "TR-M17", "status": "complete",
             "title": "Target Operating Model and Hosted Delivery Roadmap",
             "delivery_type": "foundation_enabling",
             "proof_integrity_version": "2.0",

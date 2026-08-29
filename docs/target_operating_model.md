@@ -39,7 +39,7 @@ have a completed local form while its hosted form is not started.
 | Immutable release resolution | A catalogue entry binds an adapter to a Git tag, full commit, descriptor hash, and release URI. | completed | TR-M01A, TR-M04, TR-M15 |
 | Local consumer workflow | A solution can read a downloaded catalogue, verify a lock file, check out a pinned release, and invoke it locally. | completed | TR-M01A, TR-M06 |
 | CI validation | GitHub validates repository contracts and tests on pushes and pull requests. | completed | TR-M10, TR-M11 |
-| Target operating model and delivery roadmap | Maintainers and users can distinguish available local capability from future hosted capability. | in progress | TR-M17 |
+| Target operating model and delivery roadmap | Maintainers and users can distinguish available local capability from future hosted capability. | completed | TR-M17 |
 | Immutable hosted catalogue objects | A validated catalogue and checksum are published to private Cloudflare R2 from GitHub CI. | not started | TR-M18 |
 | Protected HTTPS catalogue API | A stateless Cloudflare Worker serves immutable catalogue JSON and no adapter execution endpoint. | not started | TR-M19 |
 | HTTP catalogue consumer | A consuming repository fetches, caches, validates, and pins the hosted catalogue. | not started | TR-M20 |
@@ -60,8 +60,8 @@ GitHub source + tagged release
 
 ## Delivery order
 
-1. Complete TR-M17 to make the model and roadmap the single source of truth.
-2. Build TR-M18 before exposing any hosted data: R2 publication must be
+1. TR-M17 is complete; the model and roadmap are the current source of truth.
+2. Build TR-M18 next, before exposing any hosted data: R2 publication must be
    deterministic, least-privilege, and rollback-capable.
 3. Build TR-M19 only on the R2 artifact contract. The first API is one
    read-only document path, not search, execution, or mutation endpoints.

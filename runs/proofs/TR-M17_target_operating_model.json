@@ -1,0 +1,53 @@
+{
+  "milestone_id": "TR-M17",
+  "implementation_revision": "1985a8413bbae8e03722b344c98fa6457f9141b8",
+  "generated_at": "2026-08-29T22:23:16.421842Z",
+  "environment": {
+    "python": "3.12.3",
+    "platform": "Linux-6.6.87.2-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+    "host": "Piwakawaka",
+    "runtime": "static operating-model validation"
+  },
+  "status": "passed",
+  "verification": [
+    {
+      "command": "python3 scripts/validate_policy_docs.py",
+      "exit_code": 0,
+      "output": "OK\n",
+      "output_sha256": "a12b7cb43c9d9134b5bb1b35e9096b66775d9e92e7611d1cc92b02edd6782a87"
+    },
+    {
+      "command": "PYTHONPATH=src python3 -m tool_repository milestones validate",
+      "exit_code": 0,
+      "output": "OK\n",
+      "output_sha256": "a12b7cb43c9d9134b5bb1b35e9096b66775d9e92e7611d1cc92b02edd6782a87"
+    },
+    {
+      "command": "python3 -m unittest tests.test_target_operating_model",
+      "exit_code": 0,
+      "output": ".\n----------------------------------------------------------------------\nRan 1 test in 0.004s\n\nOK\n",
+      "output_sha256": "a626407facf1102b512cc38f00f6e7d889aa6280a5c03d1722ac6d1c4eb08dc5"
+    }
+  ],
+  "reviews": [
+    {
+      "role": "ai_engineer",
+      "status": "passed",
+      "reference": "reviews/TR-M17_ai_engineer.md",
+      "content_sha256": "0412be43080966a15e4cd6b7fbd395a7f66507ef70f7e885d82a7ec786d9f1a6"
+    },
+    {
+      "role": "solution_architect",
+      "status": "passed",
+      "reference": "reviews/TR-M17_solution_architect.md",
+      "content_sha256": "50d416c905eb734961b8f0052ee25f5d5a8f62db6116be9d136be869c3b7ae48"
+    },
+    {
+      "role": "developer",
+      "status": "passed",
+      "reference": "reviews/TR-M17_developer.md",
+      "content_sha256": "57bcc1dd91037b50845d1726d15264e8a46ca1359b7432d9729f00c00600b647"
+    }
+  ],
+  "observed_result": "The operating model distinguishes completed local/Git capability from future Cloudflare-hosted delivery and each mapped capability matches its milestone status."
+}
