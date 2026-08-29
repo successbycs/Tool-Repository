@@ -1,0 +1,65 @@
+{
+  "milestone_id": "TR-M12",
+  "implementation_revision": "dd36d114975bb0eb62f8f8cfac34b2bc7a4eeff0",
+  "generated_at": "2026-08-29T04:14:13.954729Z",
+  "environment": {
+    "python": "3.12.3",
+    "platform": "Linux-6.6.87.2-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+    "host": "Piwakawaka",
+    "runtime": "Ollama 0.19.0 loopback"
+  },
+  "status": "passed",
+  "verification": [
+    {
+      "command": "python3 scripts/verify_t480_ollama_profiles.py",
+      "exit_code": 0,
+      "output": "OK: 5 T480 Ollama profiles match exact local digests, sizes, and model details.\n",
+      "output_sha256": "df895d8ee0eb5b340441f79c82db2e2a4ca6dfdde81f8bbd6ae0c06fe145c4ff"
+    },
+    {
+      "command": "PYTHONPATH=src python3 -m tool_repository catalogue build",
+      "exit_code": 0,
+      "output": "OK\n",
+      "output_sha256": "a12b7cb43c9d9134b5bb1b35e9096b66775d9e92e7611d1cc92b02edd6782a87"
+    },
+    {
+      "command": "python3 -m unittest tests.test_catalogue_api",
+      "exit_code": 0,
+      "output": "......\n----------------------------------------------------------------------\nRan 6 tests in 0.305s\n\nOK\n",
+      "output_sha256": "2a2409b388cef351c10370f5a6528c30054c3129c1268cd3f7ea42cf5a8c428c"
+    },
+    {
+      "command": "loopback smoke qwen3:4b",
+      "exit_code": 0,
+      "output": "{\"done\": true, \"done_reason\": \"length\", \"eval_count\": 8, \"model\": \"qwen3:4b\", \"response_sha256\": \"4b1fcb4b456307f3644952c0514f1450bee0f5080bbb3025e90d5cbe70137679\"}",
+      "output_sha256": "8ef0003478a73d45d6d82d2a1199c75ab8bfd8b3b19fe53d063d56ca18c5d446"
+    },
+    {
+      "command": "loopback smoke gemma3:4b",
+      "exit_code": 0,
+      "output": "{\"done\": true, \"done_reason\": \"stop\", \"eval_count\": 3, \"model\": \"gemma3:4b\", \"response_sha256\": \"3dfa3fb239f56c778a1e9b33eb31328349edd155a95806dac4378904e88527e5\"}",
+      "output_sha256": "1165d03394aca51ab42feea70208bc669b395b3bd64482500790e8f274a78bd7"
+    }
+  ],
+  "reviews": [
+    {
+      "role": "ai_engineer",
+      "status": "passed",
+      "reference": "reviews/TR-M12_ai_engineer.md",
+      "content_sha256": "4c998da78b0cac61abbf3f7de053105f0ee5403d61faad6022924cd8d36bc565"
+    },
+    {
+      "role": "solution_architect",
+      "status": "passed",
+      "reference": "reviews/TR-M12_solution_architect.md",
+      "content_sha256": "fd0ddbf552f355841e8f7c4a7639d2e9fab275a838d6a01a934abf4906123a43"
+    },
+    {
+      "role": "developer",
+      "status": "passed",
+      "reference": "reviews/TR-M12_developer.md",
+      "content_sha256": "fa2649fb6f7ac7e3d91a78fadd5875e7e0d3caf20c08737d9153ca97dce47bed"
+    }
+  ],
+  "observed_result": "All five static T480 profiles match local Ollama readback exactly; bounded loopback-only Qwen 3 4B and Gemma 3 4B generation smokes produced non-empty responses without publishing an execution endpoint."
+}
