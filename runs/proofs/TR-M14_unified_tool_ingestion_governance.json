@@ -1,0 +1,51 @@
+{
+  "milestone_id": "TR-M14",
+  "implementation_revision": "9efc1d718cbfa54a0c19a95af16f8e3b89298230",
+  "generated_at": "2026-08-29T04:53:27.041099Z",
+  "environment": {
+    "python": "3.12.3",
+    "platform": "Linux-6.6.87.2-microsoft-standard-WSL2-x86_64-with-glibc2.39"
+  },
+  "status": "passed",
+  "verification": [
+    {
+      "command": "python3 scripts/validate_policy_docs.py",
+      "exit_code": 0,
+      "output": "OK\n",
+      "output_sha256": "a12b7cb43c9d9134b5bb1b35e9096b66775d9e92e7611d1cc92b02edd6782a87"
+    },
+    {
+      "command": "python3 -m unittest tests.test_milestone_governance",
+      "exit_code": 0,
+      "output": "......\n----------------------------------------------------------------------\nRan 6 tests in 0.067s\n\nOK\n",
+      "output_sha256": "13b96ed43ad62b23c6812e318f100b156de88f41891dfeb3b15c976596356e17"
+    },
+    {
+      "command": "PYTHONPATH=src python3 -m tool_repository milestones validate",
+      "exit_code": 0,
+      "output": "OK\n",
+      "output_sha256": "a12b7cb43c9d9134b5bb1b35e9096b66775d9e92e7611d1cc92b02edd6782a87"
+    }
+  ],
+  "reviews": [
+    {
+      "role": "ai_engineer",
+      "status": "passed",
+      "reference": "reviews/TR-M14_ai_engineer.md",
+      "content_sha256": "01c6c8503649a915ee8075d1749bbb5037b052fce138c5bfdaa54093d15fbd03"
+    },
+    {
+      "role": "solution_architect",
+      "status": "passed",
+      "reference": "reviews/TR-M14_solution_architect.md",
+      "content_sha256": "8f43829c3ce9d9f663ab87d0197dc2f48389496d52cabebeabeb4012d7c64663"
+    },
+    {
+      "role": "developer",
+      "status": "passed",
+      "reference": "reviews/TR-M14_developer.md",
+      "content_sha256": "f5ceb8c901d67ff4a908ee1c00e433df01baffbf690cc5789a908fd92bace6b0"
+    }
+  ],
+  "observed_result": "Every registry milestone declares an ingestion assessment; applicable milestones bind concrete source records and verification commands, and closure checks require that evidence."
+}
