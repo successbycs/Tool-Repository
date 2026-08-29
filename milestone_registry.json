@@ -1,4 +1,58 @@
 {
+    "milestone_status_summary": [
+        {
+            "id": "TR-M00",
+            "status": "complete"
+        },
+        {
+            "id": "TR-M01",
+            "status": "complete"
+        },
+        {
+            "id": "TR-M01A",
+            "status": "complete"
+        },
+        {
+            "id": "TR-M02",
+            "status": "complete"
+        },
+        {
+            "id": "TR-M03",
+            "status": "complete"
+        },
+        {
+            "id": "TR-M04",
+            "status": "complete"
+        },
+        {
+            "id": "TR-M05",
+            "status": "complete"
+        },
+        {
+            "id": "TR-M06",
+            "status": "complete"
+        },
+        {
+            "id": "TR-M07",
+            "status": "not_started"
+        },
+        {
+            "id": "TR-M08",
+            "status": "not_started"
+        },
+        {
+            "id": "TR-M09",
+            "status": "complete"
+        },
+        {
+            "id": "TR-M10",
+            "status": "complete"
+        },
+        {
+            "id": "TR-M11",
+            "status": "complete"
+        }
+    ],
     "milestones": [
         {
             "id": "TR-M00", "status": "complete",

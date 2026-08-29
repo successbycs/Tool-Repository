@@ -99,6 +99,15 @@ def validate_registry(root: Path = ROOT) -> list[str]:
                 issues.append(f"{identifier}: cannot depend on itself")
         if milestone.get("status") == "complete":
             issues.extend(close_check(identifier, root=root, registry=records))
+    summary = payload.get("milestone_status_summary")
+    if summary is not None:
+        expected_summary = [
+            {"id": str(milestone.get("id") or ""), "status": milestone.get("status")}
+            for milestone in milestones
+            if isinstance(milestone, dict)
+        ]
+        if summary != expected_summary:
+            issues.append("milestone_status_summary must exactly match the ordered milestone IDs and statuses")
     visiting: set[str] = set()
     visited: set[str] = set()
 

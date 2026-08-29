@@ -41,3 +41,16 @@ class MilestoneGovernanceTests(unittest.TestCase):
             second = dict(first, id="TR-M98", dependencies=["TR-M97"])
             (root / "milestone_registry.json").write_text(json.dumps({"milestones": [first, second]}), encoding="utf-8")
             self.assertTrue(any("dependency cycle" in issue for issue in validate_registry(root)))
+
+    def test_status_summary_must_match_ordered_milestones(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            milestone = {
+                "id": "TR-M96", "title": "Summary", "delivery_type": "foundation_enabling", "status": "not_started",
+                "capability_unblocked": "test", "dependencies": [], "risk_level": "low",
+                "review_requirements": {"required": False, "roles": []}, "write_scope": ["x"], "required_artifacts": ["x"], "proof_artifact": "x", "verify": ["true"],
+                "execution_brief": {"objective": "test", "context": {}, "non_goals": ["none"], "required_outputs": ["x"], "proof_requirements": ["proof"], "verification_commands": ["true"], "stop_conditions": ["stop"]},
+            }
+            payload = {"milestone_status_summary": [{"id": "TR-M96", "status": "complete"}], "milestones": [milestone]}
+            (root / "milestone_registry.json").write_text(json.dumps(payload), encoding="utf-8")
+            self.assertTrue(any("milestone_status_summary" in issue for issue in validate_registry(root)))
