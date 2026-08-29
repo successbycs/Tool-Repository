@@ -14,10 +14,7 @@ model-serving API or an adapter that can run prompts.
 | Profile | Intended use | Input |
 | --- | --- | --- |
 | `qwen3-4b-q4` | Small local reasoning, routing, structured extraction | Text |
-| `gemma3-4b-q4` | Local vision and document/image analysis | Text, image |
 | `qwen2.5-coder-7b-q4` | Local code assistance and structured tool use | Text |
-| `mistral-7b-q4` | Local general assistance and summarisation | Text |
-| `nomic-embed-text-137m-f16` | Embeddings and semantic retrieval | Text |
 
 All profiles are `active` and `local_only: true`. A local application on the
 T480 may call Ollama at `http://127.0.0.1:11434`; no other repository should

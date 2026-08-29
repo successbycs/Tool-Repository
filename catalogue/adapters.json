@@ -305,73 +305,6 @@
   ],
   "model_profiles": [
     {
-      "digest": "a2af6cc3eb7fa8be8504abaf9b04e88f17a119ec3f04a3addf55f92841195f5a",
-      "id": "gemma3-4b-q4",
-      "input_modalities": [
-        "text",
-        "image"
-      ],
-      "limitations": [
-        "CPU inference may be slow for image-heavy work.",
-        "No remote endpoint is published by this profile."
-      ],
-      "local_only": true,
-      "ollama_model": "gemma3:4b",
-      "parameters": "4.3B",
-      "quantization": "Q4_K_M",
-      "roles": [
-        "local_vision",
-        "document_image_analysis"
-      ],
-      "size_bytes": 3338801804,
-      "status": "active",
-      "title": "Gemma 3 4B vision"
-    },
-    {
-      "digest": "6577803aa9a036369e481d648a2baebb381ebc6e897f2bb9a766a2aa7bfbc1cf",
-      "id": "mistral-7b-q4",
-      "input_modalities": [
-        "text"
-      ],
-      "limitations": [
-        "The tag is mutable; consumers must verify the listed digest.",
-        "No remote endpoint is published by this profile."
-      ],
-      "local_only": true,
-      "ollama_model": "mistral:latest",
-      "parameters": "7.2B",
-      "quantization": "Q4_K_M",
-      "roles": [
-        "local_general_assistant",
-        "summarization"
-      ],
-      "size_bytes": 4372824384,
-      "status": "active",
-      "title": "Mistral 7B general"
-    },
-    {
-      "digest": "0a109f422b47e3a30ba2b10eca18548e944e8a23073ee3f3e947efcf3c45e59f",
-      "id": "nomic-embed-text-137m-f16",
-      "input_modalities": [
-        "text"
-      ],
-      "limitations": [
-        "This is an embedding model, not a conversational model.",
-        "No remote endpoint is published by this profile."
-      ],
-      "local_only": true,
-      "ollama_model": "nomic-embed-text:latest",
-      "parameters": "137M",
-      "quantization": "F16",
-      "roles": [
-        "local_embeddings",
-        "semantic_retrieval"
-      ],
-      "size_bytes": 274302450,
-      "status": "active",
-      "title": "Nomic Embed Text"
-    },
-    {
       "digest": "dae161e27b0e90dd1856c8bb3209201fd6736d8eb66298e75ed87571486f4364",
       "id": "qwen2.5-coder-7b-q4",
       "input_modalities": [
@@ -417,7 +350,7 @@
       "title": "Qwen 3 4B"
     }
   ],
-  "model_profiles_sha256": "d513117633eb3b657f33d0213954a63698768c05824509fc2acabfd2bc3c71ad",
+  "model_profiles_sha256": "65159545288d55410c95de84a34e173379bbbcfca1013bc25a3d8232fe669f53",
   "release_index_sha256": "21d3012417bd675beb2af91782b2d4688f7935d320c7011742226d4510bd1615",
   "schema_version": "1.0.0"
 }

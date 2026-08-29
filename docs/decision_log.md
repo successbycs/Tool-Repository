@@ -91,3 +91,11 @@ observed digest and hardware-fit metadata. The generated catalogue may expose
 those profiles for discovery, but it never exposes port 11434, proxies prompts,
 or turns a local model tag into a remote service. Remote inference, if needed,
 requires a separately reviewed authenticated gateway or job adapter.
+
+## 2026-08-29 — T480 core models are Qwen 3 and Qwen Coder
+
+The owner elected to keep only the general Qwen 3 4B and dedicated Qwen 2.5
+Coder 7B local profiles. Gemma 3, Mistral, and Nomic Embed Text were removed
+from the T480 and must not be advertised as installed capabilities. Vision and
+local semantic retrieval can be added back only when a concrete solution needs
+them and their profile evidence is refreshed.

@@ -40,7 +40,8 @@ class CatalogueApiTests(unittest.TestCase):
         self.assertTrue(all(profile["local_only"] for profile in profiles))
         by_id = {profile["id"]: profile for profile in profiles}
         self.assertEqual(by_id["qwen3-4b-q4"]["ollama_model"], "qwen3:4b")
-        self.assertEqual(by_id["gemma3-4b-q4"]["ollama_model"], "gemma3:4b")
+        self.assertEqual(by_id["qwen2.5-coder-7b-q4"]["ollama_model"], "qwen2.5-coder:7b")
+        self.assertEqual(set(by_id), {"qwen3-4b-q4", "qwen2.5-coder-7b-q4"})
         self.assertTrue(all(len(profile["digest"]) == 64 for profile in profiles))
 
     def test_rejects_a_model_profile_without_a_full_digest(self) -> None:
