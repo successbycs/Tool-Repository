@@ -1,0 +1,5 @@
+{
+  "schema_version": "1.0.0",
+  "adapter": {"id": "ollama-readiness", "version": "0.2.0"},
+  "records": [{"id": "fake-loopback-inventory-contract", "kind": "validated_usage", "observed_on": "2026-08-29", "context": "The conformance test supplied a fake loopback inventory matching the two approved T480 model profiles.", "outcome": "The adapter returned a schema-valid ready report and rejected an inventory that did not exactly match approved digests.", "constraints_or_lessons": "This proves the clean-room comparison contract only; live T480 readiness requires a separate loopback readback.", "evidence_ref": "tests/test_conformance.py", "redaction_attestation": "sanitized_repository_evidence", "reviewed_by": "Tool Repository"}]
+}

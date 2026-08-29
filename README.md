@@ -10,8 +10,9 @@ The practical test is simple: a developer starting a new solution can find a sui
 
 - validate reusable adapter contracts, descriptors, guides, knowledge records,
   provenance, safety boundaries, and isolated conformance tests;
-- provide three draft, read-only reference adapters for T480 target validation,
-  CS AI Lab readiness, and MP4-transcription environment readiness;
+- provide four read-only reference adapters for T480 target validation, CS AI
+  Lab readiness, MP4-transcription environment readiness, and digest-pinned
+  local Ollama inventory readiness;
 - generate a static, read-only [adapter catalogue](catalogue/adapters.json)
   that binds every listed adapter to a trusted publisher, immutable Git tag and
   commit, release URI, and descriptor SHA-256;

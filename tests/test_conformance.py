@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import importlib.util
+import json
 import sys
 import unittest
 from pathlib import Path
@@ -43,6 +44,17 @@ class FakeTranscriptionProbe:
         return {"worker_running": False, "model_cache_ready": True, "active_job_count": 0}
 
 
+class FakeOllamaProbe:
+    def __init__(self, *, mismatch: bool = False) -> None:
+        profiles = json.loads((ROOT / "catalogue" / "t480-ollama-model-profiles.json").read_text(encoding="utf-8"))["profiles"]
+        self._inventory = [{"model": profile["ollama_model"], "digest": profile["digest"]} for profile in profiles]
+        if mismatch:
+            self._inventory[0] = {"model": self._inventory[0]["model"], "digest": "0" * 64}
+
+    def inspect_inventory(self) -> list[dict[str, str]]:
+        return self._inventory
+
+
 class T480AdapterConformanceTests(unittest.TestCase):
     def test_transport_validates_locally_and_matches_its_manifest(self) -> None:
         adapter_type = load_class("adapters/t480-transport/transport.py", "T480TransportAdapter")
@@ -81,6 +93,21 @@ class T480AdapterConformanceTests(unittest.TestCase):
         self.assertEqual(runtime.output["active_job_count"], 0)
         self.assertEqual(runtime.output["worker_running"], False)
         self.assertEqual(adapter_type().health_check(config={"target": "operator@t480"}).error["code"], "transport_not_configured")
+
+    def test_ollama_readiness_uses_a_fake_loopback_probe_and_rejects_mismatch(self) -> None:
+        adapter_type = load_class("adapters/ollama-readiness/adapter.py", "OllamaReadinessAdapter")
+        adapter = adapter_type(FakeOllamaProbe())
+        manifest = load_adapter_manifest("ollama-readiness")
+        self.assertEqual(validate_adapter_contract(adapter), [])
+        self.assertEqual(validate_adapter_manifest_conformance(adapter, manifest), [])
+        result = adapter.health_check(config={"target": "t480"})
+        self.assertTrue(result.success)
+        self.assertTrue(result.output["ready"])
+        self.assertEqual(result.output["endpoint_scope"], "loopback_only")
+        mismatch = adapter_type(FakeOllamaProbe(mismatch=True)).health_check(config={"target": "t480"})
+        self.assertTrue(mismatch.success)
+        self.assertFalse(mismatch.output["ready"])
+        self.assertEqual(adapter_type().health_check(config={"target": "t480"}).error["code"], "probe_not_configured")
 
 
 if __name__ == "__main__":

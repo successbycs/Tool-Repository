@@ -11,5 +11,5 @@
   ],
   "do_not_import": ["Environment files, credentials, logs, host output, and SSH configuration may expose private infrastructure.", "Arbitrary-command compatibility violates the fixed-operation safety boundary.", "Platform-specific Docker or Compose deployment configuration is not a reusable adapter."],
   "review_records": ["intake/reviews/cs-ai-lab-infra-ai-engineer.md", "intake/reviews/cs-ai-lab-infra-senior-developer.md", "intake/reviews/cs-ai-lab-infra-solution-architect.md"],
-  "promotion_decision": "deferred"
+  "promotion_decision": "stage_approved"
 }

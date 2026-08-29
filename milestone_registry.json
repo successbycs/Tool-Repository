@@ -63,6 +63,10 @@
         {
             "id": "TR-M14", "status": "complete",
             "title": "Unified Tool Ingestion Governance"
+        },
+        {
+            "id": "TR-M15", "status": "in_progress",
+            "title": "Ollama Readiness Adapter Ingestion"
         }
     ],
     "milestones": [
@@ -1017,6 +1021,22 @@
             "proof_artifact": "runs/proofs/TR-M14_unified_tool_ingestion_governance.json",
             "verify": ["python3 scripts/validate_policy_docs.py", "python3 -m unittest tests.test_milestone_governance", "PYTHONPATH=src python3 -m tool_repository milestones close-check TR-M14"],
             "execution_brief": {"objective": "Make the catalogue ingestion flow a mandatory, verifiable concern for every milestone that promotes or retires reusable tool assets.", "context": {"standard": "docs/catalogue_ingestion.md"}, "non_goals": ["Do not add a central execution service or retroactively alter historical proof observations."], "required_outputs": ["indexed ingestion standard", "policy and schema requirement", "registry migration", "closure validation", "negative tests"], "proof_requirements": ["Validator rejects incomplete applicable ingestion declarations and requires their declared verification evidence in closure proof."], "verification_commands": ["python3 scripts/validate_policy_docs.py", "python3 -m unittest tests.test_milestone_governance"], "stop_conditions": ["Stop if applicable ingestion can be marked complete without declared source records and proof verification evidence."]}
+        },
+        {
+            "id": "TR-M15", "status": "in_progress",
+            "title": "Ollama Readiness Adapter Ingestion",
+            "delivery_type": "capability_delivering",
+            "proof_integrity_version": "2.0",
+            "capability_unblocked": "A T480-local solution can invoke a reviewed, read-only adapter to verify that the exact catalogue-approved Ollama model inventory is reachable only through loopback.",
+            "dependencies": ["TR-M05", "TR-M13", "TR-M14"],
+            "risk_level": "high",
+            "ingestion": {"applies": true, "asset_types": ["adapter"], "source_records": ["intake/assessments/cs-ai-lab-infra.json", "/home/chris/projects/cs-ai-lab-infra/ollama/README.md", "catalogue/t480-ollama-model-profiles.json", "adapters/ollama-readiness/adapter.json"], "verification": ["PYTHONPATH=src python3 -m tool_repository validate", "python3 -m unittest tests.test_conformance", "python3 scripts/verify_t480_ollama_profiles.py", "PYTHONPATH=src python3 -m tool_repository catalogue build"], "catalogue_effect": "publish"},
+            "review_requirements": {"required": true, "roles": ["ai_engineer", "solution_architect", "developer"]},
+            "write_scope": ["adapters/ollama-readiness", "catalogue", "docs", "intake", "tests", "reviews", "scripts", "runs/proofs", "milestone_registry.json", "pyproject.toml", "README.md"],
+            "required_artifacts": ["adapters/ollama-readiness/adapter.py", "adapters/ollama-readiness/adapter.json", "adapters/ollama-readiness/knowledge.json", "docs/adapters/ollama-readiness.md", "catalogue/release-index.json", "catalogue/adapters.json", "tests/test_conformance.py", "scripts/prove_ollama_readiness_adapter.py", "pyproject.toml", "README.md"],
+            "proof_artifact": "runs/proofs/TR-M15_ollama_readiness_adapter.json",
+            "verify": ["PYTHONPATH=src python3 -m tool_repository validate", "python3 -m unittest tests.test_conformance", "python3 scripts/verify_t480_ollama_profiles.py", "PYTHONPATH=src python3 -m tool_repository catalogue build", "PYTHONPATH=src python3 -m tool_repository milestones close-check TR-M15"],
+            "execution_brief": {"objective": "Clean-room ingest a read-only Ollama readiness adapter from the assessed local CS AI Lab source patterns.", "context": {"source_revision": "551f1afe972172ba9eee707a81a12072c8473ee0", "runtime": "T480 loopback Ollama only"}, "non_goals": ["Do not copy source code, pull or delete models, proxy generation, change runtime configuration, or expose port 11434."], "required_outputs": ["clean-room adapter and descriptor", "fake-probe conformance tests", "real loopback readback", "immutable release index entry", "generated catalogue entry"], "proof_requirements": ["Proof demonstrates exact approved profiles through the local loopback inventory and proves the adapter rejects missing or mismatched inventory."], "verification_commands": ["PYTHONPATH=src python3 -m tool_repository validate", "python3 -m unittest tests.test_conformance", "python3 scripts/verify_t480_ollama_profiles.py", "PYTHONPATH=src python3 -m tool_repository catalogue build"], "stop_conditions": ["Stop if a design needs a non-loopback URL, mutable model identity, model installation, or arbitrary request execution."]}
         }
     ]
 }
