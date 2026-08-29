@@ -42,3 +42,10 @@ After TR-M04 generates and validates immutable catalogue JSON, GitHub CI will
 publish it to a private Cloudflare R2 bucket. The subscribed Cloudflare Worker
 will be the stateless HTTPS catalogue endpoint; neither R2 nor the Worker may
 execute adapters or hold solution secrets.
+
+## 2026-08-29 — First local release is v0.1.0
+
+TR-M01A promotes the library package from `0.0.0` to `0.1.0` and binds the
+first CS AI Lab installation to the exact local Git tag `v0.1.0`. The install
+uses a non-root, versioned release directory and records the resolved commit;
+the tag is not a mutable runtime dependency.
