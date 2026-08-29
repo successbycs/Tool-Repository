@@ -49,3 +49,7 @@ TR-M01A promotes the library package from `0.0.0` to `0.1.0` and binds the
 first CS AI Lab installation to the exact local Git tag `v0.1.0`. The install
 uses a non-root, versioned release directory and records the resolved commit;
 the tag is not a mutable runtime dependency.
+
+The existing `v0.0.0` package commit is retained locally as the rollback
+baseline. It is installed only to exercise rollback and then `v0.1.0` is
+restored as the selected release.
