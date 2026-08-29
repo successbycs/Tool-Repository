@@ -39,6 +39,9 @@ plane.
 - publish the generated catalogue through Cloudflare R2 and a stateless Worker
   HTTPS endpoint.
 
+The [target operating model](docs/target_operating_model.md) maps this hosted
+delivery path, its user workflow, and the status of every planned capability.
+
 ## What this repository owns
 
 - reusable adapters, workflow recipes, solution templates, prompts, schemas, evaluation assets, and operational knowledge;

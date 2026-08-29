@@ -71,6 +71,30 @@
         {
             "id": "TR-M16", "status": "complete",
             "title": "Prompt and Template Catalogue Ingestion"
+        },
+        {
+            "id": "TR-M17", "status": "in_progress",
+            "title": "Target Operating Model and Hosted Delivery Roadmap"
+        },
+        {
+            "id": "TR-M18", "status": "not_started",
+            "title": "Immutable Catalogue Publication to Cloudflare R2"
+        },
+        {
+            "id": "TR-M19", "status": "not_started",
+            "title": "Protected Cloudflare Worker Catalogue API"
+        },
+        {
+            "id": "TR-M20", "status": "not_started",
+            "title": "HTTP Catalogue Consumer and Release Resolver"
+        },
+        {
+            "id": "TR-M21", "status": "not_started",
+            "title": "Pinned Adapter Acquisition and Local Installation"
+        },
+        {
+            "id": "TR-M22", "status": "not_started",
+            "title": "Hosted Catalogue Operations and Service Assurance"
         }
     ],
     "milestones": [
@@ -1057,6 +1081,97 @@
             "proof_artifact": "runs/proofs/TR-M16_prompt_template_catalogue.json",
             "verify": ["PYTHONPATH=src python3 -m tool_repository prompts validate", "PYTHONPATH=src python3 -m tool_repository milestones validate", "PYTHONPATH=src python3 -m tool_repository catalogue build", "PYTHONPATH=src python3 -m tool_repository milestones close-check TR-M16"],
             "execution_brief": {"objective": "Publish validated prompt, approved-goal, and operating-template metadata through the read-only catalogue.", "context": {"privacy": "No raw private execution content is catalogue data.", "approval_gate": "Only an explicitly human-approved goal record may be published."}, "non_goals": ["Do not execute prompts, store raw prompt executions, or ingest product-specific prompts without review.", "Do not publish a goal candidate before a human approval record exists."], "required_outputs": ["versioned goal prompt and template source", "human-approved goal record", "privacy-safe asset metadata", "catalogue integration", "tests and proof"], "proof_requirements": ["Build proves prompt definitions, templates, and approved goals are versioned, validated, and represented without raw execution content.", "A negative test proves an unapproved goal cannot be published."], "verification_commands": ["PYTHONPATH=src python3 -m tool_repository prompts validate", "PYTHONPATH=src python3 -m tool_repository milestones validate", "PYTHONPATH=src python3 -m tool_repository catalogue build"], "stop_conditions": ["Stop if a catalogue entry would contain raw inputs, outputs, hidden reasoning, credentials, or customer content.", "Stop if explicit human approval cannot be validated."]}
+        },
+        {
+            "id": "TR-M17", "status": "in_progress",
+            "title": "Target Operating Model and Hosted Delivery Roadmap",
+            "delivery_type": "foundation_enabling",
+            "proof_integrity_version": "2.0",
+            "capability_unblocked": "Users and maintainers have a single, truthful operating model that maps current local discovery and release resolution to the staged Cloudflare-hosted delivery path.",
+            "dependencies": ["TR-M16"],
+            "risk_level": "moderate",
+            "ingestion": {"applies": false, "asset_types": [], "source_records": [], "verification": [], "catalogue_effect": "not_applicable"},
+            "review_requirements": {"required": true, "roles": ["ai_engineer", "solution_architect", "developer"]},
+            "write_scope": ["README.md", "docs", "milestone_registry.json", "reviews", "scripts", "runs/proofs"],
+            "required_artifacts": ["docs/target_operating_model.md", "docs/README.md", "README.md", "scripts/prove_target_operating_model.py"],
+            "proof_artifact": "runs/proofs/TR-M17_target_operating_model.json",
+            "verify": ["python3 scripts/validate_policy_docs.py", "PYTHONPATH=src python3 -m tool_repository milestones validate", "PYTHONPATH=src python3 -m tool_repository milestones close-check TR-M17"],
+            "execution_brief": {"objective": "Define the user-facing target operating model and create a truthful, sequenced hosted-delivery roadmap.", "context": {"hosting_target": "Cloudflare R2 and a stateless Worker", "current_boundary": "local/Git discovery and local adapter execution"}, "non_goals": ["Do not claim the Cloudflare publisher, Worker, consumer HTTP client, or adapter installer exists before it is implemented.", "Do not create a central adapter execution service."], "required_outputs": ["capability status map", "user workflow", "staged milestones with dependencies", "proof and Review Triad"], "proof_requirements": ["Proof validates the registry and confirms every operating-model capability has a matching milestone and truthful status."], "verification_commands": ["python3 scripts/validate_policy_docs.py", "PYTHONPATH=src python3 -m tool_repository milestones validate"], "stop_conditions": ["Stop if a capability is marked complete without checked-in evidence or a future hosted capability lacks a concrete delivery milestone."]}
+        },
+        {
+            "id": "TR-M18", "status": "not_started",
+            "title": "Immutable Catalogue Publication to Cloudflare R2",
+            "delivery_type": "capability_delivering",
+            "capability_unblocked": "GitHub CI can publish a validated, checksum-bound immutable catalogue object to a private Cloudflare R2 bucket with rollback-safe versioning.",
+            "dependencies": ["TR-M17"],
+            "risk_level": "high",
+            "ingestion": {"applies": false, "asset_types": [], "source_records": [], "verification": [], "catalogue_effect": "not_applicable"},
+            "review_requirements": {"required": true, "roles": ["ai_engineer", "solution_architect", "developer"]},
+            "write_scope": [".github/workflows", "catalogue", "docs", "scripts", "tests", "reviews", "runs/proofs", "milestone_registry.json"],
+            "required_artifacts": [".github/workflows/publish-catalogue.yml", "scripts/publish_catalogue_r2.py", "docs/catalogue_publication_runbook.md", "tests/test_catalogue_publication.py"],
+            "proof_artifact": "runs/proofs/TR-M18_catalogue_r2_publication.json",
+            "verify": ["PYTHONPATH=src python3 -m unittest tests.test_catalogue_publication", "PYTHONPATH=src python3 -m tool_repository catalogue build", "PYTHONPATH=src python3 -m tool_repository milestones close-check TR-M18"],
+            "execution_brief": {"objective": "Publish only generated, validated, immutable catalogue objects and checksums to private R2 through least-privilege CI.", "context": {"provider": "Cloudflare R2", "source_of_truth": "GitHub release and generated catalogue"}, "non_goals": ["Do not upload adapter code, secrets, solution data, or mutable runtime state to R2."], "required_outputs": ["CI publication workflow", "versioned object naming", "checksum verification", "rollback runbook", "isolated tests"], "proof_requirements": ["Proof demonstrates a non-production fixture publication and validates object version, checksum, and rollback selection."], "verification_commands": ["PYTHONPATH=src python3 -m unittest tests.test_catalogue_publication", "PYTHONPATH=src python3 -m tool_repository catalogue build"], "stop_conditions": ["Stop if credentials can enter repository files, an unvalidated object can publish, or object versions cannot be selected for rollback."]}
+        },
+        {
+            "id": "TR-M19", "status": "not_started",
+            "title": "Protected Cloudflare Worker Catalogue API",
+            "delivery_type": "capability_delivering",
+            "capability_unblocked": "Authorised consumers can fetch immutable catalogue JSON through a stateless HTTPS endpoint that performs no adapter execution.",
+            "dependencies": ["TR-M18"],
+            "risk_level": "high",
+            "ingestion": {"applies": false, "asset_types": [], "source_records": [], "verification": [], "catalogue_effect": "not_applicable"},
+            "review_requirements": {"required": true, "roles": ["ai_engineer", "solution_architect", "developer"]},
+            "write_scope": ["worker", "docs", "tests", "wrangler.toml", "reviews", "runs/proofs", "milestone_registry.json"],
+            "required_artifacts": ["worker/src/index.ts", "worker/wrangler.toml", "docs/catalogue_api.md", "docs/catalogue_api_runbook.md", "worker/test/catalogue-api.test.ts"],
+            "proof_artifact": "runs/proofs/TR-M19_worker_catalogue_api.json",
+            "verify": ["npm --prefix worker test", "npm --prefix worker run deploy:dry-run", "PYTHONPATH=src python3 -m tool_repository milestones close-check TR-M19"],
+            "execution_brief": {"objective": "Serve the exact R2 catalogue object over a protected, stateless HTTPS API.", "context": {"initial_route": "GET /catalogue/v1/adapters.json", "execution_boundary": "adapters remain local to consumers"}, "non_goals": ["Do not implement adapter execution, write endpoints, search indexing, customer data storage, or model proxying."], "required_outputs": ["Worker source", "R2 binding", "access-control policy", "contract tests", "deployment and rollback runbook"], "proof_requirements": ["Proof demonstrates authorised read-only retrieval, denial for unauthorised access, immutable version resolution, and no write or execution route."], "verification_commands": ["npm --prefix worker test", "npm --prefix worker run deploy:dry-run"], "stop_conditions": ["Stop if the Worker can mutate R2, execute an adapter, expose a secret, or serve an unvalidated catalogue object."]}
+        },
+        {
+            "id": "TR-M20", "status": "not_started",
+            "title": "HTTP Catalogue Consumer and Release Resolver",
+            "delivery_type": "capability_delivering",
+            "capability_unblocked": "A consuming repository can safely fetch, cache, validate, filter, and pin the hosted catalogue before resolving a local adapter release.",
+            "dependencies": ["TR-M19"],
+            "risk_level": "moderate",
+            "ingestion": {"applies": false, "asset_types": [], "source_records": [], "verification": [], "catalogue_effect": "not_applicable"},
+            "review_requirements": {"required": true, "roles": ["ai_engineer", "solution_architect", "developer"]},
+            "write_scope": ["examples", "src", "docs", "tests", "reviews", "runs/proofs", "milestone_registry.json"],
+            "required_artifacts": ["src/tool_repository/catalogue_client.py", "docs/catalogue_consumer_http.md", "examples/minimal-solution/fetch_catalogue.py", "tests/test_catalogue_client.py"],
+            "proof_artifact": "runs/proofs/TR-M20_http_catalogue_consumer.json",
+            "verify": ["PYTHONPATH=src python3 -m unittest tests.test_catalogue_client", "PYTHONPATH=src python3 -m tool_repository milestones close-check TR-M20"],
+            "execution_brief": {"objective": "Add a bounded HTTP consumer that accepts only validated catalogue bytes, verifies checksums, and emits a lockable release selection.", "context": {"consumer": "another solution repository", "transport": "protected Worker HTTPS"}, "non_goals": ["Do not automatically run downloaded adapter code or silently upgrade a pinned release."], "required_outputs": ["HTTP fetcher", "cache and checksum rules", "selection filters", "lock-file integration", "offline fixtures and tests"], "proof_requirements": ["Proof covers successful verified fetch, checksum mismatch rejection, stale-cache behaviour, and an exact pinned selection."], "verification_commands": ["PYTHONPATH=src python3 -m unittest tests.test_catalogue_client"], "stop_conditions": ["Stop if a consumer accepts unverified content, silently changes a pinned release, or executes received code."]}
+        },
+        {
+            "id": "TR-M21", "status": "not_started",
+            "title": "Pinned Adapter Acquisition and Local Installation",
+            "delivery_type": "capability_delivering",
+            "capability_unblocked": "A consumer can deliberately acquire and non-root install the exact adapter release selected from the catalogue, with verification and rollback.",
+            "dependencies": ["TR-M19"],
+            "risk_level": "high",
+            "ingestion": {"applies": false, "asset_types": [], "source_records": [], "verification": [], "catalogue_effect": "not_applicable"},
+            "review_requirements": {"required": true, "roles": ["ai_engineer", "solution_architect", "developer"]},
+            "write_scope": ["deploy", "docs", "examples", "scripts", "tests", "reviews", "runs/proofs", "milestone_registry.json"],
+            "required_artifacts": ["scripts/acquire_pinned_adapter.py", "docs/pinned_adapter_installation.md", "examples/minimal-solution/install_pinned_adapter.sh", "tests/test_pinned_adapter_acquisition.py"],
+            "proof_artifact": "runs/proofs/TR-M21_pinned_adapter_acquisition.json",
+            "verify": ["PYTHONPATH=src python3 -m unittest tests.test_pinned_adapter_acquisition", "PYTHONPATH=src python3 -m tool_repository milestones close-check TR-M21"],
+            "execution_brief": {"objective": "Make exact release acquisition deliberate, non-root, hash-verified, and reversible for consuming solutions.", "context": {"release_source": "catalogue artifact URI and release lock", "execution_location": "consumer-controlled local environment"}, "non_goals": ["Do not build a central package registry, auto-execute an adapter after download, or install outside a declared local root."], "required_outputs": ["acquisition command", "verification and rollback commands", "local install contract", "negative tests"], "proof_requirements": ["Proof demonstrates selection of an exact immutable release, checksum verification, non-root installation, and rollback without network-side mutation."], "verification_commands": ["PYTHONPATH=src python3 -m unittest tests.test_pinned_adapter_acquisition"], "stop_conditions": ["Stop if installation can escape the target root, accept a mutable ref, or execute adapter code implicitly."]}
+        },
+        {
+            "id": "TR-M22", "status": "not_started",
+            "title": "Hosted Catalogue Operations and Service Assurance",
+            "delivery_type": "operational_enabling",
+            "capability_unblocked": "The hosted catalogue can be operated as a dependable shared read-only service with access controls, observability, rollback, and incident procedures.",
+            "dependencies": ["TR-M19", "TR-M20", "TR-M21"],
+            "risk_level": "high",
+            "ingestion": {"applies": false, "asset_types": [], "source_records": [], "verification": [], "catalogue_effect": "not_applicable"},
+            "review_requirements": {"required": true, "roles": ["ai_engineer", "solution_architect", "developer"]},
+            "write_scope": ["worker", "docs", ".github/workflows", "tests", "reviews", "runs/proofs", "milestone_registry.json"],
+            "required_artifacts": ["docs/catalogue_service_operations.md", "docs/catalogue_incident_runbook.md", "worker/test/service-assurance.test.ts", ".github/workflows/catalogue-service-smoke.yml"],
+            "proof_artifact": "runs/proofs/TR-M22_hosted_catalogue_service_assurance.json",
+            "verify": ["npm --prefix worker test", "PYTHONPATH=src python3 -m tool_repository milestones close-check TR-M22"],
+            "execution_brief": {"objective": "Make the deployed catalogue observable, access-controlled, testable, and recoverable without weakening its read-only boundary.", "context": {"service": "Cloudflare Worker over private R2", "data": "generated public-or-authorised catalogue metadata only"}, "non_goals": ["Do not add central adapter execution, analytics containing customer data, or broad standing credentials."], "required_outputs": ["access policy", "health and synthetic checks", "alerting boundaries", "rollback and incident runbooks", "service tests"], "proof_requirements": ["Proof demonstrates an authorised healthy read, denied unauthorised request, rollback exercise, and operational alert/smoke evidence."], "verification_commands": ["npm --prefix worker test"], "stop_conditions": ["Stop if operations require exposing secrets, centralising customer data, or granting mutation rights to the Worker runtime."]}
         }
     ]
 }
