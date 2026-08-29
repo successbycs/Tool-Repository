@@ -29,7 +29,10 @@ class CatalogueApiTests(unittest.TestCase):
         assert payload is not None
         entries = payload["adapters"]
         self.assertEqual([(entry["adapter"]["id"], entry["adapter"]["version"]) for entry in entries], sorted((entry["adapter"]["id"], entry["adapter"]["version"]) for entry in entries))
-        self.assertTrue(all(entry["release"]["release_tag"] == "v0.1.0" for entry in entries))
+        self.assertEqual(
+            {entry["adapter"]["id"]: entry["release"]["release_tag"] for entry in entries},
+            {"mp4-transcription-t480": "v0.1.0", "ollama-readiness": "v0.2.0", "t480-lab": "v0.1.0", "t480-transport": "v0.1.0"},
+        )
 
     def test_includes_sorted_local_only_t480_model_profiles(self) -> None:
         payload, issues = build_catalogue(ROOT)
