@@ -7,6 +7,7 @@ from tool_repository.knowledge import load_knowledge_base
 from tool_repository.manifest import discover_manifests, load_manifest
 from tool_repository.milestones import close_check, validate_registry
 from tool_repository.repository_intake import load_queue
+from tool_repository.catalogue import load_catalogue, write_catalogue
 
 
 def main() -> int:
@@ -24,6 +25,13 @@ def main() -> int:
     repository_commands = repositories.add_subparsers(dest="repository_command", required=True)
     validate_queue = repository_commands.add_parser("validate-queue", help="Validate the read-only repository intake queue")
     validate_queue.add_argument("--queue", type=Path, default=Path("intake/repository_queue.json"))
+    catalogue = commands.add_parser("catalogue")
+    catalogue_commands = catalogue.add_subparsers(dest="catalogue_command", required=True)
+    build_catalogue_command = catalogue_commands.add_parser("build", help="Build the static read-only catalogue without importing adapters")
+    build_catalogue_command.add_argument("--output", type=Path, default=Path("catalogue/adapters.json"))
+    build_catalogue_command.add_argument("--release-index", type=Path, default=Path("catalogue/release-index.json"))
+    validate_catalogue_command = catalogue_commands.add_parser("validate", help="Validate a generated catalogue document")
+    validate_catalogue_command.add_argument("path", type=Path, nargs="?", default=Path("catalogue/adapters.json"))
     args = parser.parse_args()
 
     if args.command == "milestones":
@@ -43,6 +51,11 @@ def main() -> int:
                 issues.extend(load_knowledge_base(fixture, repository_root=Path.cwd())[1])
     elif args.command == "repositories":
         _, issues = load_queue(Path.cwd() / args.queue, repository_root=Path.cwd())
+    elif args.command == "catalogue":
+        if args.catalogue_command == "build":
+            issues = write_catalogue(Path.cwd() / args.output, root=Path.cwd(), release_index_path=Path.cwd() / args.release_index)
+        else:
+            _, issues = load_catalogue(Path.cwd() / args.path)
     else:  # pragma: no cover - argparse makes this unreachable
         issues = close_check(args.milestone_id)
     if issues:

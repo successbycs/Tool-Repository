@@ -10,6 +10,8 @@ These documents govern delivery of this repository. They are intentionally small
   intended library, intake, release, knowledge, and solution-consumption boundaries.
 - [Catalogue deployment architecture](catalogue_deployment_architecture.md)
   defines GitHub-to-Cloudflare R2 publication for the future read-only catalogue.
+- [Catalogue API](catalogue_api.md) defines the generated read-only discovery
+  document and consumer pinning contract.
 - [CS AI Lab deployment](cs_ai_lab_deployment.md) describes the non-root,
   versioned local release path and rollback contract.
 

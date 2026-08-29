@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tool-repository.local/schemas/catalogue-1.0.0.schema.json",
+  "title": "Tool Repository Read-only Catalogue",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "release_index_sha256", "adapters"],
+  "properties": {
+    "schema_version": {"const": "1.0.0"},
+    "release_index_sha256": {"$ref": "#/$defs/sha256"},
+    "adapters": {"type": "array", "items": {"$ref": "#/$defs/entry"}}
+  },
+  "$defs": {
+    "identifier": {"type": "string", "pattern": "^[a-z][a-z0-9]*(?:[._-][a-z0-9]+)*$"},
+    "semver": {"type": "string", "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$"},
+    "sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "release": {
+      "type": "object", "additionalProperties": false,
+      "required": ["publisher", "release_tag", "release_commit", "artifact_uri"],
+      "properties": {
+        "publisher": {"type": "string", "minLength": 2},
+        "release_tag": {"type": "string", "pattern": "^v[0-9]+\\.[0-9]+\\.[0-9]+$"},
+        "release_commit": {"type": "string", "pattern": "^[a-f0-9]{40}$"},
+        "artifact_uri": {"type": "string", "pattern": "^git\\+https://"}
+      }
+    },
+    "entry": {
+      "type": "object", "additionalProperties": false,
+      "required": ["adapter", "value", "capabilities", "operations", "documentation", "manifest_sha256", "release"],
+      "properties": {
+        "adapter": {"type": "object", "additionalProperties": false, "required": ["id", "version", "title", "summary", "status", "owner", "license"], "properties": {"id": {"$ref": "#/$defs/identifier"}, "version": {"$ref": "#/$defs/semver"}, "title": {"type": "string"}, "summary": {"type": "string"}, "status": {"enum": ["draft", "active", "deprecated", "archived"]}, "owner": {"type": "string"}, "license": {"type": "string"}}},
+        "value": {"type": "object", "additionalProperties": false, "required": ["use_cases", "fit_for", "not_for", "limitations"], "properties": {"use_cases": {"type": "array", "items": {"type": "string"}}, "fit_for": {"type": "array", "items": {"type": "string"}}, "not_for": {"type": "array", "items": {"type": "string"}}, "limitations": {"type": "array", "items": {"type": "string"}}}},
+        "capabilities": {"type": "array", "items": {"type": "object"}},
+        "operations": {"type": "array", "items": {"type": "object"}},
+        "documentation": {"type": "object", "additionalProperties": false, "required": ["user_guide", "knowledge_base"], "properties": {"user_guide": {"type": "string"}, "knowledge_base": {"type": "string"}}},
+        "manifest_sha256": {"$ref": "#/$defs/sha256"},
+        "release": {"$ref": "#/$defs/release"}
+      }
+    }
+  }
+}

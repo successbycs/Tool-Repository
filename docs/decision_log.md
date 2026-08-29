@@ -53,3 +53,10 @@ the tag is not a mutable runtime dependency.
 The existing `v0.0.0` package commit is retained locally as the rollback
 baseline. It is installed only to exercise rollback and then `v0.1.0` is
 restored as the selected release.
+
+## 2026-08-29 — Catalogue trust binds descriptor bytes to releases
+
+TR-M04 uses a static release index. A catalogue entry is generated only when
+its descriptor SHA-256 matches the indexed digest and the publisher, tag, full
+commit, and Git HTTPS release URI pass validation. This supplies deterministic
+local release resolution before CI publishes the document to R2.

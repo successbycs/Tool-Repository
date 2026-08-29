@@ -1,0 +1,308 @@
+{
+  "adapters": [
+    {
+      "adapter": {
+        "id": "mp4-transcription-t480",
+        "license": "Internal-Proprietary",
+        "owner": "Tool Repository",
+        "status": "draft",
+        "summary": "Reports fixed read-only MP4 transcription deployment readiness through an injected transport probe.",
+        "title": "T480 MP4 Transcription Readiness",
+        "version": "0.1.0"
+      },
+      "capabilities": [
+        {
+          "description": "Read fixed private transcription deployment readiness.",
+          "name": "transcription_readiness"
+        }
+      ],
+      "documentation": {
+        "knowledge_base": "adapters/mp4-transcription-t480/knowledge.json",
+        "user_guide": "docs/adapters/mp4-transcription-t480.md"
+      },
+      "manifest_sha256": "de6bdfa8542501bb73aa3874380124da247cbce2d5ad5de23a81314d778d1dba",
+      "operations": [
+        {
+          "capability": "transcription_readiness",
+          "idempotency": "idempotent",
+          "input_schema": {
+            "additionalProperties": false,
+            "type": "object"
+          },
+          "name": "transcription_preflight",
+          "output_schema": {
+            "additionalProperties": false,
+            "properties": {
+              "inbox_ready": {
+                "type": "boolean"
+              },
+              "output_ready": {
+                "type": "boolean"
+              },
+              "target": {
+                "type": "string"
+              },
+              "worker_image_ready": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "target",
+              "inbox_ready",
+              "output_ready",
+              "worker_image_ready"
+            ],
+            "type": "object"
+          },
+          "retry_guidance": "Retry after the consuming application restores the fixed transport or deployment.",
+          "side_effect": "read_only",
+          "summary": "Read inbox, output, and worker-image readiness.",
+          "timeout_seconds": 10
+        },
+        {
+          "capability": "transcription_readiness",
+          "idempotency": "idempotent",
+          "input_schema": {
+            "additionalProperties": false,
+            "type": "object"
+          },
+          "name": "transcription_runtime_status",
+          "output_schema": {
+            "additionalProperties": false,
+            "properties": {
+              "active_job_count": {
+                "minimum": 0,
+                "type": "integer"
+              },
+              "model_cache_ready": {
+                "type": "boolean"
+              },
+              "target": {
+                "type": "string"
+              },
+              "worker_running": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "target",
+              "worker_running",
+              "model_cache_ready",
+              "active_job_count"
+            ],
+            "type": "object"
+          },
+          "retry_guidance": "Retry after the consuming application restores the fixed transport or deployment.",
+          "side_effect": "read_only",
+          "summary": "Read worker and local-model runtime readiness.",
+          "timeout_seconds": 10
+        }
+      ],
+      "release": {
+        "artifact_uri": "git+https://github.com/successbycs/Tool-Repository.git@v0.1.0",
+        "publisher": "tool-repository",
+        "release_commit": "ee92b26d407a49422560d0a3e98b0fb9764ee6a2",
+        "release_tag": "v0.1.0"
+      },
+      "value": {
+        "fit_for": [
+          "Read-only transcription preflight and runtime status."
+        ],
+        "limitations": [
+          "A consuming application supplies the fixed probe; this adapter never accesses media or a host by itself."
+        ],
+        "not_for": [
+          "Media upload, transcription job execution, cloud media processing, or model downloads."
+        ],
+        "use_cases": [
+          "Check a fixed private transcription deployment before an approved application workflow."
+        ]
+      }
+    },
+    {
+      "adapter": {
+        "id": "t480-lab",
+        "license": "Internal-Proprietary",
+        "owner": "Tool Repository",
+        "status": "draft",
+        "summary": "Reports fixed CS AI Lab readiness checks through an injected read-only transport probe.",
+        "title": "T480 Lab Readiness",
+        "version": "0.1.0"
+      },
+      "capabilities": [
+        {
+          "description": "Read fixed T480 lab readiness checks.",
+          "name": "runtime_readiness"
+        }
+      ],
+      "documentation": {
+        "knowledge_base": "adapters/t480-lab/knowledge.json",
+        "user_guide": "docs/adapters/t480-lab.md"
+      },
+      "manifest_sha256": "e60ffede8b5dbfdaab9b28002d28cdadeb464f3b1ac503435d54aee7b363021b",
+      "operations": [
+        {
+          "capability": "runtime_readiness",
+          "idempotency": "idempotent",
+          "input_schema": {
+            "additionalProperties": false,
+            "type": "object"
+          },
+          "name": "inspect_runtime",
+          "output_schema": {
+            "additionalProperties": false,
+            "properties": {
+              "checks": {
+                "additionalProperties": false,
+                "properties": {
+                  "docker": {
+                    "type": "boolean"
+                  },
+                  "n8n": {
+                    "type": "boolean"
+                  },
+                  "ollama": {
+                    "type": "boolean"
+                  },
+                  "postgres": {
+                    "type": "boolean"
+                  },
+                  "storage": {
+                    "type": "boolean"
+                  },
+                  "wsl": {
+                    "type": "boolean"
+                  }
+                },
+                "required": [
+                  "wsl",
+                  "docker",
+                  "storage",
+                  "ollama",
+                  "postgres",
+                  "n8n"
+                ],
+                "type": "object"
+              },
+              "ready": {
+                "type": "boolean"
+              },
+              "target": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "target",
+              "ready",
+              "checks"
+            ],
+            "type": "object"
+          },
+          "retry_guidance": "Retry after the consuming application restores its fixed transport.",
+          "side_effect": "read_only",
+          "summary": "Read fixed lab readiness checks.",
+          "timeout_seconds": 10
+        }
+      ],
+      "release": {
+        "artifact_uri": "git+https://github.com/successbycs/Tool-Repository.git@v0.1.0",
+        "publisher": "tool-repository",
+        "release_commit": "ee92b26d407a49422560d0a3e98b0fb9764ee6a2",
+        "release_tag": "v0.1.0"
+      },
+      "value": {
+        "fit_for": [
+          "Read-only readiness checks for the named internal lab."
+        ],
+        "limitations": [
+          "A consuming application supplies the fixed transport probe; this adapter never opens a session by itself."
+        ],
+        "not_for": [
+          "Arbitrary remote commands, Docker control, or service reconfiguration."
+        ],
+        "use_cases": [
+          "Assess a fixed T480 lab before a solution performs its own approved work."
+        ]
+      }
+    },
+    {
+      "adapter": {
+        "id": "t480-transport",
+        "license": "Internal-Proprietary",
+        "owner": "Tool Repository",
+        "status": "draft",
+        "summary": "Validates bounded SSH targets for fixed T480 operations without opening a remote session.",
+        "title": "T480 Transport Safety",
+        "version": "0.1.0"
+      },
+      "capabilities": [
+        {
+          "description": "Validate a safe SSH target.",
+          "name": "target_validation"
+        }
+      ],
+      "documentation": {
+        "knowledge_base": "adapters/t480-transport/knowledge.json",
+        "user_guide": "docs/adapters/t480-transport.md"
+      },
+      "manifest_sha256": "d462e986991269a72220046785629313a3438c38ebba15fcebaf425c2543e70f",
+      "operations": [
+        {
+          "capability": "target_validation",
+          "idempotency": "idempotent",
+          "input_schema": {
+            "additionalProperties": false,
+            "properties": {
+              "target": {
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9_.@:-]*$",
+                "type": "string"
+              }
+            },
+            "required": [
+              "target"
+            ],
+            "type": "object"
+          },
+          "name": "validate_target",
+          "output_schema": {
+            "properties": {
+              "target": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "target"
+            ],
+            "type": "object"
+          },
+          "retry_guidance": "No retry is required.",
+          "side_effect": "read_only",
+          "summary": "Validate one SSH target.",
+          "timeout_seconds": 1
+        }
+      ],
+      "release": {
+        "artifact_uri": "git+https://github.com/successbycs/Tool-Repository.git@v0.1.0",
+        "publisher": "tool-repository",
+        "release_commit": "ee92b26d407a49422560d0a3e98b0fb9764ee6a2",
+        "release_tag": "v0.1.0"
+      },
+      "value": {
+        "fit_for": [
+          "Bounded SSH transport preparation."
+        ],
+        "limitations": [
+          "Does not connect to a host or execute operations."
+        ],
+        "not_for": [
+          "Arbitrary remote command execution."
+        ],
+        "use_cases": [
+          "Validate a fixed T480 target before an application operation."
+        ]
+      }
+    }
+  ],
+  "release_index_sha256": "21d3012417bd675beb2af91782b2d4688f7935d320c7011742226d4510bd1615",
+  "schema_version": "1.0.0"
+}
