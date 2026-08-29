@@ -1,0 +1,65 @@
+{
+  "milestone_id": "TR-M15",
+  "implementation_revision": "7829430756c387d38c819ebd56156565c771f45b",
+  "generated_at": "2026-08-29T05:31:42.998191Z",
+  "environment": {
+    "python": "3.12.3",
+    "platform": "Linux-6.6.87.2-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+    "host": "Piwakawaka",
+    "runtime": "Ollama loopback"
+  },
+  "status": "passed",
+  "verification": [
+    {
+      "command": "PYTHONPATH=src python3 -m tool_repository validate",
+      "exit_code": 0,
+      "output": "OK\n",
+      "output_sha256": "a12b7cb43c9d9134b5bb1b35e9096b66775d9e92e7611d1cc92b02edd6782a87"
+    },
+    {
+      "command": "python3 -m unittest tests.test_conformance",
+      "exit_code": 0,
+      "output": "....\n----------------------------------------------------------------------\nRan 4 tests in 0.134s\n\nOK\n",
+      "output_sha256": "eb994ecbd4aa1157f88dc825c8db87a24939b665bb2fff893591a086729dd6b3"
+    },
+    {
+      "command": "python3 scripts/verify_t480_ollama_profiles.py",
+      "exit_code": 0,
+      "output": "OK: 2 T480 Ollama profiles match exact local digests, sizes, and model details.\n",
+      "output_sha256": "422f5498a4ceee4e6b99ae96e9cf863ecc803c3f6cfa68774788845b0cb268c0"
+    },
+    {
+      "command": "PYTHONPATH=src python3 -m tool_repository catalogue build",
+      "exit_code": 0,
+      "output": "OK\n",
+      "output_sha256": "a12b7cb43c9d9134b5bb1b35e9096b66775d9e92e7611d1cc92b02edd6782a87"
+    },
+    {
+      "command": "ollama-readiness literal loopback adapter readback",
+      "exit_code": 0,
+      "output": "{\"error\": null, \"metadata\": {}, \"output\": {\"checks\": {\"approved_inventory\": true, \"service_reachable\": true}, \"endpoint_scope\": \"loopback_only\", \"models\": [{\"digest\": \"dae161e27b0e90dd1856c8bb3209201fd6736d8eb66298e75ed87571486f4364\", \"model\": \"qwen2.5-coder:7b\"}, {\"digest\": \"359d7dd4bcdab3d86b87d73ac27966f4dbb9f5efdfcc75d34a8764a09474fae7\", \"model\": \"qwen3:4b\"}], \"ready\": true, \"target\": \"t480\"}, \"success\": true}",
+      "output_sha256": "e40ecb42b1bfca31e5b73cf9488f85b787c447bcb4df8d99c993dc6d7f6fefb8"
+    }
+  ],
+  "reviews": [
+    {
+      "role": "ai_engineer",
+      "status": "passed",
+      "reference": "reviews/TR-M15_ai_engineer.md",
+      "content_sha256": "d9db59d73c2543783971d02d01f316b9018c8dd71db148b9e986460da1da2662"
+    },
+    {
+      "role": "solution_architect",
+      "status": "passed",
+      "reference": "reviews/TR-M15_solution_architect.md",
+      "content_sha256": "dcdfff382ba2186db33d76fe8244b08ee9984d2d26689f3b56fa5589751ca09b"
+    },
+    {
+      "role": "developer",
+      "status": "passed",
+      "reference": "reviews/TR-M15_developer.md",
+      "content_sha256": "bc851cc679608203bf2c4f974366aea348a1f4e216f4d1823bb181fc55abd5d2"
+    }
+  ],
+  "observed_result": "The clean-room Ollama readiness adapter read the literal T480 loopback inventory and matched exactly the two approved Qwen profile digests without model mutation, prompt submission, or network exposure."
+}

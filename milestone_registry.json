@@ -65,7 +65,7 @@
             "title": "Unified Tool Ingestion Governance"
         },
         {
-            "id": "TR-M15", "status": "in_progress",
+            "id": "TR-M15", "status": "complete",
             "title": "Ollama Readiness Adapter Ingestion"
         }
     ],
@@ -1023,7 +1023,7 @@
             "execution_brief": {"objective": "Make the catalogue ingestion flow a mandatory, verifiable concern for every milestone that promotes or retires reusable tool assets.", "context": {"standard": "docs/catalogue_ingestion.md"}, "non_goals": ["Do not add a central execution service or retroactively alter historical proof observations."], "required_outputs": ["indexed ingestion standard", "policy and schema requirement", "registry migration", "closure validation", "negative tests"], "proof_requirements": ["Validator rejects incomplete applicable ingestion declarations and requires their declared verification evidence in closure proof."], "verification_commands": ["python3 scripts/validate_policy_docs.py", "python3 -m unittest tests.test_milestone_governance"], "stop_conditions": ["Stop if applicable ingestion can be marked complete without declared source records and proof verification evidence."]}
         },
         {
-            "id": "TR-M15", "status": "in_progress",
+            "id": "TR-M15", "status": "complete",
             "title": "Ollama Readiness Adapter Ingestion",
             "delivery_type": "capability_delivering",
             "proof_integrity_version": "2.0",
