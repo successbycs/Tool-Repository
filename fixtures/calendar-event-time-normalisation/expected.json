@@ -1,0 +1,9 @@
+{
+  "schema_version": "1.0.0",
+  "cases": [
+    {"id": "summer_explicit_title_metadata", "event_start": "2026-02-06T00:00:00Z", "timezone": "Pacific/Auckland", "title": "High Tide: 11:24", "title_time": "11:24", "display_time_source": "title_metadata", "expected_display_date": "2026-02-06", "expected_display_time": "11:24"},
+    {"id": "winter_provider_instant", "event_start": "2026-06-01T00:30:00Z", "timezone": "Pacific/Auckland", "title": "Calendar event", "display_time_source": "event_start", "expected_display_date": "2026-06-01", "expected_display_time": "12:30"},
+    {"id": "midnight_rollover", "event_start": "2026-02-06T11:30:00Z", "timezone": "Pacific/Auckland", "title": "Calendar event", "display_time_source": "event_start", "expected_display_date": "2026-02-07", "expected_display_time": "00:30"},
+    {"id": "malformed_title_falls_back", "event_start": "2026-06-01T00:30:00Z", "timezone": "Pacific/Auckland", "title": "High Tide later", "display_time_source": "event_start", "expected_display_date": "2026-06-01", "expected_display_time": "12:30"}
+  ]
+}

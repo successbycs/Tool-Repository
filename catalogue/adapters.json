@@ -479,7 +479,7 @@
     }
   ],
   "model_profiles_sha256": "65159545288d55410c95de84a34e173379bbbcfca1013bc25a3d8232fe669f53",
-  "prompt_template_assets_sha256": "9fd8d43704ce155d74e9066a9445a28c6a66e3ad1ca175e1352e0e58a68b414c",
+  "prompt_template_assets_sha256": "b61ab71eee28667f9946e96a269aa4b20814d30be26dac43cb658976a9d8d263",
   "prompts": [
     {
       "data_classification": "internal",
@@ -503,6 +503,24 @@
   "release_index_sha256": "7385586931e0da94bca27f168bb242133c07ad661c0264b902e1c458d86027b9",
   "schema_version": "1.0.0",
   "templates": [
+    {
+      "data_classification": "internal",
+      "id": "calendar-event-time-normalisation",
+      "owner": "Tool Repository maintainers",
+      "purpose": "Define explicit, testable rules for presenting a calendar event instant in a consumer-selected timezone without treating editorial title text as an implicit source of truth.",
+      "required_sections": [
+        "input_event",
+        "consumer_timezone",
+        "instant_preservation",
+        "display_time_source",
+        "fallback_rules",
+        "test_fixtures",
+        "limitations"
+      ],
+      "source_sha256": "55ca9ca72a4b9ab69e79aa0b47bb09ecb1fe66cb176f154daeb62ee764956eed",
+      "title": "Calendar event time normalisation",
+      "version": "0.1.0"
+    },
     {
       "data_classification": "internal",
       "id": "milestone-execution",
@@ -539,6 +557,25 @@
       ],
       "source_sha256": "52f4f97226a6299144e686a278b9d14a01bce4f146efb037160655db65901d1e",
       "title": "Read-only public iCalendar reader contract",
+      "version": "0.1.0"
+    },
+    {
+      "data_classification": "internal",
+      "id": "public-readonly-data-proxy-controls",
+      "owner": "Tool Repository maintainers",
+      "purpose": "Define the minimum controls for a clean-room proxy that reads a specifically approved public source and returns bounded, non-sensitive data.",
+      "required_sections": [
+        "approved_source_allow_list",
+        "minimal_response_contract",
+        "cors_policy",
+        "cache_policy",
+        "rate_limit_policy",
+        "error_contract",
+        "test_plan",
+        "stop_conditions"
+      ],
+      "source_sha256": "b4dc148b81160d3da12b9aaf563254b7f92015a813dbc4d39da1afbe989ab162",
+      "title": "Public read-only data proxy controls",
       "version": "0.1.0"
     }
   ]

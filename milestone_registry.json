@@ -99,6 +99,18 @@
         {
             "id": "TR-M23", "status": "complete",
             "title": "Pt Chev Calendar Asset Intake and Template Ingestion"
+        },
+        {
+            "id": "TR-M24", "status": "in_progress",
+            "title": "Calendar Event Time-Normalisation Fixture and Template Ingestion"
+        },
+        {
+            "id": "TR-M25", "status": "in_progress",
+            "title": "Public Read-only Data Proxy Control Pattern Ingestion"
+        },
+        {
+            "id": "TR-M26", "status": "not_started",
+            "title": "Privacy-Governed Feedback Capability Decision"
         }
     ],
     "milestones": [
@@ -1192,6 +1204,51 @@
             "proof_artifact": "runs/proofs/TR-M23_pt_chev_calendar_asset_intake.json",
             "verify": ["PYTHONPATH=src python3 -m tool_repository repositories validate-queue", "PYTHONPATH=src python3 -m tool_repository catalogue build", "python3 -m unittest tests.test_catalogue_api", "PYTHONPATH=src python3 -m tool_repository milestones close-check TR-M23"],
             "execution_brief": {"objective": "Ingest the agreed Pt Chev public-calendar contract template, candidate knowledge, and reference pattern without promoting unverified executable source code.", "context": {"source": "Success by CS MIT-licensed Pt Chev Water Times", "external_gate": "calendar-feed terms and permitted fields require human approval"}, "non_goals": ["Do not copy the source Edge Function, publish an active calendar adapter, fetch an external feed, or ingest source environment values, user feedback, branded UI, or raw calendar data."], "required_outputs": ["validated intake assessment and lift plan", "candidate README/KB references", "catalogued contract template", "reference pattern", "tests, proof, and Review Triad"], "proof_requirements": ["Proof demonstrates source assessment validation and template catalogue inclusion while recording that executable promotion remains blocked on external-feed authority and clean-room tests."], "verification_commands": ["PYTHONPATH=src python3 -m tool_repository repositories validate-queue", "PYTHONPATH=src python3 -m tool_repository catalogue build", "python3 -m unittest tests.test_catalogue_api"], "stop_conditions": ["Stop if an unapproved external feed, source code, secret, user content, or executable adapter is published through this milestone."]}
+        },
+        {
+            "id": "TR-M24", "status": "in_progress",
+            "title": "Calendar Event Time-Normalisation Fixture and Template Ingestion",
+            "delivery_type": "capability_delivering",
+            "capability_unblocked": "Solutions can discover an explicit calendar time-normalisation template and synthetic fixture set without relying on an executable source adapter.",
+            "dependencies": ["TR-M23"],
+            "risk_level": "medium",
+            "ingestion": {"applies": true, "asset_types": ["template", "harvested_asset"], "source_records": ["intake/assessments/pt-chev-water-times.json", "templates/integrations/calendar-event-time-normalisation-0.1.0.json", "fixtures/calendar-event-time-normalisation/expected.json", "docs/patterns/calendar-event-time-normalisation.md"], "verification": ["PYTHONPATH=src python3 -m tool_repository catalogue build", "python3 -m unittest tests.test_calendar_event_time_normalisation", "python3 -m unittest tests.test_catalogue_api"], "catalogue_effect": "publish"},
+            "review_requirements": {"required": true, "roles": ["ai_engineer", "solution_architect", "developer"]},
+            "write_scope": ["catalogue", "docs", "fixtures", "templates", "tests", "reviews", "scripts", "runs/proofs", "milestone_registry.json"],
+            "required_artifacts": ["templates/integrations/calendar-event-time-normalisation-0.1.0.json", "fixtures/calendar-event-time-normalisation/expected.json", "docs/patterns/calendar-event-time-normalisation.md", "catalogue/prompt-template-assets.json", "catalogue/adapters.json", "tests/test_calendar_event_time_normalisation.py", "tests/test_catalogue_api.py", "scripts/prove_calendar_event_time_normalisation.py"],
+            "proof_artifact": "runs/proofs/TR-M24_calendar_event_time_normalisation.json",
+            "verify": ["PYTHONPATH=src python3 -m tool_repository catalogue build", "python3 -m unittest tests.test_calendar_event_time_normalisation", "python3 -m unittest tests.test_catalogue_api", "PYTHONPATH=src python3 -m tool_repository milestones close-check TR-M24"],
+            "execution_brief": {"objective": "Publish an explicit, testable normalisation template and synthetic fixtures for the Pt Chev calendar pattern.", "context": {"source": "MIT-licensed Pt Chev Water Times assessment", "boundary": "calendar presentation metadata only"}, "non_goals": ["Do not copy source code, fetch a live feed, infer timezones, or make editorial title text implicitly authoritative."], "required_outputs": ["catalogued template", "synthetic fixture set", "reference pattern", "tests, proof, and Review Triad"], "proof_requirements": ["Proof demonstrates catalogue inclusion and tests for DST, rollover, explicit title metadata, and fallback behaviour."], "verification_commands": ["PYTHONPATH=src python3 -m tool_repository catalogue build", "python3 -m unittest tests.test_calendar_event_time_normalisation", "python3 -m unittest tests.test_catalogue_api"], "stop_conditions": ["Stop if raw calendar data, a provider feed, source code, or implicit title-time inference enters the published asset."]}
+        },
+        {
+            "id": "TR-M25", "status": "in_progress",
+            "title": "Public Read-only Data Proxy Control Pattern Ingestion",
+            "delivery_type": "capability_delivering",
+            "capability_unblocked": "Solutions can discover a reusable control template and pattern for a future clean-room, public-source, read-only proxy without centralising adapter execution.",
+            "dependencies": ["TR-M23"],
+            "risk_level": "high",
+            "ingestion": {"applies": true, "asset_types": ["template", "harvested_asset"], "source_records": ["intake/assessments/pt-chev-water-times.json", "templates/integrations/public-readonly-data-proxy-controls-0.1.0.json", "docs/patterns/public-readonly-data-proxy-controls.md"], "verification": ["PYTHONPATH=src python3 -m tool_repository catalogue build", "python3 -m unittest tests.test_public_readonly_data_proxy_pattern", "python3 -m unittest tests.test_catalogue_api"], "catalogue_effect": "publish"},
+            "review_requirements": {"required": true, "roles": ["ai_engineer", "solution_architect", "developer"]},
+            "write_scope": ["catalogue", "docs", "templates", "tests", "reviews", "scripts", "runs/proofs", "milestone_registry.json"],
+            "required_artifacts": ["templates/integrations/public-readonly-data-proxy-controls-0.1.0.json", "docs/patterns/public-readonly-data-proxy-controls.md", "catalogue/prompt-template-assets.json", "catalogue/adapters.json", "tests/test_public_readonly_data_proxy_pattern.py", "tests/test_catalogue_api.py", "scripts/prove_public_readonly_data_proxy_controls.py"],
+            "proof_artifact": "runs/proofs/TR-M25_public_readonly_data_proxy_controls.json",
+            "verify": ["PYTHONPATH=src python3 -m tool_repository catalogue build", "python3 -m unittest tests.test_public_readonly_data_proxy_pattern", "python3 -m unittest tests.test_catalogue_api", "PYTHONPATH=src python3 -m tool_repository milestones close-check TR-M25"],
+            "execution_brief": {"objective": "Publish a clean-room data-proxy control template and reference pattern, preserving the local-execution boundary.", "context": {"source": "MIT-licensed Pt Chev Water Times assessment", "boundary": "approved public-source reads only"}, "non_goals": ["Do not publish source proxy code, deploy a proxy, permit arbitrary URLs, or centralise execution."], "required_outputs": ["catalogued template", "reference pattern", "negative-boundary tests", "proof, and Review Triad"], "proof_requirements": ["Proof demonstrates the catalogue entry and tests confirming the no-arbitrary-URL, explicit-CORS, durable-control, and read-only constraints."], "verification_commands": ["PYTHONPATH=src python3 -m tool_repository catalogue build", "python3 -m unittest tests.test_public_readonly_data_proxy_pattern", "python3 -m unittest tests.test_catalogue_api"], "stop_conditions": ["Stop if the asset contains executable source code, provider credentials, a user-data path, or a central adapter execution service."]}
+        },
+        {
+            "id": "TR-M26", "status": "not_started",
+            "title": "Privacy-Governed Feedback Capability Decision",
+            "delivery_type": "governance_enabling",
+            "capability_unblocked": "A future feedback capability has a decision gate that prevents reusable intake until privacy, retention, anti-abuse, and operating ownership are approved.",
+            "dependencies": ["TR-M23"],
+            "risk_level": "high",
+            "ingestion": {"applies": false, "asset_types": [], "source_records": [], "verification": [], "catalogue_effect": "not_applicable"},
+            "review_requirements": {"required": true, "roles": ["ai_engineer", "solution_architect", "developer"]},
+            "write_scope": ["docs", "templates", "tests", "reviews", "runs/proofs", "milestone_registry.json"],
+            "required_artifacts": ["docs/privacy_governed_feedback_decision.md", "templates/feedback/privacy-governed-feedback-contract-0.1.0.json", "tests/test_privacy_governed_feedback_decision.py"],
+            "proof_artifact": "runs/proofs/TR-M26_privacy_governed_feedback_decision.json",
+            "verify": ["python3 -m unittest tests.test_privacy_governed_feedback_decision", "PYTHONPATH=src python3 -m tool_repository milestones close-check TR-M26"],
+            "execution_brief": {"objective": "Obtain and record the decisions required before any reusable feedback asset can be designed or ingested.", "context": {"source": "Pt Chev anonymous-feedback-flow assessment", "data_risk": "feedback can contain personal, sensitive, or abusive content"}, "non_goals": ["Do not build a feedback form, database, API, or catalogue asset before written human approval."], "required_outputs": ["approved purpose and lawful basis", "privacy notice and data classification", "retention/deletion policy", "anti-abuse/moderation design", "operating owner and incident path"], "proof_requirements": ["Proof must include explicit human approval for each decision and negative tests that prevent publication without it."], "verification_commands": ["python3 -m unittest tests.test_privacy_governed_feedback_decision"], "stop_conditions": ["Stop if a personal-data path, anonymous submission endpoint, or feedback content is introduced before all required approvals exist."]}
         }
     ]
 }

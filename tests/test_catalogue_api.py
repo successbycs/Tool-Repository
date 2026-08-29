@@ -56,7 +56,7 @@ class CatalogueApiTests(unittest.TestCase):
         self.assertEqual(issues, [])
         assert payload is not None
         self.assertEqual([prompt["id"] for prompt in payload["prompts"]], ["goal-definition-and-milestone-seed", "repository-asset-assessment"])
-        self.assertEqual([template["id"] for template in payload["templates"]], ["milestone-execution", "public-ical-calendar-reader-contract"])
+        self.assertEqual([template["id"] for template in payload["templates"]], ["calendar-event-time-normalisation", "milestone-execution", "public-ical-calendar-reader-contract", "public-readonly-data-proxy-controls"])
         self.assertEqual([goal["id"] for goal in payload["goals"]], ["tool-repository-goal-flow"])
         self.assertEqual(payload["goals"][0]["approval_status"], "approved")
         self.assertEqual(payload["goals"][0]["milestones"], ["TR-M16"])

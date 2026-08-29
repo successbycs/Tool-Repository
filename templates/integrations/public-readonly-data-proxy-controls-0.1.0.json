@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0.0",
+  "id": "public-readonly-data-proxy-controls",
+  "version": "0.1.0",
+  "title": "Public read-only data proxy controls",
+  "purpose": "Define the minimum controls for a clean-room proxy that reads a specifically approved public source and returns bounded, non-sensitive data.",
+  "owner": "Tool Repository maintainers",
+  "data_classification": "internal",
+  "source_documents": ["intake/assessments/pt-chev-water-times.md", "docs/patterns/public-readonly-data-proxy-controls.md"],
+  "required_sections": ["approved_source_allow_list", "minimal_response_contract", "cors_policy", "cache_policy", "rate_limit_policy", "error_contract", "test_plan", "stop_conditions"],
+  "constraints": ["Reject arbitrary outbound URLs and all write operations.", "Apply explicit origin policy rather than wildcard CORS for protected consumers.", "Use a durable, appropriately scoped cache and rate-limit implementation; do not rely on process-local state for a distributed deployment.", "Exclude secrets, raw provider payloads, customer data, and executable source from the catalogue asset."],
+  "validation": ["python3 -m unittest tests.test_public_readonly_data_proxy_pattern", "PYTHONPATH=src python3 -m tool_repository catalogue build"]
+}

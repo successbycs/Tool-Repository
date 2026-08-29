@@ -14,6 +14,10 @@ These documents govern delivery of this repository. They are intentionally small
   today and the staged path to hosted catalogue discovery.
 - [Public read-only calendar reader pattern](patterns/public-readonly-calendar-reader.md)
   defines the safe boundary for a future clean-room calendar adapter.
+- [Calendar event time-normalisation pattern](patterns/calendar-event-time-normalisation.md)
+  defines safe presentation rules and non-sensitive fixture expectations.
+- [Public read-only data proxy controls](patterns/public-readonly-data-proxy-controls.md)
+  defines the reusable controls a future clean-room proxy must implement.
 - [Catalogue API](catalogue_api.md) defines the generated read-only discovery
   document and consumer pinning contract.
 - [Catalogue ingestion standard](catalogue_ingestion.md) defines the required

@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0.0",
+  "id": "calendar-event-time-normalisation",
+  "version": "0.1.0",
+  "title": "Calendar event time normalisation",
+  "purpose": "Define explicit, testable rules for presenting a calendar event instant in a consumer-selected timezone without treating editorial title text as an implicit source of truth.",
+  "owner": "Tool Repository maintainers",
+  "data_classification": "internal",
+  "source_documents": ["intake/assessments/pt-chev-water-times.md", "docs/patterns/calendar-event-time-normalisation.md"],
+  "required_sections": ["input_event", "consumer_timezone", "instant_preservation", "display_time_source", "fallback_rules", "test_fixtures", "limitations"],
+  "constraints": ["Preserve the provider event instant before any display conversion.", "Require an explicit IANA consumer timezone for local presentation.", "Treat a time embedded in a title as editorial metadata unless an approved contract explicitly selects it.", "Do not silently overwrite a provider timestamp, infer a timezone, or change recurrence semantics."],
+  "validation": ["python3 -m unittest tests.test_calendar_event_time_normalisation", "PYTHONPATH=src python3 -m tool_repository catalogue build"]
+}
