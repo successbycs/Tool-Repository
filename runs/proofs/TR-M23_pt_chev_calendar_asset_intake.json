@@ -1,0 +1,53 @@
+{
+  "milestone_id": "TR-M23",
+  "implementation_revision": "d61d0b3730116e0c19a78b0978e6f64948ecd708",
+  "generated_at": "2026-08-29T22:45:48.441351Z",
+  "environment": {
+    "python": "3.12.3",
+    "platform": "Linux-6.6.87.2-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+    "host": "Piwakawaka",
+    "runtime": "static intake and catalogue validation"
+  },
+  "status": "passed",
+  "verification": [
+    {
+      "command": "PYTHONPATH=src python3 -m tool_repository repositories validate-queue",
+      "exit_code": 0,
+      "output": "OK\n",
+      "output_sha256": "a12b7cb43c9d9134b5bb1b35e9096b66775d9e92e7611d1cc92b02edd6782a87"
+    },
+    {
+      "command": "PYTHONPATH=src python3 -m tool_repository catalogue build",
+      "exit_code": 0,
+      "output": "OK\n",
+      "output_sha256": "a12b7cb43c9d9134b5bb1b35e9096b66775d9e92e7611d1cc92b02edd6782a87"
+    },
+    {
+      "command": "python3 -m unittest tests.test_catalogue_api",
+      "exit_code": 0,
+      "output": "........\n----------------------------------------------------------------------\nRan 8 tests in 0.572s\n\nOK\n",
+      "output_sha256": "a4e6603065b5f49076dd5476c823192683bd37f737098901e8c6cd94e7888f85"
+    }
+  ],
+  "reviews": [
+    {
+      "role": "ai_engineer",
+      "status": "passed",
+      "reference": "reviews/TR-M23_ai_engineer.md",
+      "content_sha256": "54af4b93e3a9ffe07b276af52ea01e83ce227bfe92a5f87d63c8ed9c71dc5e0b"
+    },
+    {
+      "role": "solution_architect",
+      "status": "passed",
+      "reference": "reviews/TR-M23_solution_architect.md",
+      "content_sha256": "0c7fcf9b843db40e3c6b82650737a262ed8aefb6992f4702596636d7309d8451"
+    },
+    {
+      "role": "developer",
+      "status": "passed",
+      "reference": "reviews/TR-M23_developer.md",
+      "content_sha256": "b46930113dd87bccbc92b7926158695052a413269dfb82ebe03f5a7992db637d"
+    }
+  ],
+  "observed_result": "The Pt Chev assessment, candidate knowledge, public iCalendar contract template, and reference pattern were ingested without publishing executable adapter code or external feed data."
+}

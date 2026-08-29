@@ -97,7 +97,7 @@
             "title": "Hosted Catalogue Operations and Service Assurance"
         },
         {
-            "id": "TR-M23", "status": "in_progress",
+            "id": "TR-M23", "status": "complete",
             "title": "Pt Chev Calendar Asset Intake and Template Ingestion"
         }
     ],
@@ -1178,7 +1178,7 @@
             "execution_brief": {"objective": "Make the deployed catalogue observable, access-controlled, testable, and recoverable without weakening its read-only boundary.", "context": {"service": "Cloudflare Worker over private R2", "data": "generated public-or-authorised catalogue metadata only"}, "non_goals": ["Do not add central adapter execution, analytics containing customer data, or broad standing credentials."], "required_outputs": ["access policy", "health and synthetic checks", "alerting boundaries", "rollback and incident runbooks", "service tests"], "proof_requirements": ["Proof demonstrates an authorised healthy read, denied unauthorised request, rollback exercise, and operational alert/smoke evidence."], "verification_commands": ["npm --prefix worker test"], "stop_conditions": ["Stop if operations require exposing secrets, centralising customer data, or granting mutation rights to the Worker runtime."]}
         },
         {
-            "id": "TR-M23", "status": "in_progress",
+            "id": "TR-M23", "status": "complete",
             "title": "Pt Chev Calendar Asset Intake and Template Ingestion",
             "delivery_type": "capability_delivering",
             "proof_integrity_version": "2.0",

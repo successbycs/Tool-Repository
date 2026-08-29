@@ -40,7 +40,7 @@ have a completed local form while its hosted form is not started.
 | Local consumer workflow | A solution can read a downloaded catalogue, verify a lock file, check out a pinned release, and invoke it locally. | completed | TR-M01A, TR-M06 |
 | CI validation | GitHub validates repository contracts and tests on pushes and pull requests. | completed | TR-M10, TR-M11 |
 | Target operating model and delivery roadmap | Maintainers and users can distinguish available local capability from future hosted capability. | completed | TR-M17 |
-| Governed harvested calendar assets | A reusable calendar-reader contract and safe reference pattern are available while executable promotion remains human-gated. | in progress | TR-M23 |
+| Governed harvested calendar assets | A reusable calendar-reader contract and safe reference pattern are available while executable promotion remains human-gated. | completed | TR-M23 |
 | Immutable hosted catalogue objects | A validated catalogue and checksum are published to private Cloudflare R2 from GitHub CI. | not started | TR-M18 |
 | Protected HTTPS catalogue API | A stateless Cloudflare Worker serves immutable catalogue JSON and no adapter execution endpoint. | not started | TR-M19 |
 | HTTP catalogue consumer | A consuming repository fetches, caches, validates, and pins the hosted catalogue. | not started | TR-M20 |
