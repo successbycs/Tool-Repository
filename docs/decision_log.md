@@ -27,3 +27,7 @@ The Tool Repository exists to make trusted assets discoverable, understandable, 
 ## 2026-08-17 — Every material hand-off shows the review triad
 
 Codex must show AI Engineer, Solution Architect, and Senior Developer review state after every material milestone or iteration hand-off. `AGENTS.md` carries the executor instruction, the milestone policy defines truthful statuses, and the stored review/proof records remain the durable evidence.
+
+## 2026-08-29 — New closure evidence is commit-bound
+
+New high-risk corrective milestones require a full inspectable commit SHA, matching verification-output hashes, and hashed saved review records. Historical proofs are preserved as records rather than rewritten.

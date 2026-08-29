@@ -1,0 +1,15 @@
+{
+  "schema_version": "1.0.0",
+  "sources": [
+    {
+      "id": "cs-ai-lab-infra",
+      "location": "/home/chris/projects/cs-ai-lab-infra",
+      "revision": "551f1afe972172ba9eee707a81a12072c8473ee0",
+      "owner": "CS AI Lab",
+      "license_status": "unresolved",
+      "status": "assessing",
+      "review_status": "pending",
+      "assessment": "intake/assessments/cs-ai-lab-infra.json"
+    }
+  ]
+}

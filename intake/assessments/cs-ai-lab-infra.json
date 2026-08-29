@@ -1,13 +1,15 @@
 {
-  "source": "/home/chris/projects/cs-ai-lab-infra",
-  "revision": "551f1afe972172ba9eee707a81a12072c8473ee0",
-  "inspection_mode": "read_only_static_plus_governed_preflight",
-  "license": "unresolved_no_license_file_found",
+  "schema_version": "1.0.0",
+  "source": {"id": "cs-ai-lab-infra", "location": "/home/chris/projects/cs-ai-lab-infra", "revision": "551f1afe972172ba9eee707a81a12072c8473ee0", "owner": "CS AI Lab", "license_status": "unresolved"},
+  "inspection_mode": "read_only_static",
   "candidates": [
-    {"id": "t480_wsl_lab", "category": "adapter_tool", "decision": "extract", "target": "adapters/t480", "blockers": ["licence/provenance", "transport isolation", "conformance tests"]},
-    {"id": "ollama_local", "category": "adapter_tool", "decision": "rewrite", "target": "adapters/ollama", "blockers": ["new portable implementation", "schemas", "fake and opt-in live tests"]},
-    {"id": "n8n_t480", "category": "workflow_integration", "decision": "defer", "target": "adapters/n8n"},
-    {"id": "postgres_pgvector_t480", "category": "adapter_tool", "decision": "defer", "target": "adapters/postgres-pgvector"},
-    {"id": "t480_core", "category": "schema_or_contract", "decision": "reference_only"}
-  ]
+    {"id": "t480_wsl_lab", "category": "adapter_tool", "decision": "defer", "target": "adapters/t480", "evidence": ["Source assessment: fixed-operation T16 to T480 Windows/WSL bridge."], "reusable_value": "A bounded bridge pattern could support CS AI Lab diagnostics across solutions.", "security_posture": ["Do not preserve arbitrary-command compatibility.", "Transport and connection details must be isolated."], "admission_gaps": ["Licence and provenance unresolved.", "Requires fake transport and conformance tests."], "acceptance_checks": ["Validate descriptor.", "Run fake-transport conformance tests.", "Require opt-in live smoke evidence."], "owner": "Tool Repository maintainers", "effort": "large"},
+    {"id": "ollama_local", "category": "adapter_tool", "decision": "rewrite", "target": "adapters/ollama", "evidence": ["Source assessment: configured local Ollama HTTP client candidate."], "reusable_value": "A portable local model client can be reused without target-host deployment assumptions.", "security_posture": ["Requires endpoint and SSRF policy.", "Must not embed model storage or T480 addresses."], "admission_gaps": ["Needs clean-room implementation.", "Needs schemas and fake HTTP tests."], "acceptance_checks": ["Run schema and conformance validation.", "Run fake HTTP tests.", "Keep live smoke opt-in."], "owner": "Tool Repository maintainers", "effort": "medium"},
+    {"id": "n8n_t480", "category": "workflow_integration", "decision": "defer", "target": "adapters/n8n", "evidence": ["Source assessment: private loopback n8n control bridge."], "reusable_value": "Potential workflow integration after transport isolation is proven.", "security_posture": ["Private control bridge requires dependency and licence review."], "admission_gaps": ["Licence unresolved.", "Transport extraction not complete."], "acceptance_checks": ["Complete transport extraction review.", "Run isolated dependency tests."], "owner": "Tool Repository maintainers", "effort": "large"},
+    {"id": "postgres_pgvector_t480", "category": "adapter_tool", "decision": "defer", "target": "adapters/postgres-pgvector", "evidence": ["Source assessment: pgvector diagnostics and migration path."], "reusable_value": "Could offer bounded diagnostics after database safety review.", "security_posture": ["Database mutation safety and migration evidence are required."], "admission_gaps": ["Licence unresolved.", "Requires fake transport and migration design."], "acceptance_checks": ["Run fake transport tests.", "Review destructive operation controls."], "owner": "Tool Repository maintainers", "effort": "large"},
+    {"id": "t480_core", "category": "schema_or_contract", "decision": "reference_only", "target": "", "evidence": ["Source assessment: standalone transport-boundary pattern."], "reusable_value": "Useful only as a design reference for a portable transport boundary.", "security_posture": ["No source copy until standalone provenance is established."], "admission_gaps": ["Standalone package boundary and provenance are not established."], "acceptance_checks": ["Reassess only after provenance is confirmed."], "owner": "Tool Repository maintainers", "effort": "small"}
+  ],
+  "do_not_import": ["Environment files, credentials, logs, host output, and SSH configuration may expose private infrastructure.", "Arbitrary-command compatibility violates the fixed-operation safety boundary.", "Platform-specific Docker or Compose deployment configuration is not a reusable adapter."],
+  "review_records": ["intake/reviews/cs-ai-lab-infra-ai-engineer.md", "intake/reviews/cs-ai-lab-infra-senior-developer.md", "intake/reviews/cs-ai-lab-infra-solution-architect.md"],
+  "promotion_decision": "deferred"
 }

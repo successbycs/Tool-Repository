@@ -6,6 +6,7 @@ from pathlib import Path
 from tool_repository.knowledge import load_knowledge_base
 from tool_repository.manifest import discover_manifests, load_manifest
 from tool_repository.milestones import close_check, validate_registry
+from tool_repository.repository_intake import load_queue
 
 
 def main() -> int:
@@ -19,6 +20,10 @@ def main() -> int:
     validate = commands.add_parser("validate", help="Validate static adapter descriptors without importing adapter code")
     validate.add_argument("paths", nargs="*", type=Path, help="adapter.json files; defaults to adapters/**/adapter.json")
     validate.add_argument("--require-knowledge", action="store_true", help="Validate knowledge records; uses the safe contract fixture while no adapters exist")
+    repositories = commands.add_parser("repositories")
+    repository_commands = repositories.add_subparsers(dest="repository_command", required=True)
+    validate_queue = repository_commands.add_parser("validate-queue", help="Validate the read-only repository intake queue")
+    validate_queue.add_argument("--queue", type=Path, default=Path("intake/repository_queue.json"))
     args = parser.parse_args()
 
     if args.command == "milestones":
@@ -36,6 +41,8 @@ def main() -> int:
             else:
                 fixture = Path.cwd() / "examples" / "knowledge-base-fixture" / "knowledge.json"
                 issues.extend(load_knowledge_base(fixture, repository_root=Path.cwd())[1])
+    elif args.command == "repositories":
+        _, issues = load_queue(Path.cwd() / args.queue, repository_root=Path.cwd())
     else:  # pragma: no cover - argparse makes this unreachable
         issues = close_check(args.milestone_id)
     if issues:

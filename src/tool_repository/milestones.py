@@ -1,6 +1,9 @@
 from __future__ import annotations
 
 import json
+import hashlib
+import re
+import subprocess
 from datetime import datetime
 from pathlib import Path
 from typing import Any
@@ -21,6 +24,7 @@ REQUIRED_BRIEF_FIELDS = {
 REQUIRED_PROOF_FIELDS = {
     "milestone_id", "implementation_revision", "generated_at", "environment", "status", "verification", "observed_result",
 }
+_COMMIT = re.compile(r"^[0-9a-f]{40,64}$")
 
 
 def _load_json(path: Path) -> Any:
@@ -138,14 +142,79 @@ def _validate_proof(path: Path, identifier: str) -> list[str]:
     checks = proof.get("verification")
     if not isinstance(checks, list) or not checks:
         issues.append(f"{identifier}: proof verification must be a non-empty list")
-    elif any(
-        not isinstance(item, dict)
-        or item.get("exit_code") != 0
-        or not str(item.get("command") or "").strip()
-        or not str(item.get("output_sha256") or "").strip()
-        for item in checks
-    ):
-        issues.append(f"{identifier}: proof verification must contain successful command records")
+    else:
+        for index, item in enumerate(checks):
+            if (
+                not isinstance(item, dict)
+                or item.get("exit_code") != 0
+                or not str(item.get("command") or "").strip()
+                or not str(item.get("output_sha256") or "").strip()
+            ):
+                issues.append(f"{identifier}: proof verification must contain successful command records")
+                break
+            output = item.get("output")
+            if not isinstance(output, str):
+                issues.append(f"{identifier}: proof verification[{index}].output must be recorded")
+            elif hashlib.sha256(output.encode("utf-8")).hexdigest() != item["output_sha256"]:
+                issues.append(f"{identifier}: proof verification[{index}] output hash does not match output")
+    return issues
+
+
+def _safe_repository_file(root: Path, reference: object) -> Path | None:
+    if not isinstance(reference, str) or not reference.strip():
+        return None
+    candidate = Path(reference)
+    if candidate.is_absolute() or ".." in candidate.parts:
+        return None
+    resolved_root = root.resolve()
+    resolved = (root / candidate).resolve()
+    try:
+        resolved.relative_to(resolved_root)
+    except ValueError:
+        return None
+    return resolved if resolved.is_file() else None
+
+
+def _validate_integrity_v2(root: Path, proof: dict[str, Any], milestone: dict[str, Any], identifier: str) -> list[str]:
+    """Validate proof data that is bound to an inspectable revision and review files."""
+
+    issues: list[str] = []
+    revision = proof.get("implementation_revision")
+    if not isinstance(revision, str) or not _COMMIT.fullmatch(revision):
+        issues.append(f"{identifier}: proof implementation_revision must be a full Git commit SHA")
+    else:
+        result = subprocess.run(
+            ["git", "cat-file", "-e", f"{revision}^{{commit}}"],
+            cwd=root,
+            text=True,
+            capture_output=True,
+            check=False,
+        )
+        if result.returncode != 0:
+            issues.append(f"{identifier}: proof implementation_revision is not an inspectable Git commit")
+    review = milestone["review_requirements"]
+    if not review["required"]:
+        return issues
+    records = proof.get("reviews")
+    if not isinstance(records, list):
+        return [*issues, f"{identifier}: proof reviews must be a list"]
+    by_role: dict[str, dict[str, Any]] = {}
+    for record in records:
+        if isinstance(record, dict) and isinstance(record.get("role"), str):
+            by_role[record["role"]] = record
+    for role in review["roles"]:
+        record = by_role.get(role)
+        if record is None or record.get("status") != "passed":
+            issues.append(f"{identifier}: required review missing or failed for {role}")
+            continue
+        review_path = _safe_repository_file(root, record.get("reference"))
+        if review_path is None:
+            issues.append(f"{identifier}: {role} review reference must be an existing repository-contained file")
+            continue
+        digest = record.get("content_sha256")
+        actual = hashlib.sha256(review_path.read_bytes()).hexdigest()
+        if not isinstance(digest, str) or digest != actual:
+            issues.append(f"{identifier}: {role} review content hash does not match its saved record")
     return issues
 
 
@@ -196,4 +265,6 @@ def close_check(
             for role in review["roles"]:
                 if role not in completed_roles:
                     issues.append(f"{identifier}: required review missing or failed for {role}")
+        if milestone.get("proof_integrity_version") == "2.0":
+            issues.extend(_validate_integrity_v2(root, proof, milestone, identifier))
     return issues

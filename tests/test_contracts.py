@@ -7,7 +7,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
-from tool_repository.contracts import Adapter, AdapterResult, Idempotency, OperationDefinition, SideEffect, validate_adapter_contract
+from tool_repository.contracts import Adapter, AdapterResult, Idempotency, OperationDefinition, SideEffect, validate_adapter_contract, validate_adapter_manifest_conformance
 
 
 class ExampleAdapter(Adapter):
@@ -106,3 +106,22 @@ class ContractTests(unittest.TestCase):
         adapter = ExampleAdapter()
         self.assertEqual(adapter.invoke("echo", {}, config={}).error["code"], "invalid_config")
         self.assertEqual(adapter.invoke("missing", {}, config={"enabled": True}).error["code"], "operation_not_found")
+
+    def test_invoke_enforces_declared_input_and_output_schemas(self) -> None:
+        class SchemaAdapter(ExampleAdapter):
+            def list_operations(self) -> list[OperationDefinition]:
+                return [OperationDefinition("echo", "Echo one message.", {"type": "object", "properties": {"message": {"type": "string"}}, "required": ["message"], "additionalProperties": False}, {"type": "object", "required": ["message"]}, SideEffect.READ_ONLY, Idempotency.IDEMPOTENT)]
+
+            def _invoke_operation(self, operation: OperationDefinition, arguments: dict[str, object], *, config: dict[str, object]) -> AdapterResult:
+                return AdapterResult(success=True, output={"wrong": True})
+
+        adapter = SchemaAdapter()
+        self.assertEqual(adapter.invoke("echo", {}, config={"enabled": True}).error["code"], "invalid_arguments")
+        self.assertEqual(adapter.invoke("echo", {"message": "ok"}, config={"enabled": True}).error["code"], "invalid_adapter_result")
+
+    def test_manifest_conformance_detects_runtime_drift(self) -> None:
+        adapter = ExampleAdapter()
+        manifest = {"adapter": {"id": "example"}, "operations": [{"name": "echo", "input_schema": {"type": "object"}, "output_schema": {"type": "object"}, "side_effect": "read_only", "idempotency": "idempotent", "timeout_seconds": None, "retry_guidance": ""}], "health_check": {"operation": "echo"}}
+        self.assertEqual(validate_adapter_manifest_conformance(adapter, manifest), [])
+        manifest["operations"][0]["side_effect"] = "mutating"
+        self.assertIn("runtime operation echo.side_effect must match the manifest", validate_adapter_manifest_conformance(adapter, manifest))

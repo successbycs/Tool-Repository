@@ -8,6 +8,8 @@ from enum import StrEnum
 from math import isfinite
 from typing import Any
 
+from jsonschema import Draft202012Validator, SchemaError
+
 CONTRACT_VERSION = "1.0.0"
 
 
@@ -122,12 +124,17 @@ class Adapter(ABC):
             return AdapterResult.failure("invalid_config_validation", "adapter returned invalid configuration errors")
         if config_errors:
             return AdapterResult.failure("invalid_config", "; ".join(config_errors))
+        argument_issues = _schema_validation_issues(operation.input_schema, arguments)
+        if argument_issues:
+            return AdapterResult.failure("invalid_arguments", "arguments do not match the declared input schema")
         try:
             result = self._invoke_operation(operation, arguments, config=config)
         except Exception:
             return AdapterResult.failure("adapter_execution_failed", "adapter operation failed")
         if not isinstance(result, AdapterResult):
             return AdapterResult.failure("invalid_adapter_result", "adapter returned an invalid result")
+        if result.success and _schema_validation_issues(operation.output_schema, result.output):
+            return AdapterResult.failure("invalid_adapter_result", "adapter output does not match the declared output schema")
         return result
 
     @abstractmethod
@@ -162,6 +169,56 @@ def validate_adapter_contract(adapter: Adapter) -> list[str]:
     return issues
 
 
+def validate_adapter_manifest_conformance(adapter: Adapter, manifest: Any) -> list[str]:
+    """Compare an explicitly loaded descriptor with an explicitly loaded adapter.
+
+    Manifest discovery remains static; this check is only for an admission test
+    that has deliberately imported the candidate adapter.
+    """
+
+    if not isinstance(manifest, dict):
+        return ["manifest must be an object"]
+    issues = validate_adapter_contract(adapter)
+    adapter_data = manifest.get("adapter")
+    if not isinstance(adapter_data, dict) or adapter_data.get("id") != getattr(adapter, "adapter_id", None):
+        issues.append("runtime adapter_id must match manifest adapter.id")
+    declared = manifest.get("operations")
+    if not isinstance(declared, list):
+        return [*issues, "manifest operations must be a list"]
+    try:
+        runtime_operations = adapter.list_operations()
+    except Exception as error:
+        return [*issues, f"list_operations raised {type(error).__name__}"]
+    if not isinstance(runtime_operations, list):
+        return [*issues, "list_operations must return a list"]
+    runtime_by_name = {operation.name: operation for operation in runtime_operations if isinstance(operation, OperationDefinition)}
+    manifest_by_name = {item.get("name"): item for item in declared if isinstance(item, dict) and isinstance(item.get("name"), str)}
+    if set(runtime_by_name) != set(manifest_by_name):
+        issues.append("runtime operations must exactly match manifest operations")
+    for name in sorted(set(runtime_by_name) & set(manifest_by_name)):
+        runtime = runtime_by_name[name]
+        descriptor = manifest_by_name[name]
+        expected = {
+            "input_schema": runtime.input_schema,
+            "output_schema": runtime.output_schema,
+            "side_effect": runtime.side_effect.value,
+            "idempotency": runtime.idempotency.value,
+            "timeout_seconds": runtime.timeout_seconds,
+            "retry_guidance": runtime.retry_guidance,
+        }
+        for field, value in expected.items():
+            if descriptor.get(field) != value:
+                issues.append(f"runtime operation {name}.{field} must match the manifest")
+    health = manifest.get("health_check")
+    if isinstance(health, dict):
+        operation = runtime_by_name.get(health.get("operation"))
+        if operation is None or operation.side_effect is not SideEffect.READ_ONLY:
+            issues.append("manifest health_check must reference a runtime read_only operation")
+    else:
+        issues.append("manifest health_check must be an object")
+    return issues
+
+
 def _validate_operation_definition(operation: Any) -> list[str]:
     if not isinstance(operation, OperationDefinition):
         return ["list_operations must return OperationDefinition instances"]
@@ -172,6 +229,12 @@ def _validate_operation_definition(operation: Any) -> list[str]:
         issues.append(f"{operation.name}: description must be non-empty")
     if not isinstance(operation.input_schema, dict) or not isinstance(operation.output_schema, dict):
         issues.append(f"{operation.name}: input_schema and output_schema must be objects")
+    else:
+        for label, schema in (("input_schema", operation.input_schema), ("output_schema", operation.output_schema)):
+            try:
+                Draft202012Validator.check_schema(schema)
+            except SchemaError:
+                issues.append(f"{operation.name}: {label} must be a valid Draft 2020-12 JSON Schema")
     if not isinstance(operation.side_effect, SideEffect):
         issues.append(f"{operation.name}: side_effect must be a SideEffect")
     if not isinstance(operation.idempotency, Idempotency):
@@ -183,3 +246,13 @@ def _validate_operation_definition(operation: Any) -> list[str]:
     if operation.side_effect is SideEffect.DESTRUCTIVE and operation.idempotency is Idempotency.UNKNOWN:
         issues.append(f"{operation.name}: destructive operations must declare idempotency")
     return issues
+
+
+def _schema_validation_issues(schema: dict[str, Any], value: dict[str, Any]) -> list[str]:
+    """Return schema errors without reflecting caller data into normalized results."""
+
+    try:
+        validator = Draft202012Validator(schema)
+    except SchemaError:
+        return ["invalid schema"]
+    return [error.message for error in validator.iter_errors(value)]
