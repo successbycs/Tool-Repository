@@ -1,10 +1,9 @@
 {
     "milestones": [
         {
-            "id": "TR-M00",
+            "id": "TR-M00", "status": "complete",
             "title": "Governance Policy Baseline",
             "delivery_type": "foundation_enabling",
-            "status": "complete",
             "capability_unblocked": "The repository has a small, versioned, executable policy layer for truthful milestone closure and safe future delivery.",
             "dependencies": [],
             "risk_level": "low",
@@ -78,10 +77,9 @@
             }
         },
         {
-            "id": "TR-M01",
+            "id": "TR-M01", "status": "complete",
             "title": "Repository Contract Foundation",
             "delivery_type": "foundation_enabling",
-            "status": "complete",
             "capability_unblocked": "A minimal, independently testable adapter library with one shared contract.",
             "dependencies": [
                 "TR-M00"
@@ -142,10 +140,9 @@
             }
         },
         {
-            "id": "TR-M01A",
+            "id": "TR-M01A", "status": "complete",
             "title": "CS AI Lab Deployable Release",
             "delivery_type": "capability_delivering",
-            "status": "complete",
             "proof_integrity_version": "2.0",
             "capability_unblocked": "The CS AI Lab laptop can install, verify, update, and roll back an immutable Tool Repository release without privileged runtime access.",
             "dependencies": [
@@ -213,10 +210,9 @@
             }
         },
         {
-            "id": "TR-M02",
+            "id": "TR-M02", "status": "complete",
             "title": "Standard Tool Descriptor Schema",
             "delivery_type": "foundation_enabling",
-            "status": "complete",
             "capability_unblocked": "Tools have one validated descriptor that makes value, fit, limits, and lifecycle discoverable.",
             "dependencies": [
                 "TR-M01"
@@ -280,10 +276,9 @@
             }
         },
         {
-            "id": "TR-M03",
+            "id": "TR-M03", "status": "complete",
             "title": "Tool Knowledge Base Contract",
             "delivery_type": "foundation_enabling",
-            "status": "complete",
             "capability_unblocked": "The library can validate concise guides, evidenced usage learning, and clearly separated suggested uses.",
             "dependencies": [
                 "TR-M02"
@@ -347,10 +342,9 @@
             }
         },
         {
-            "id": "TR-M04",
+            "id": "TR-M04", "status": "complete",
             "title": "Machine Discovery and Catalogue API",
             "delivery_type": "capability_delivering",
-            "status": "complete",
             "proof_integrity_version": "2.0",
             "capability_unblocked": "Solutions can discover approved adapters, resolve immutable releases, and retrieve value/use and knowledge links without executing adapter code.",
             "dependencies": [
@@ -418,10 +412,9 @@
             }
         },
         {
-            "id": "TR-M05",
+            "id": "TR-M05", "status": "complete",
             "title": "Reference Adapters and AF Extraction",
             "delivery_type": "capability_delivering",
-            "status": "complete",
             "proof_integrity_version": "2.0",
             "capability_unblocked": "Solutions can use a small, proven set of independently tested adapters migrated from or informed by AF.",
             "dependencies": [
@@ -493,10 +486,9 @@
             }
         },
         {
-            "id": "TR-M06",
+            "id": "TR-M06", "status": "not_started",
             "title": "Solution Consumption and Contribution Loop",
             "delivery_type": "capability_delivering",
-            "status": "not_started",
             "capability_unblocked": "A new solution can resolve and use a pinned adapter, make a documented local fork, and contribute reusable improvements back.",
             "dependencies": [
                 "TR-M04",
@@ -554,10 +546,9 @@
             }
         },
         {
-            "id": "TR-M07",
+            "id": "TR-M07", "status": "not_started",
             "title": "Prompt Library and Execution Provenance",
             "delivery_type": "foundation_enabling",
-            "status": "not_started",
             "capability_unblocked": "Reusable major prompts are versioned and solution executions have privacy-aware, auditable provenance.",
             "dependencies": [
                 "TR-M00",
@@ -617,10 +608,9 @@
             }
         },
         {
-            "id": "TR-M08",
+            "id": "TR-M08", "status": "not_started",
             "title": "Prompt Evaluation and Drift Correction",
             "delivery_type": "capability_delivering",
-            "status": "not_started",
             "capability_unblocked": "Prompt execution quality and drift are evidence-backed, measurable, visible, and corrected through controlled prompt versions.",
             "dependencies": [
                 "TR-M03",
@@ -692,10 +682,9 @@
             }
         },
         {
-            "id": "TR-M09",
+            "id": "TR-M09", "status": "complete",
             "title": "Repository Asset Intake and Curation",
             "delivery_type": "foundation_enabling",
-            "status": "complete",
             "proof_integrity_version": "2.0",
             "capability_unblocked": "Source repositories are assessed one at a time for reusable, lawful, safe assets before any code or solution structure is promoted.",
             "dependencies": [
@@ -767,10 +756,9 @@
             }
         },
         {
-            "id": "TR-M10",
+            "id": "TR-M10", "status": "complete",
             "title": "Proof and Review Integrity",
             "delivery_type": "foundation_enabling",
-            "status": "complete",
             "proof_integrity_version": "2.0",
             "capability_unblocked": "New milestone closure evidence is bound to inspectable commits and saved review records.",
             "dependencies": [
@@ -830,10 +818,9 @@
             }
         },
         {
-            "id": "TR-M11",
+            "id": "TR-M11", "status": "complete",
             "title": "Runtime Contract Enforcement",
             "delivery_type": "foundation_enabling",
-            "status": "complete",
             "proof_integrity_version": "2.0",
             "capability_unblocked": "Adapter requests and successful results conform to their declared schemas before promotion.",
             "dependencies": [
