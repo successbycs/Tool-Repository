@@ -1,0 +1,37 @@
+{
+  "schema_version": "1.0.0",
+  "adapter": {"id": "t480-lab", "version": "0.1.0", "contract_version": "1.0.0", "title": "T480 Lab Readiness", "summary": "Reports fixed CS AI Lab readiness checks through an injected read-only transport probe.", "status": "draft", "owner": "Tool Repository", "license": "Internal-Proprietary"},
+  "value": {
+    "use_cases": ["Assess a fixed T480 lab before a solution performs its own approved work."],
+    "fit_for": ["Read-only readiness checks for the named internal lab."],
+    "not_for": ["Arbitrary remote commands, Docker control, or service reconfiguration."],
+    "limitations": ["A consuming application supplies the fixed transport probe; this adapter never opens a session by itself."]
+  },
+  "provenance": {
+    "origin": {"source": "clean-room implementation informed by /home/chris/projects/cs-ai-lab-infra", "revision": "551f1afe972172ba9eee707a81a12072c8473ee0", "license": "Internal-Proprietary", "owner": "Tool Repository"},
+    "changed_from": "No source code or machine-local configuration copied; reduced to fixed read-only readiness checks."
+  },
+  "capabilities": [{"name": "runtime_readiness", "description": "Read fixed T480 lab readiness checks."}],
+  "operations": [
+    {
+      "name": "inspect_runtime", "summary": "Read fixed lab readiness checks.", "capability": "runtime_readiness",
+      "input_schema": {"type": "object", "additionalProperties": false},
+      "output_schema": {
+        "type": "object", "required": ["target", "ready", "checks"],
+        "properties": {
+          "target": {"type": "string"}, "ready": {"type": "boolean"},
+          "checks": {
+            "type": "object", "required": ["wsl", "docker", "storage", "ollama", "postgres", "n8n"], "additionalProperties": false,
+            "properties": {"wsl": {"type": "boolean"}, "docker": {"type": "boolean"}, "storage": {"type": "boolean"}, "ollama": {"type": "boolean"}, "postgres": {"type": "boolean"}, "n8n": {"type": "boolean"}}
+          }
+        }, "additionalProperties": false
+      },
+      "side_effect": "read_only", "idempotency": "idempotent", "timeout_seconds": 10,
+      "retry_guidance": "Retry after the consuming application restores its fixed transport."
+    }
+  ],
+  "configuration": {"schema": {"type": "object", "required": ["target"], "properties": {"target": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9_.@:-]*$"}}, "additionalProperties": false}, "secret_names": []},
+  "safety": {"data_classification": "internal", "log_redaction": true, "destructive_opt_in": false},
+  "health_check": {"operation": "inspect_runtime", "side_effect": "read_only"},
+  "documentation": {"user_guide": "docs/adapters/t480-lab.md", "knowledge_base": "adapters/t480-lab/knowledge.json"}
+}

@@ -10,7 +10,9 @@ publishes immutable releases for solution repositories to consume locally.
 It does not execute adapters centrally, store solution secrets, or require a
 database. The CS AI Lab installs versioned repository releases under a non-root
 account and can roll back locally. A future catalogue is read-only discovery and
-release resolution; adapter execution remains inside each consuming solution.
+release resolution, published as immutable JSON to Cloudflare R2; adapter
+execution remains inside each consuming solution. See the
+[catalogue deployment architecture](catalogue_deployment_architecture.md).
 
 ## Knowledge relationship
 

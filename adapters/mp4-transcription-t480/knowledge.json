@@ -1,0 +1,5 @@
+{
+  "schema_version": "1.0.0",
+  "adapter": {"id": "mp4-transcription-t480", "version": "0.1.0"},
+  "records": [{"id": "fake-probe-contract", "kind": "validated_usage", "observed_on": "2026-08-29", "context": "The conformance test supplied a fake read-only transcription probe without media or host access.", "outcome": "The adapter returned schema-valid preflight and runtime status reports for the fixed operations.", "constraints_or_lessons": "This validates local contracts only; it does not prove a model, private media path, or remote runtime.", "evidence_ref": "tests/test_conformance.py", "redaction_attestation": "sanitized_repository_evidence", "reviewed_by": "Tool Repository"}]
+}

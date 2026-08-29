@@ -1,0 +1,5 @@
+{
+  "schema_version": "1.0.0",
+  "adapter": {"id": "t480-lab", "version": "0.1.0"},
+  "records": [{"id": "fake-probe-contract", "kind": "validated_usage", "observed_on": "2026-08-29", "context": "The conformance test supplied a fake fixed lab probe without creating a remote session.", "outcome": "The adapter returned a schema-valid readiness report and calculated readiness from the fixed checks.", "constraints_or_lessons": "This validates the local contract only; it does not prove T480 connectivity or service health.", "evidence_ref": "tests/test_conformance.py", "redaction_attestation": "sanitized_repository_evidence", "reviewed_by": "Tool Repository"}]
+}

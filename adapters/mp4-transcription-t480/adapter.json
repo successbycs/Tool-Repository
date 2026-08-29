@@ -1,0 +1,35 @@
+{
+  "schema_version": "1.0.0",
+  "adapter": {"id": "mp4-transcription-t480", "version": "0.1.0", "contract_version": "1.0.0", "title": "T480 MP4 Transcription Readiness", "summary": "Reports fixed read-only MP4 transcription deployment readiness through an injected transport probe.", "status": "draft", "owner": "Tool Repository", "license": "Internal-Proprietary"},
+  "value": {
+    "use_cases": ["Check a fixed private transcription deployment before an approved application workflow."],
+    "fit_for": ["Read-only transcription preflight and runtime status."],
+    "not_for": ["Media upload, transcription job execution, cloud media processing, or model downloads."],
+    "limitations": ["A consuming application supplies the fixed probe; this adapter never accesses media or a host by itself."]
+  },
+  "provenance": {
+    "origin": {"source": "clean-room implementation informed by /home/chris/projects/mp4-to-transcript", "revision": "85af3a676f689cf67cfc8e63913b133e0bd5c704", "license": "Internal-Proprietary", "owner": "Tool Repository"},
+    "changed_from": "No source code, media path, credentials, or machine-local configuration copied; limited to fixed read-only diagnostics."
+  },
+  "capabilities": [{"name": "transcription_readiness", "description": "Read fixed private transcription deployment readiness."}],
+  "operations": [
+    {
+      "name": "transcription_preflight", "summary": "Read inbox, output, and worker-image readiness.", "capability": "transcription_readiness",
+      "input_schema": {"type": "object", "additionalProperties": false},
+      "output_schema": {"type": "object", "required": ["target", "inbox_ready", "output_ready", "worker_image_ready"], "properties": {"target": {"type": "string"}, "inbox_ready": {"type": "boolean"}, "output_ready": {"type": "boolean"}, "worker_image_ready": {"type": "boolean"}}, "additionalProperties": false},
+      "side_effect": "read_only", "idempotency": "idempotent", "timeout_seconds": 10,
+      "retry_guidance": "Retry after the consuming application restores the fixed transport or deployment."
+    },
+    {
+      "name": "transcription_runtime_status", "summary": "Read worker and local-model runtime readiness.", "capability": "transcription_readiness",
+      "input_schema": {"type": "object", "additionalProperties": false},
+      "output_schema": {"type": "object", "required": ["target", "worker_running", "model_cache_ready", "active_job_count"], "properties": {"target": {"type": "string"}, "worker_running": {"type": "boolean"}, "model_cache_ready": {"type": "boolean"}, "active_job_count": {"type": "integer", "minimum": 0}}, "additionalProperties": false},
+      "side_effect": "read_only", "idempotency": "idempotent", "timeout_seconds": 10,
+      "retry_guidance": "Retry after the consuming application restores the fixed transport or deployment."
+    }
+  ],
+  "configuration": {"schema": {"type": "object", "required": ["target"], "properties": {"target": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9_.@:-]*$"}}, "additionalProperties": false}, "secret_names": []},
+  "safety": {"data_classification": "restricted", "log_redaction": true, "destructive_opt_in": false},
+  "health_check": {"operation": "transcription_preflight", "side_effect": "read_only"},
+  "documentation": {"user_guide": "docs/adapters/mp4-transcription-t480.md", "knowledge_base": "adapters/mp4-transcription-t480/knowledge.json"}
+}

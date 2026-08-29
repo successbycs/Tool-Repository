@@ -31,3 +31,14 @@ Codex must show AI Engineer, Solution Architect, and Senior Developer review sta
 ## 2026-08-29 — New closure evidence is commit-bound
 
 New high-risk corrective milestones require a full inspectable commit SHA, matching verification-output hashes, and hashed saved review records. Historical proofs are preserved as records rather than rewritten.
+
+## 2026-08-29 — T480 migration uses clean-room components
+
+The repository owner authorised internal/proprietary reuse of the local CS AI Lab and MP4 transcription repositories. TR-M05 will create separately versioned clean-room transport, lab, and MP4 components without copying source code or machine-local configuration.
+
+## 2026-08-29 — Catalogue publication uses Cloudflare R2
+
+After TR-M04 generates and validates immutable catalogue JSON, GitHub CI will
+publish it to a private Cloudflare R2 bucket. The subscribed Cloudflare Worker
+will be the stateless HTTPS catalogue endpoint; neither R2 nor the Worker may
+execute adapters or hold solution secrets.

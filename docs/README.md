@@ -8,5 +8,7 @@ These documents govern delivery of this repository. They are intentionally small
 - [Decision log](decision_log.md) records durable choices and their rationale.
 - [Completed-state architecture](architecture.md) shows the repository's
   intended library, intake, release, knowledge, and solution-consumption boundaries.
+- [Catalogue deployment architecture](catalogue_deployment_architecture.md)
+  defines GitHub-to-Cloudflare R2 publication for the future read-only catalogue.
 
 `milestone_registry.json` is the delivery plan. A proof artifact records what actually happened. Neither may be edited to make an unverified result appear complete.
