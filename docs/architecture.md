@@ -26,6 +26,14 @@ its exact source release and proposes the change through intake, isolated
 tests, review, and a new immutable release. The executable reference is the
 [minimal solution example](../examples/minimal-solution/README.md).
 
+## Prompt assets and provenance
+
+Reusable prompts are static, versioned definitions. A solution may retain an
+execution provenance record that binds a definition hash, context, runtime,
+redacted/protected fingerprints, and outcome evidence. Raw prompts, private
+content, credentials, and hidden reasoning stay outside this repository and
+outside any central execution service.
+
 ## Knowledge relationship
 
 Each active adapter links its user guide and JSON knowledge records from its

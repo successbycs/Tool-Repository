@@ -21,7 +21,10 @@ The practical test is simple: a developer starting a new solution can find a sui
 - retain provenance for solution-owned forks and provide a documented route to
   promote genuinely reusable improvements back into this repository; and
 - install, verify, update, and roll back the versioned library release on the
-  local CS AI Lab machine without privileged runtime access.
+  local CS AI Lab machine without privileged runtime access; and
+- validate versioned reusable prompts and privacy-safe, hash-bound execution
+  provenance without retaining raw prompts, private content, credentials, or
+  hidden reasoning.
 
 The catalogue is a discovery and release-verification document only. It never
 executes adapters, receives solution secrets, or becomes a central control
@@ -31,8 +34,7 @@ plane.
 
 - publish the generated catalogue through Cloudflare R2 and a stateless Worker
   HTTPS endpoint; and
-- complete the prompt library, privacy-safe execution provenance, prompt
-  evaluation, and drift-correction capabilities.
+- complete prompt evaluation and drift-correction capabilities.
 
 ## What this repository owns
 

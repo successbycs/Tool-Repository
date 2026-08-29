@@ -8,6 +8,7 @@ from tool_repository.manifest import discover_manifests, load_manifest
 from tool_repository.milestones import close_check, validate_registry
 from tool_repository.repository_intake import load_queue
 from tool_repository.catalogue import load_catalogue, write_catalogue
+from tool_repository.prompt_library import load_prompt_execution, load_prompt_library
 
 
 def main() -> int:
@@ -32,6 +33,11 @@ def main() -> int:
     build_catalogue_command.add_argument("--release-index", type=Path, default=Path("catalogue/release-index.json"))
     validate_catalogue_command = catalogue_commands.add_parser("validate", help="Validate a generated catalogue document")
     validate_catalogue_command.add_argument("path", type=Path, nargs="?", default=Path("catalogue/adapters.json"))
+    prompts = commands.add_parser("prompts")
+    prompt_commands = prompts.add_subparsers(dest="prompt_command", required=True)
+    validate_prompts = prompt_commands.add_parser("validate", help="Validate reusable prompt definitions and optional metadata-only execution records")
+    validate_prompts.add_argument("--definitions", type=Path, default=Path("prompts/definitions"))
+    validate_prompts.add_argument("--execution", action="append", type=Path, default=[])
     args = parser.parse_args()
 
     if args.command == "milestones":
@@ -56,6 +62,11 @@ def main() -> int:
             issues = write_catalogue(Path.cwd() / args.output, root=Path.cwd(), release_index_path=Path.cwd() / args.release_index)
         else:
             _, issues = load_catalogue(Path.cwd() / args.path)
+    elif args.command == "prompts":
+        definitions, issues = load_prompt_library(Path.cwd() / args.definitions)
+        for path in args.execution:
+            _, execution_issues = load_prompt_execution(Path.cwd() / path, definitions)
+            issues.extend(execution_issues)
     else:  # pragma: no cover - argparse makes this unreachable
         issues = close_check(args.milestone_id)
     if issues:

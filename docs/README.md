@@ -16,6 +16,8 @@ These documents govern delivery of this repository. They are intentionally small
   upgrade, fork, and retire immutable adapter releases.
 - [Contributing adapters](contributing_adapters.md) defines the provenance and
   promotion path for reusable solution improvements.
+- [Prompt library standard](prompt_library_standard.md) defines versioned,
+  privacy-safe reusable prompts and execution provenance.
 - [CS AI Lab deployment](cs_ai_lab_deployment.md) describes the non-root,
   versioned local release path and rollback contract.
 

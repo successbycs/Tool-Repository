@@ -68,3 +68,11 @@ tag, commit, descriptor hash, and release-index hash; checks out the commit;
 and invokes the adapter inside its own process. Improvements retain that origin
 in a fork provenance record and return through review and a new release. The
 catalogue remains discovery-only and never becomes a central execution API.
+
+## 2026-08-29 — Prompt provenance is metadata-only
+
+TR-M07 stores reusable prompt definitions as versioned static assets. Execution
+records bind a definition hash, context reference, runtime, redacted or
+protected input/output fingerprints, and outcome evidence without retaining
+rendered prompts, raw private content, credentials, or hidden reasoning. The
+repository never becomes a central prompt-execution log.

@@ -1,0 +1,25 @@
+{
+  "schema_version": "1.0.0",
+  "id": "repository-asset-assessment",
+  "version": "1.0.0",
+  "title": "Repository asset assessment",
+  "purpose": "Assess one candidate repository asset using supplied evidence and return a bounded reuse recommendation for the Tool Repository intake process.",
+  "owner": "Tool Repository maintainers",
+  "data_classification": "internal",
+  "input_contract": [
+    {"name": "assessment_reference", "description": "Repository-contained intake assessment reference.", "classification": "internal"},
+    {"name": "evidence_references", "description": "Approved evidence references with no secrets or customer content.", "classification": "internal"}
+  ],
+  "output_contract": [
+    {"name": "reuse_recommendation", "description": "Bounded recommendation with reasons and unresolved risks.", "classification": "internal"}
+  ],
+  "constraints": [
+    "Use only the supplied evidence references.",
+    "Do not infer licence, provenance, or security facts that lack evidence.",
+    "Do not include secrets, private content, or hidden reasoning in the recorded outcome."
+  ],
+  "rendering": {
+    "template": "Assess the candidate repository asset using only the approved evidence references. State a bounded reuse recommendation, cite unresolved provenance, licence, safety, and maintenance risks, and do not claim that unverified behaviour has been tested.",
+    "execution_capture": "redacted_canonical"
+  }
+}

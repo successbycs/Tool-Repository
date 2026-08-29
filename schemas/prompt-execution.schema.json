@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tool-repository.local/schemas/prompt-execution-1.0.0.schema.json",
+  "title": "Tool Repository privacy-safe prompt execution provenance",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "execution_id", "occurred_at", "prompt", "context", "runtime", "input_capture", "output_capture", "outcome", "redaction_attestation"],
+  "properties": {
+    "schema_version": {"const": "1.0.0"},
+    "execution_id": {"type": "string", "pattern": "^[a-z][a-z0-9_-]{5,99}$"},
+    "occurred_at": {"type": "string", "format": "date-time"},
+    "prompt": {"$ref": "#/$defs/promptReference"},
+    "context": {"$ref": "#/$defs/context"},
+    "runtime": {"$ref": "#/$defs/runtime"},
+    "input_capture": {"$ref": "#/$defs/capture"},
+    "output_capture": {"$ref": "#/$defs/capture"},
+    "outcome": {"$ref": "#/$defs/outcome"},
+    "redaction_attestation": {"const": "no_secrets_or_private_content"}
+  },
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "promptReference": {"type": "object", "additionalProperties": false, "required": ["id", "version", "definition_sha256"], "properties": {"id": {"type": "string", "pattern": "^[a-z][a-z0-9]*(?:[._-][a-z0-9]+)*$"}, "version": {"type": "string", "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$"}, "definition_sha256": {"$ref": "#/$defs/sha256"}}},
+    "context": {"type": "object", "additionalProperties": false, "required": ["kind", "reference"], "properties": {"kind": {"enum": ["milestone", "solution", "repository_intake", "review", "qa", "remediation"]}, "reference": {"type": "string", "minLength": 3, "maxLength": 500}}},
+    "runtime": {"type": "object", "additionalProperties": false, "required": ["provider", "model", "settings_profile"], "properties": {"provider": {"type": "string", "minLength": 2, "maxLength": 100}, "model": {"type": "string", "minLength": 2, "maxLength": 200}, "settings_profile": {"type": "string", "pattern": "^[a-z][a-z0-9._-]{1,99}$"}}},
+    "capture": {"type": "object", "additionalProperties": false, "required": ["mode", "canonical_sha256", "reference"], "properties": {"mode": {"enum": ["redacted_canonical", "protected_reference"]}, "canonical_sha256": {"$ref": "#/$defs/sha256"}, "reference": {"type": "string", "minLength": 3, "maxLength": 500}}},
+    "outcome": {"type": "object", "additionalProperties": false, "required": ["status", "evidence_sha256"], "properties": {"status": {"enum": ["success", "failure", "inconclusive"]}, "evidence_sha256": {"$ref": "#/$defs/sha256"}}}
+  }
+}

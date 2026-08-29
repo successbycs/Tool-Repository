@@ -33,7 +33,7 @@
             "title": "Solution Consumption and Contribution Loop"
         },
         {
-            "id": "TR-M07", "status": "not_started",
+            "id": "TR-M07", "status": "in_progress",
             "title": "Prompt Library and Execution Provenance"
         },
         {
@@ -603,9 +603,10 @@
             }
         },
         {
-            "id": "TR-M07", "status": "not_started",
+            "id": "TR-M07", "status": "in_progress",
             "title": "Prompt Library and Execution Provenance",
             "delivery_type": "foundation_enabling",
+            "proof_integrity_version": "2.0",
             "capability_unblocked": "Reusable major prompts are versioned and solution executions have privacy-aware, auditable provenance.",
             "dependencies": [
                 "TR-M00",
@@ -625,6 +626,9 @@
                 "docs",
                 "src/tool_repository",
                 "tests",
+                "prompts",
+                "scripts",
+                "reviews",
                 "runs/proofs",
                 "milestone_registry.json"
             ],
@@ -633,6 +637,7 @@
                 "schemas/prompt-execution.schema.json",
                 "docs/prompt_library_standard.md",
                 "src/tool_repository/prompt_library.py",
+                "prompts/definitions/repository-asset-assessment-1.0.0.json",
                 "tests/test_prompt_library.py"
             ],
             "proof_artifact": "runs/proofs/TR-M07_prompt_library_and_execution_provenance.json",
