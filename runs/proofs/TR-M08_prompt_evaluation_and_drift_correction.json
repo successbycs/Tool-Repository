@@ -1,0 +1,45 @@
+{
+  "milestone_id": "TR-M08",
+  "implementation_revision": "be6262ce90961f45a4dc43a306a67e04ed4013bb",
+  "generated_at": "2026-08-29T03:53:58.732307Z",
+  "environment": {
+    "python": "3.12.3",
+    "platform": "Linux-6.6.87.2-microsoft-standard-WSL2-x86_64-with-glibc2.39"
+  },
+  "status": "passed",
+  "verification": [
+    {
+      "command": "PYTHONPATH=src python3 -m tool_repository prompts evaluate --fixture examples/prompt-evaluation-fixture",
+      "exit_code": 0,
+      "output": "OK\n",
+      "output_sha256": "a12b7cb43c9d9134b5bb1b35e9096b66775d9e92e7611d1cc92b02edd6782a87"
+    },
+    {
+      "command": "python3 -m unittest tests.test_prompt_evaluation",
+      "exit_code": 0,
+      "output": "....\n----------------------------------------------------------------------\nRan 4 tests in 0.159s\n\nOK\n",
+      "output_sha256": "287ae1d553a2b9ef2f7714249d014359fb941152a9f2321692a62e9409ac851c"
+    }
+  ],
+  "reviews": [
+    {
+      "role": "ai_engineer",
+      "status": "passed",
+      "reference": "reviews/TR-M08_ai_engineer.md",
+      "content_sha256": "c411df1de37a90e2bafabb3ea93e50a5a7fcc7d9f8895fe468c98dd67a70b969"
+    },
+    {
+      "role": "solution_architect",
+      "status": "passed",
+      "reference": "reviews/TR-M08_solution_architect.md",
+      "content_sha256": "29bc105ae0d18a127fee0563702479d4a80d239eed0571e746d9a34fce89a6d8"
+    },
+    {
+      "role": "developer",
+      "status": "passed",
+      "reference": "reviews/TR-M08_developer.md",
+      "content_sha256": "9e0de4addbe57185537d1b9f9adb673ee8df78b7b7be1c340a1b62da5d41a41a"
+    }
+  ],
+  "observed_result": "The synthetic fixture records a calibrated, threshold-based candidate drift, a proposed correction, and a passing non-regression comparison without auto-promoting any prompt version."
+}
