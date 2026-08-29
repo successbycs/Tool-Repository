@@ -3,6 +3,7 @@
   "trusted_publishers": ["tool-repository"],
   "releases": [
     {"adapter_id": "mp4-transcription-t480", "adapter_version": "0.1.0", "publisher": "tool-repository", "release_tag": "v0.1.0", "release_commit": "ee92b26d407a49422560d0a3e98b0fb9764ee6a2", "artifact_uri": "git+https://github.com/successbycs/Tool-Repository.git@v0.1.0", "manifest_sha256": "de6bdfa8542501bb73aa3874380124da247cbce2d5ad5de23a81314d778d1dba"},
+    {"adapter_id": "ollama-readiness", "adapter_version": "0.2.0", "publisher": "tool-repository", "release_tag": "v0.2.0", "release_commit": "c556444c8106bd36e0d0a13bedbec94b64eb4187", "artifact_uri": "git+https://github.com/successbycs/Tool-Repository.git@v0.2.0", "manifest_sha256": "bb49740d327410c90f29046251411fc4fd7ec27945eaac29331dd6b265b45c1f"},
     {"adapter_id": "t480-lab", "adapter_version": "0.1.0", "publisher": "tool-repository", "release_tag": "v0.1.0", "release_commit": "ee92b26d407a49422560d0a3e98b0fb9764ee6a2", "artifact_uri": "git+https://github.com/successbycs/Tool-Repository.git@v0.1.0", "manifest_sha256": "e60ffede8b5dbfdaab9b28002d28cdadeb464f3b1ac503435d54aee7b363021b"},
     {"adapter_id": "t480-transport", "adapter_version": "0.1.0", "publisher": "tool-repository", "release_tag": "v0.1.0", "release_commit": "ee92b26d407a49422560d0a3e98b0fb9764ee6a2", "artifact_uri": "git+https://github.com/successbycs/Tool-Repository.git@v0.1.0", "manifest_sha256": "d462e986991269a72220046785629313a3438c38ebba15fcebaf425c2543e70f"}
   ]

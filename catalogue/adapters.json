@@ -121,6 +121,121 @@
     },
     {
       "adapter": {
+        "id": "ollama-readiness",
+        "license": "Internal-Proprietary",
+        "owner": "Tool Repository",
+        "status": "active",
+        "summary": "Compares the literal loopback Ollama inventory with the approved digest-pinned local model profile set.",
+        "title": "T480 Ollama Readiness",
+        "version": "0.2.0"
+      },
+      "capabilities": [
+        {
+          "description": "Read and verify the approved local Ollama inventory.",
+          "name": "local_model_readiness"
+        }
+      ],
+      "documentation": {
+        "knowledge_base": "adapters/ollama-readiness/knowledge.json",
+        "user_guide": "docs/adapters/ollama-readiness.md"
+      },
+      "manifest_sha256": "bb49740d327410c90f29046251411fc4fd7ec27945eaac29331dd6b265b45c1f",
+      "operations": [
+        {
+          "capability": "local_model_readiness",
+          "idempotency": "idempotent",
+          "input_schema": {
+            "additionalProperties": false,
+            "type": "object"
+          },
+          "name": "inspect_inventory",
+          "output_schema": {
+            "additionalProperties": false,
+            "properties": {
+              "checks": {
+                "additionalProperties": false,
+                "properties": {
+                  "approved_inventory": {
+                    "type": "boolean"
+                  },
+                  "service_reachable": {
+                    "type": "boolean"
+                  }
+                },
+                "required": [
+                  "service_reachable",
+                  "approved_inventory"
+                ],
+                "type": "object"
+              },
+              "endpoint_scope": {
+                "const": "loopback_only"
+              },
+              "models": {
+                "items": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "digest": {
+                      "pattern": "^[a-f0-9]{64}$",
+                      "type": "string"
+                    },
+                    "model": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "model",
+                    "digest"
+                  ],
+                  "type": "object"
+                },
+                "type": "array"
+              },
+              "ready": {
+                "type": "boolean"
+              },
+              "target": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "target",
+              "ready",
+              "endpoint_scope",
+              "checks",
+              "models"
+            ],
+            "type": "object"
+          },
+          "retry_guidance": "Retry after the local Ollama service is restored or the approved profile set is refreshed.",
+          "side_effect": "read_only",
+          "summary": "Read the literal loopback inventory and compare exact approved model digests.",
+          "timeout_seconds": 10
+        }
+      ],
+      "release": {
+        "artifact_uri": "git+https://github.com/successbycs/Tool-Repository.git@v0.2.0",
+        "publisher": "tool-repository",
+        "release_commit": "c556444c8106bd36e0d0a13bedbec94b64eb4187",
+        "release_tag": "v0.2.0"
+      },
+      "value": {
+        "fit_for": [
+          "Read-only local inventory and exact digest readiness checks."
+        ],
+        "limitations": [
+          "A consumer must explicitly provide the loopback probe; a successful check proves only the current local inventory."
+        ],
+        "not_for": [
+          "Model installation, deletion, generation proxying, runtime reconfiguration, or any non-loopback endpoint."
+        ],
+        "use_cases": [
+          "Verify the local T480 Ollama runtime before an approved local solution uses an approved model."
+        ]
+      }
+    },
+    {
+      "adapter": {
         "id": "t480-lab",
         "license": "Internal-Proprietary",
         "owner": "Tool Repository",
@@ -351,6 +466,6 @@
     }
   ],
   "model_profiles_sha256": "65159545288d55410c95de84a34e173379bbbcfca1013bc25a3d8232fe669f53",
-  "release_index_sha256": "21d3012417bd675beb2af91782b2d4688f7935d320c7011742226d4510bd1615",
+  "release_index_sha256": "7385586931e0da94bca27f168bb242133c07ad661c0264b902e1c458d86027b9",
   "schema_version": "1.0.0"
 }
