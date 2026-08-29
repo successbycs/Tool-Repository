@@ -24,7 +24,9 @@ class RepositoryIntakeTests(unittest.TestCase):
         self.assertIsNotNone(payload); self.assertEqual(issues, [])
 
     def test_queue_requires_exactly_one_assessment(self) -> None:
-        queue = copy.deepcopy(self.queue); queue["sources"][0]["status"] = "queued"
+        queue = copy.deepcopy(self.queue)
+        for source in queue["sources"]:
+            source["status"] = "queued"
         self.assertIn("intake queue must contain exactly one source with status assessing", validate_queue(queue, repository_root=ROOT))
 
     def test_unresolved_licence_cannot_adopt_or_extract(self) -> None:

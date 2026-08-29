@@ -5,7 +5,8 @@
     {"id": "repository-asset-assessment", "version": "1.0.0", "source": "prompts/definitions/repository-asset-assessment-1.0.0.json"}
   ],
   "templates": [
-    {"id": "milestone-execution", "version": "1.0.0", "source": "templates/milestones/milestone-execution-1.0.0.json"}
+    {"id": "milestone-execution", "version": "1.0.0", "source": "templates/milestones/milestone-execution-1.0.0.json"},
+    {"id": "public-ical-calendar-reader-contract", "version": "0.1.0", "source": "templates/integrations/public-ical-calendar-reader-contract-0.1.0.json"}
   ],
   "goals": [
     {"id": "tool-repository-goal-flow", "version": "1.0.0", "source": "goals/approved/tool-repository-goal-flow-1.0.0.json"}

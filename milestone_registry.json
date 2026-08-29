@@ -95,6 +95,10 @@
         {
             "id": "TR-M22", "status": "not_started",
             "title": "Hosted Catalogue Operations and Service Assurance"
+        },
+        {
+            "id": "TR-M23", "status": "in_progress",
+            "title": "Pt Chev Calendar Asset Intake and Template Ingestion"
         }
     ],
     "milestones": [
@@ -1172,6 +1176,22 @@
             "proof_artifact": "runs/proofs/TR-M22_hosted_catalogue_service_assurance.json",
             "verify": ["npm --prefix worker test", "PYTHONPATH=src python3 -m tool_repository milestones close-check TR-M22"],
             "execution_brief": {"objective": "Make the deployed catalogue observable, access-controlled, testable, and recoverable without weakening its read-only boundary.", "context": {"service": "Cloudflare Worker over private R2", "data": "generated public-or-authorised catalogue metadata only"}, "non_goals": ["Do not add central adapter execution, analytics containing customer data, or broad standing credentials."], "required_outputs": ["access policy", "health and synthetic checks", "alerting boundaries", "rollback and incident runbooks", "service tests"], "proof_requirements": ["Proof demonstrates an authorised healthy read, denied unauthorised request, rollback exercise, and operational alert/smoke evidence."], "verification_commands": ["npm --prefix worker test"], "stop_conditions": ["Stop if operations require exposing secrets, centralising customer data, or granting mutation rights to the Worker runtime."]}
+        },
+        {
+            "id": "TR-M23", "status": "in_progress",
+            "title": "Pt Chev Calendar Asset Intake and Template Ingestion",
+            "delivery_type": "capability_delivering",
+            "proof_integrity_version": "2.0",
+            "capability_unblocked": "Solutions can discover a privacy-safe public iCalendar reader contract template and reference pattern while the executable adapter remains a human-gated clean-room candidate.",
+            "dependencies": ["TR-M14", "TR-M16", "TR-M17"],
+            "risk_level": "high",
+            "ingestion": {"applies": true, "asset_types": ["template", "harvested_asset"], "source_records": ["intake/assessments/pt-chev-water-times.json", "intake/assessments/pt-chev-water-times.md", "intake/lift-plans/pt-chev-water-times.md", "templates/integrations/public-ical-calendar-reader-contract-0.1.0.json", "docs/patterns/public-readonly-calendar-reader.md", "/home/chris/pt-chev-water-times/docs/adapter-candidates/public-ical-calendar-reader.md", "/home/chris/pt-chev-water-times/docs/adapter-candidates/public-ical-calendar-reader.kb.json"], "verification": ["PYTHONPATH=src python3 -m tool_repository repositories validate-queue", "PYTHONPATH=src python3 -m tool_repository catalogue build", "python3 -m unittest tests.test_catalogue_api"], "catalogue_effect": "publish"},
+            "review_requirements": {"required": true, "roles": ["ai_engineer", "solution_architect", "developer"]},
+            "write_scope": ["catalogue", "docs", "intake", "templates", "tests", "reviews", "scripts", "runs/proofs", "milestone_registry.json"],
+            "required_artifacts": ["intake/assessments/pt-chev-water-times.json", "intake/assessments/pt-chev-water-times.md", "intake/lift-plans/pt-chev-water-times.md", "intake/reviews/pt-chev-water-times-ai-engineer.md", "intake/reviews/pt-chev-water-times-solution-architect.md", "intake/reviews/pt-chev-water-times-senior-developer.md", "templates/integrations/public-ical-calendar-reader-contract-0.1.0.json", "docs/patterns/public-readonly-calendar-reader.md", "catalogue/prompt-template-assets.json", "catalogue/adapters.json", "tests/test_catalogue_api.py", "scripts/prove_pt_chev_calendar_asset_intake.py"],
+            "proof_artifact": "runs/proofs/TR-M23_pt_chev_calendar_asset_intake.json",
+            "verify": ["PYTHONPATH=src python3 -m tool_repository repositories validate-queue", "PYTHONPATH=src python3 -m tool_repository catalogue build", "python3 -m unittest tests.test_catalogue_api", "PYTHONPATH=src python3 -m tool_repository milestones close-check TR-M23"],
+            "execution_brief": {"objective": "Ingest the agreed Pt Chev public-calendar contract template, candidate knowledge, and reference pattern without promoting unverified executable source code.", "context": {"source": "Success by CS MIT-licensed Pt Chev Water Times", "external_gate": "calendar-feed terms and permitted fields require human approval"}, "non_goals": ["Do not copy the source Edge Function, publish an active calendar adapter, fetch an external feed, or ingest source environment values, user feedback, branded UI, or raw calendar data."], "required_outputs": ["validated intake assessment and lift plan", "candidate README/KB references", "catalogued contract template", "reference pattern", "tests, proof, and Review Triad"], "proof_requirements": ["Proof demonstrates source assessment validation and template catalogue inclusion while recording that executable promotion remains blocked on external-feed authority and clean-room tests."], "verification_commands": ["PYTHONPATH=src python3 -m tool_repository repositories validate-queue", "PYTHONPATH=src python3 -m tool_repository catalogue build", "python3 -m unittest tests.test_catalogue_api"], "stop_conditions": ["Stop if an unapproved external feed, source code, secret, user content, or executable adapter is published through this milestone."]}
         }
     ]
 }

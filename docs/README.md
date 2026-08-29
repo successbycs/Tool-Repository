@@ -12,6 +12,8 @@ These documents govern delivery of this repository. They are intentionally small
   defines GitHub-to-Cloudflare R2 publication for the future read-only catalogue.
 - [Target operating model](target_operating_model.md) maps what users can do
   today and the staged path to hosted catalogue discovery.
+- [Public read-only calendar reader pattern](patterns/public-readonly-calendar-reader.md)
+  defines the safe boundary for a future clean-room calendar adapter.
 - [Catalogue API](catalogue_api.md) defines the generated read-only discovery
   document and consumer pinning contract.
 - [Catalogue ingestion standard](catalogue_ingestion.md) defines the required

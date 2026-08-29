@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0.0",
+  "id": "public-ical-calendar-reader-contract",
+  "version": "0.1.0",
+  "title": "Read-only public iCalendar reader contract",
+  "purpose": "Define a bounded clean-room adapter contract for reading an approved public iCalendar feed and returning minimal normalised event metadata.",
+  "owner": "Tool Repository maintainers",
+  "data_classification": "internal",
+  "source_documents": ["intake/assessments/pt-chev-water-times.md", "docs/patterns/public-readonly-calendar-reader.md"],
+  "required_sections": ["approved_source", "input_contract", "output_contract", "timezone_semantics", "error_contract", "privacy_boundary", "test_fixtures", "stop_conditions"],
+  "constraints": ["Accept only a human-approved allow-listed public feed reference.", "Return minimal event metadata and exclude provider payload fields by default.", "Do not fetch arbitrary URLs, access private calendars, write provider data, or execute actions.", "Use non-sensitive fixtures for folding, timezone, recurrence, DST, and malformed-input tests."],
+  "validation": ["PYTHONPATH=src python3 -m tool_repository catalogue build", "PYTHONPATH=src python3 -m tool_repository repositories validate-queue"]
+}

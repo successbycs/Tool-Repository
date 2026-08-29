@@ -479,7 +479,7 @@
     }
   ],
   "model_profiles_sha256": "65159545288d55410c95de84a34e173379bbbcfca1013bc25a3d8232fe669f53",
-  "prompt_template_assets_sha256": "09bb9e728333fa9f258673aab3096dceeb53d0e30e089896784360275c94b0ae",
+  "prompt_template_assets_sha256": "9fd8d43704ce155d74e9066a9445a28c6a66e3ad1ca175e1352e0e58a68b414c",
   "prompts": [
     {
       "data_classification": "internal",
@@ -521,6 +521,25 @@
       "source_sha256": "8036bbbbf4bbcc6ee47c076ad976ca40d3d2f0c659966d384f2971f934ee0b92",
       "title": "Governed milestone execution",
       "version": "1.0.0"
+    },
+    {
+      "data_classification": "internal",
+      "id": "public-ical-calendar-reader-contract",
+      "owner": "Tool Repository maintainers",
+      "purpose": "Define a bounded clean-room adapter contract for reading an approved public iCalendar feed and returning minimal normalised event metadata.",
+      "required_sections": [
+        "approved_source",
+        "input_contract",
+        "output_contract",
+        "timezone_semantics",
+        "error_contract",
+        "privacy_boundary",
+        "test_fixtures",
+        "stop_conditions"
+      ],
+      "source_sha256": "52f4f97226a6299144e686a278b9d14a01bce4f146efb037160655db65901d1e",
+      "title": "Read-only public iCalendar reader contract",
+      "version": "0.1.0"
     }
   ]
 }

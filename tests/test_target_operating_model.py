@@ -29,7 +29,7 @@ class TargetOperatingModelTests(unittest.TestCase):
                 self.assertIn(identifier, statuses, row)
                 self.assertEqual(statuses[identifier], expected, row)
                 mapped.add(identifier)
-        self.assertEqual(mapped, {"TR-M00", "TR-M01A", "TR-M04", "TR-M06", "TR-M09", "TR-M10", "TR-M11", "TR-M12", "TR-M14", "TR-M15", "TR-M16", "TR-M17", "TR-M18", "TR-M19", "TR-M20", "TR-M21", "TR-M22"})
+        self.assertEqual(mapped, {"TR-M00", "TR-M01A", "TR-M04", "TR-M06", "TR-M09", "TR-M10", "TR-M11", "TR-M12", "TR-M14", "TR-M15", "TR-M16", "TR-M17", "TR-M18", "TR-M19", "TR-M20", "TR-M21", "TR-M22", "TR-M23"})
 
 
 if __name__ == "__main__":

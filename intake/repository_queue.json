@@ -7,9 +7,19 @@
       "revision": "551f1afe972172ba9eee707a81a12072c8473ee0",
       "owner": "CS AI Lab",
       "license_status": "unresolved",
-      "status": "assessing",
+      "status": "assessed",
       "review_status": "passed",
       "assessment": "intake/assessments/cs-ai-lab-infra.json"
+    },
+    {
+      "id": "pt-chev-water-times",
+      "location": "/home/chris/pt-chev-water-times",
+      "revision": "ef86a75ccf39a4039df8b836b928c92da30ec0f0",
+      "owner": "Success by CS",
+      "license_status": "confirmed",
+      "status": "assessing",
+      "review_status": "passed",
+      "assessment": "intake/assessments/pt-chev-water-times.json"
     }
   ]
 }
