@@ -14,6 +14,18 @@ release resolution, published as immutable JSON to Cloudflare R2; adapter
 execution remains inside each consuming solution. See the
 [catalogue deployment architecture](catalogue_deployment_architecture.md).
 
+## Solution consumption and contribution
+
+A solution selects a catalogue entry, records the adapter version, tag, full
+commit, artefact URI, descriptor hash, and release-index hash in its own lock
+file, then checks out and invokes that release locally. It does not get an
+execution endpoint from the catalogue.
+
+When a solution needs a reusable improvement, it keeps a provenance record for
+its exact source release and proposes the change through intake, isolated
+tests, review, and a new immutable release. The executable reference is the
+[minimal solution example](../examples/minimal-solution/README.md).
+
 ## Knowledge relationship
 
 Each active adapter links its user guide and JSON knowledge records from its

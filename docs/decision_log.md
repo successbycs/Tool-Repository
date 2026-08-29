@@ -60,3 +60,11 @@ TR-M04 uses a static release index. A catalogue entry is generated only when
 its descriptor SHA-256 matches the indexed digest and the publisher, tag, full
 commit, and Git HTTPS release URI pass validation. This supplies deterministic
 local release resolution before CI publishes the document to R2.
+
+## 2026-08-29 — Solutions consume immutable source releases locally
+
+TR-M06 establishes that a consuming solution records the exact adapter version,
+tag, commit, descriptor hash, and release-index hash; checks out the commit;
+and invokes the adapter inside its own process. Improvements retain that origin
+in a fork provenance record and return through review and a new release. The
+catalogue remains discovery-only and never becomes a central execution API.

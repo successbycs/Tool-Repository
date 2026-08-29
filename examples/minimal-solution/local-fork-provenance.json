@@ -1,0 +1,23 @@
+{
+  "schema_version": "1.0.0",
+  "local_asset": {
+    "kind": "adapter-wrapper",
+    "id": "minimal-solution-t480-target-validation",
+    "owner": "Minimal Solution"
+  },
+  "source": {
+    "adapter_id": "t480-transport",
+    "adapter_version": "0.1.0",
+    "release_tag": "v0.1.0",
+    "release_commit": "ee92b26d407a49422560d0a3e98b0fb9764ee6a2",
+    "artifact_uri": "git+https://github.com/successbycs/Tool-Repository.git@v0.1.0",
+    "manifest_sha256": "d462e986991269a72220046785629313a3438c38ebba15fcebaf425c2543e70f"
+  },
+  "material_changes": [
+    "The solution selects its own approved target and invokes the unchanged read-only validation operation."
+  ],
+  "promotion": {
+    "status": "not_proposed",
+    "rule": "Propose only a generalisable adapter change with isolated tests, descriptor updates, and this source provenance."
+  }
+}

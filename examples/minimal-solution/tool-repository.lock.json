@@ -1,0 +1,19 @@
+{
+  "schema_version": "1.0.0",
+  "catalogue": {
+    "schema_version": "1.0.0",
+    "release_index_sha256": "21d3012417bd675beb2af91782b2d4688f7935d320c7011742226d4510bd1615"
+  },
+  "dependencies": [
+    {
+      "kind": "adapter",
+      "adapter_id": "t480-transport",
+      "adapter_version": "0.1.0",
+      "publisher": "tool-repository",
+      "release_tag": "v0.1.0",
+      "release_commit": "ee92b26d407a49422560d0a3e98b0fb9764ee6a2",
+      "artifact_uri": "git+https://github.com/successbycs/Tool-Repository.git@v0.1.0",
+      "manifest_sha256": "d462e986991269a72220046785629313a3438c38ebba15fcebaf425c2543e70f"
+    }
+  ]
+}

@@ -486,9 +486,10 @@
             }
         },
         {
-            "id": "TR-M06", "status": "not_started",
+            "id": "TR-M06", "status": "in_progress",
             "title": "Solution Consumption and Contribution Loop",
             "delivery_type": "capability_delivering",
+            "proof_integrity_version": "2.0",
             "capability_unblocked": "A new solution can resolve and use a pinned adapter, make a documented local fork, and contribute reusable improvements back.",
             "dependencies": [
                 "TR-M04",
@@ -506,6 +507,8 @@
                 "examples/minimal-solution",
                 "docs",
                 "tests",
+                "scripts",
+                "reviews",
                 "runs/proofs",
                 "milestone_registry.json"
             ],
