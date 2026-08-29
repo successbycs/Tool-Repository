@@ -38,7 +38,10 @@ class PromptLibraryTests(unittest.TestCase):
         self.definition = self.definitions[("repository-asset-assessment", "1.0.0")]
 
     def test_checked_in_library_and_cli_validate_without_execution(self) -> None:
-        self.assertEqual(len(self.definitions), 1)
+        self.assertEqual(
+            set(self.definitions),
+            {("goal-definition-and-milestone-seed", "1.0.0"), ("repository-asset-assessment", "1.0.0")},
+        )
         environment = {**os.environ, "PYTHONPATH": str(ROOT / "src")}
         result = subprocess.run([sys.executable, "-m", "tool_repository", "prompts", "validate"], cwd=ROOT, env=environment, text=True, capture_output=True, check=False)
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)

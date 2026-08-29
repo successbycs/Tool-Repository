@@ -1,0 +1,25 @@
+{
+  "schema_version": "1.0.0",
+  "id": "goal-definition-and-milestone-seed",
+  "version": "1.0.0",
+  "title": "Goal definition and milestone seed",
+  "purpose": "Turn an approved business or engineering intent into a bounded goal candidate with scope, authority, evidence requirements, and candidate milestones for human approval.",
+  "owner": "Tool Repository maintainers",
+  "data_classification": "internal",
+  "input_contract": [
+    {"name": "goal_intent", "description": "Sanitised outcome the user wants to achieve.", "classification": "internal"},
+    {"name": "available_evidence", "description": "Approved repository references and constraints relevant to the goal.", "classification": "internal"}
+  ],
+  "output_contract": [
+    {"name": "goal_candidate", "description": "Structured candidate with outcome, scope, non-goals, success criteria, authority needs, and milestones.", "classification": "internal"}
+  ],
+  "constraints": [
+    "Treat the outcome as a candidate until a human records explicit approval.",
+    "Separate scope, non-goals, dependencies, proof requirements, and stop conditions.",
+    "Do not include secrets, customer data, raw prompt executions, or hidden reasoning."
+  ],
+  "rendering": {
+    "template": "Using only the approved intent and evidence references, produce a goal candidate with desired outcome, scope, non-goals, success criteria, proof requirements, dependencies, authority required, risks, and candidate milestones. Mark it pending human approval. Do not invent evidence or include private execution content.",
+    "execution_capture": "redacted_canonical"
+  }
+}

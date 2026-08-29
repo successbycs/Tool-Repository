@@ -8,14 +8,17 @@ import re
 from pathlib import Path
 from typing import Any
 
-from jsonschema import Draft202012Validator, SchemaError
+from jsonschema import Draft202012Validator, FormatChecker, SchemaError
 
 from tool_repository.manifest import discover_manifests, load_manifest
+from tool_repository.prompt_library import validate_prompt_definition
 
 ROOT = Path(__file__).resolve().parents[2]
 SCHEMA_PATH = ROOT / "schemas" / "catalogue.schema.json"
 RELEASE_INDEX_PATH = ROOT / "catalogue" / "release-index.json"
 MODEL_PROFILES_PATH = ROOT / "catalogue" / "t480-ollama-model-profiles.json"
+PROMPT_TEMPLATE_ASSETS_PATH = ROOT / "catalogue" / "prompt-template-assets.json"
+GOAL_RECORD_SCHEMA_PATH = ROOT / "schemas" / "goal-record.schema.json"
 _IDENTIFIER = re.compile(r"^[a-z][a-z0-9]*(?:[._-][a-z0-9]+)*$")
 _SEMVER = re.compile(r"^(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)(?:-[0-9A-Za-z.-]+)?(?:\+[0-9A-Za-z.-]+)?$")
 _SHA256 = re.compile(r"^[a-f0-9]{64}$")
@@ -38,6 +41,12 @@ def _catalogue_validator() -> Draft202012Validator:
     schema = json.loads(SCHEMA_PATH.read_text(encoding="utf-8"))
     Draft202012Validator.check_schema(schema)
     return Draft202012Validator(schema)
+
+
+def _goal_record_validator() -> Draft202012Validator:
+    schema = json.loads(GOAL_RECORD_SCHEMA_PATH.read_text(encoding="utf-8"))
+    Draft202012Validator.check_schema(schema)
+    return Draft202012Validator(schema, format_checker=FormatChecker())
 
 
 def validate_catalogue(payload: Any) -> list[str]:
@@ -167,15 +176,158 @@ def _model_profile_issues(payload: Any) -> tuple[list[dict[str, Any]], list[str]
     return valid, issues
 
 
-def build_catalogue(root: Path = ROOT, *, release_index_path: Path | None = None, model_profiles_path: Path | None = None) -> tuple[dict[str, Any] | None, list[str]]:
+def _source_path(root: Path, reference: Any) -> Path | None:
+    if not isinstance(reference, str) or not reference or Path(reference).is_absolute() or ".." in Path(reference).parts:
+        return None
+    candidate = (root / reference).resolve()
+    try:
+        candidate.relative_to(root)
+    except ValueError:
+        return None
+    return candidate if candidate.is_file() else None
+
+
+def _pointer_records(payload: Any) -> tuple[dict[str, list[dict[str, str]]], list[str]]:
+    required = {"schema_version", "prompts", "templates", "goals"}
+    collections: dict[str, list[dict[str, str]]] = {"prompts": [], "templates": [], "goals": []}
+    if not isinstance(payload, dict) or set(payload) != required:
+        return collections, ["prompt-template assets must contain only schema_version, prompts, templates, and goals"]
+    issues: list[str] = []
+    if payload["schema_version"] != "1.0.0":
+        issues.append("prompt-template assets schema_version must be 1.0.0")
+    for collection in collections:
+        records = payload[collection]
+        if not isinstance(records, list) or not records:
+            issues.append(f"prompt-template assets {collection} must be a non-empty list")
+            continue
+        keys: list[tuple[str, str]] = []
+        for index, record in enumerate(records):
+            label = f"prompt-template assets {collection}[{index}]"
+            if not isinstance(record, dict) or set(record) != {"id", "version", "source"}:
+                issues.append(f"{label} must contain only id, version, and source")
+                continue
+            identifier, version, source = record["id"], record["version"], record["source"]
+            if not isinstance(identifier, str) or not _IDENTIFIER.fullmatch(identifier):
+                issues.append(f"{label}.id is invalid")
+            if not isinstance(version, str) or not _SEMVER.fullmatch(version):
+                issues.append(f"{label}.version is invalid")
+            if not isinstance(source, str) or not source.endswith(".json"):
+                issues.append(f"{label}.source must be a JSON path")
+            if isinstance(identifier, str) and isinstance(version, str) and isinstance(source, str):
+                collections[collection].append({"id": identifier, "version": version, "source": source})
+                keys.append((identifier, version))
+        if len(keys) != len(set(keys)):
+            issues.append(f"prompt-template assets {collection} contains duplicate id/version records")
+        if keys != sorted(keys):
+            issues.append(f"prompt-template assets {collection} must be sorted by id and version")
+    return collections, issues
+
+
+def _template_issues(payload: Any, label: str) -> list[str]:
+    required = {"schema_version", "id", "version", "title", "purpose", "owner", "data_classification", "source_documents", "required_sections", "constraints", "validation"}
+    if not isinstance(payload, dict) or set(payload) != required:
+        return [f"{label} must contain only the documented template fields"]
+    issues: list[str] = []
+    if payload["schema_version"] != "1.0.0":
+        issues.append(f"{label}.schema_version must be 1.0.0")
+    for field in ("id",):
+        if not isinstance(payload[field], str) or not _IDENTIFIER.fullmatch(payload[field]):
+            issues.append(f"{label}.{field} is invalid")
+    if not isinstance(payload["version"], str) or not _SEMVER.fullmatch(payload["version"]):
+        issues.append(f"{label}.version is invalid")
+    for field in ("title", "purpose", "owner"):
+        if not isinstance(payload[field], str) or not payload[field].strip():
+            issues.append(f"{label}.{field} must be a non-empty string")
+    if payload["data_classification"] not in {"public", "internal", "restricted"}:
+        issues.append(f"{label}.data_classification is invalid")
+    for field in ("source_documents", "required_sections", "constraints", "validation"):
+        if not isinstance(payload[field], list) or not payload[field] or any(not isinstance(item, str) or not item.strip() for item in payload[field]):
+            issues.append(f"{label}.{field} must be a non-empty string list")
+    return issues
+
+
+def _goal_issues(payload: Any, label: str) -> list[str]:
+    try:
+        validator = _goal_record_validator()
+    except (OSError, ValueError, json.JSONDecodeError, SchemaError) as error:
+        return [f"goal record schema is invalid: {error}"]
+    issues = [f"{label} schema {'.'.join(str(part) for part in error.absolute_path) or 'goal'}: {error.message}" for error in validator.iter_errors(payload)]
+    if isinstance(payload, dict) and isinstance(payload.get("approval"), dict) and payload["approval"].get("status") != "approved":
+        issues.append(f"{label} must have explicit human approval before catalogue publication")
+    return issues
+
+
+def _prompt_template_assets_issues(root: Path, path: Path) -> tuple[dict[str, list[dict[str, Any]]], list[str]]:
+    """Load metadata-only prompt, template, and approved-goal catalogue entries."""
+
+    output: dict[str, list[dict[str, Any]]] = {"prompts": [], "templates": [], "goals": []}
+    payload, issues = _read_json(path)
+    pointers, pointer_issues = _pointer_records(payload)
+    issues.extend(pointer_issues)
+    if issues:
+        return output, issues
+    for pointer in pointers["prompts"]:
+        source = _source_path(root, pointer["source"])
+        if source is None:
+            issues.append(f"prompt source is missing or unsafe: {pointer['source']}")
+            continue
+        record, read_issues = _read_json(source)
+        issues.extend(read_issues)
+        record_issues = validate_prompt_definition(record)
+        issues.extend(f"{source}: {issue}" for issue in record_issues)
+        if record_issues or not isinstance(record, dict):
+            continue
+        if (record.get("id"), record.get("version")) != (pointer["id"], pointer["version"]):
+            issues.append(f"prompt pointer does not match source id/version: {pointer['source']}")
+            continue
+        output["prompts"].append({field: record[field] for field in ("id", "version", "title", "purpose", "owner", "data_classification")} | {"definition_sha256": _sha256(source)})
+    for pointer in pointers["templates"]:
+        source = _source_path(root, pointer["source"])
+        if source is None:
+            issues.append(f"template source is missing or unsafe: {pointer['source']}")
+            continue
+        record, read_issues = _read_json(source)
+        issues.extend(read_issues)
+        record_issues = _template_issues(record, "template")
+        issues.extend(f"{source}: {issue}" for issue in record_issues)
+        if record_issues or not isinstance(record, dict):
+            continue
+        if (record.get("id"), record.get("version")) != (pointer["id"], pointer["version"]):
+            issues.append(f"template pointer does not match source id/version: {pointer['source']}")
+            continue
+        output["templates"].append({field: record[field] for field in ("id", "version", "title", "purpose", "owner", "data_classification", "required_sections")} | {"source_sha256": _sha256(source)})
+    for pointer in pointers["goals"]:
+        source = _source_path(root, pointer["source"])
+        if source is None:
+            issues.append(f"goal source is missing or unsafe: {pointer['source']}")
+            continue
+        record, read_issues = _read_json(source)
+        issues.extend(read_issues)
+        record_issues = _goal_issues(record, "goal record")
+        issues.extend(f"{source}: {issue}" for issue in record_issues)
+        if record_issues or not isinstance(record, dict):
+            continue
+        if (record.get("id"), record.get("version")) != (pointer["id"], pointer["version"]):
+            issues.append(f"goal pointer does not match source id/version: {pointer['source']}")
+            continue
+        output["goals"].append({field: record[field] for field in ("id", "version", "title", "desired_outcome", "milestones")} | {"approval_status": "approved", "source_sha256": _sha256(source)})
+    return output, issues
+
+
+def build_catalogue(root: Path = ROOT, *, release_index_path: Path | None = None, model_profiles_path: Path | None = None, prompt_template_assets_path: Path | None = None) -> tuple[dict[str, Any] | None, list[str]]:
     """Build a deterministic catalogue from static descriptor bytes and a release index."""
 
     root = root.resolve()
     index_path = (release_index_path or root / "catalogue" / "release-index.json").resolve()
     profiles_path = (model_profiles_path or root / "catalogue" / "t480-ollama-model-profiles.json").resolve()
+    assets_path = (prompt_template_assets_path or root / "catalogue" / "prompt-template-assets.json").resolve()
     index, issues = _read_json(index_path)
     releases, index_issues = _release_index_issues(index)
     issues.extend(index_issues)
+    if issues:
+        return None, issues
+    prompt_template_assets, asset_issues = _prompt_template_assets_issues(root, assets_path)
+    issues.extend(asset_issues)
     if issues:
         return None, issues
     profile_payload, profile_read_issues = _read_json(profiles_path)
@@ -215,12 +367,22 @@ def build_catalogue(root: Path = ROOT, *, release_index_path: Path | None = None
         issues.append(f"release index contains no current descriptor for {adapter_id}@{version}")
     if issues:
         return None, issues
-    payload = {"schema_version": "1.0.0", "release_index_sha256": _sha256(index_path), "model_profiles_sha256": _sha256(profiles_path), "model_profiles": profiles, "adapters": sorted(entries, key=lambda item: (item["adapter"]["id"], item["adapter"]["version"]))}
+    payload = {
+        "schema_version": "1.0.0",
+        "release_index_sha256": _sha256(index_path),
+        "model_profiles_sha256": _sha256(profiles_path),
+        "model_profiles": profiles,
+        "prompt_template_assets_sha256": _sha256(assets_path),
+        "prompts": prompt_template_assets["prompts"],
+        "templates": prompt_template_assets["templates"],
+        "goals": prompt_template_assets["goals"],
+        "adapters": sorted(entries, key=lambda item: (item["adapter"]["id"], item["adapter"]["version"])),
+    }
     return payload, validate_catalogue(payload)
 
 
-def write_catalogue(output_path: Path, root: Path = ROOT, *, release_index_path: Path | None = None, model_profiles_path: Path | None = None) -> list[str]:
-    payload, issues = build_catalogue(root, release_index_path=release_index_path, model_profiles_path=model_profiles_path)
+def write_catalogue(output_path: Path, root: Path = ROOT, *, release_index_path: Path | None = None, model_profiles_path: Path | None = None, prompt_template_assets_path: Path | None = None) -> list[str]:
+    payload, issues = build_catalogue(root, release_index_path=release_index_path, model_profiles_path=model_profiles_path, prompt_template_assets_path=prompt_template_assets_path)
     if issues or payload is None:
         return issues
     output_path.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")

@@ -4,12 +4,16 @@
   "title": "Tool Repository Read-only Catalogue",
   "type": "object",
   "additionalProperties": false,
-  "required": ["schema_version", "release_index_sha256", "adapters"],
+  "required": ["schema_version", "release_index_sha256", "model_profiles_sha256", "model_profiles", "prompt_template_assets_sha256", "prompts", "templates", "goals", "adapters"],
   "properties": {
     "schema_version": {"const": "1.0.0"},
     "release_index_sha256": {"$ref": "#/$defs/sha256"},
     "model_profiles_sha256": {"$ref": "#/$defs/sha256"},
     "model_profiles": {"type": "array", "items": {"$ref": "#/$defs/modelProfile"}},
+    "prompt_template_assets_sha256": {"$ref": "#/$defs/sha256"},
+    "prompts": {"type": "array", "items": {"$ref": "#/$defs/prompt"}},
+    "templates": {"type": "array", "items": {"$ref": "#/$defs/template"}},
+    "goals": {"type": "array", "items": {"$ref": "#/$defs/goal"}},
     "adapters": {"type": "array", "items": {"$ref": "#/$defs/entry"}}
   },
   "$defs": {
@@ -31,6 +35,27 @@
       "required": ["id", "title", "roles", "ollama_model", "digest", "size_bytes", "parameters", "quantization", "input_modalities", "status", "local_only", "limitations"],
       "properties": {
         "id": {"$ref": "#/$defs/identifier"}, "title": {"type": "string"}, "roles": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/identifier"}}, "ollama_model": {"type": "string", "pattern": ".+:"}, "digest": {"$ref": "#/$defs/sha256"}, "size_bytes": {"type": "integer", "minimum": 1}, "parameters": {"type": "string"}, "quantization": {"type": "string"}, "input_modalities": {"type": "array", "minItems": 1, "items": {"enum": ["text", "image"]}}, "status": {"const": "active"}, "local_only": {"const": true}, "limitations": {"type": "array", "minItems": 1, "items": {"type": "string"}}
+      }
+    },
+    "prompt": {
+      "type": "object", "additionalProperties": false,
+      "required": ["id", "version", "title", "purpose", "owner", "data_classification", "definition_sha256"],
+      "properties": {
+        "id": {"$ref": "#/$defs/identifier"}, "version": {"$ref": "#/$defs/semver"}, "title": {"type": "string"}, "purpose": {"type": "string"}, "owner": {"type": "string"}, "data_classification": {"enum": ["public", "internal", "restricted"]}, "definition_sha256": {"$ref": "#/$defs/sha256"}
+      }
+    },
+    "template": {
+      "type": "object", "additionalProperties": false,
+      "required": ["id", "version", "title", "purpose", "owner", "data_classification", "required_sections", "source_sha256"],
+      "properties": {
+        "id": {"$ref": "#/$defs/identifier"}, "version": {"$ref": "#/$defs/semver"}, "title": {"type": "string"}, "purpose": {"type": "string"}, "owner": {"type": "string"}, "data_classification": {"enum": ["public", "internal", "restricted"]}, "required_sections": {"type": "array", "minItems": 1, "items": {"type": "string"}}, "source_sha256": {"$ref": "#/$defs/sha256"}
+      }
+    },
+    "goal": {
+      "type": "object", "additionalProperties": false,
+      "required": ["id", "version", "title", "desired_outcome", "milestones", "approval_status", "source_sha256"],
+      "properties": {
+        "id": {"$ref": "#/$defs/identifier"}, "version": {"$ref": "#/$defs/semver"}, "title": {"type": "string"}, "desired_outcome": {"type": "string"}, "milestones": {"type": "array", "minItems": 1, "items": {"type": "string", "pattern": "^TR-M[0-9]+[A-Z]?$"}}, "approval_status": {"const": "approved"}, "source_sha256": {"$ref": "#/$defs/sha256"}
       }
     },
     "entry": {

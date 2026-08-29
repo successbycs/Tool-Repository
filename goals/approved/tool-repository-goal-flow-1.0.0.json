@@ -1,0 +1,28 @@
+{
+  "schema_version": "1.0.0",
+  "id": "tool-repository-goal-flow",
+  "version": "1.0.0",
+  "title": "Governed goal-to-catalogue flow",
+  "desired_outcome": "A user-approved goal reliably becomes governed milestone work, validated catalogue metadata, proof, and review without storing private execution content.",
+  "scope": [
+    "Define a reusable goal prompt and a human-approved canonical goal record.",
+    "Connect approved goals to milestone execution, ingestion, verification, proof, review, and catalogue discovery."
+  ],
+  "non_goals": [
+    "Do not execute prompts or store raw prompt conversations, hidden reasoning, credentials, or customer data.",
+    "Do not let an unapproved goal publish a catalogue entry or mark a milestone complete."
+  ],
+  "success_criteria": [
+    "A reusable prompt can capture a bounded goal and candidate milestones.",
+    "Only a human-approved goal record is represented in the generated catalogue.",
+    "The approved goal links to a milestone that has validation, proof, and Review Triad evidence."
+  ],
+  "proof_requirements": [
+    "Catalogue build validates prompt, template, and approved-goal source records and emits privacy-safe metadata.",
+    "Milestone close-check verifies the declared ingestion sources, successful commands, proof, and required reviews."
+  ],
+  "dependencies": ["TR-M07", "TR-M14", "TR-M15"],
+  "authority": "Repository owner authorised this governed goal-flow implementation and its approved record on 2026-08-29.",
+  "approval": {"status": "approved", "approved_by": "Repository owner", "approved_on": "2026-08-29"},
+  "milestones": ["TR-M16"]
+}

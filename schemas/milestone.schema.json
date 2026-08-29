@@ -13,7 +13,7 @@
       "required": ["applies", "asset_types", "source_records", "verification", "catalogue_effect"],
       "properties": {
         "applies": {"type": "boolean"},
-        "asset_types": {"type": "array", "items": {"enum": ["adapter", "local_model", "prompt", "harvested_asset"]}},
+        "asset_types": {"type": "array", "items": {"enum": ["adapter", "goal", "local_model", "prompt", "template", "harvested_asset"]}},
         "source_records": {"type": "array", "items": {"type": "string", "minLength": 1}},
         "verification": {"type": "array", "items": {"type": "string", "minLength": 1}},
         "catalogue_effect": {"enum": ["publish", "retire", "not_published", "not_applicable"]}

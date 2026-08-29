@@ -24,11 +24,16 @@ operations, guide and knowledge paths, descriptor hash, and immutable Git
 release reference. It contains no adapter result, secret, host configuration,
 customer data, or execution endpoint.
 
-The document may also contain `model_profiles`: static, digest-pinned metadata
+The document also contains `model_profiles`: static, digest-pinned metadata
 for models installed only on the T480. These records help a T480-local
 consumer choose and verify a model; they do not provide a host, token, prompt
 API, proxy, or public inference service. See
 [`t480_ollama_model_profiles.md`](t480_ollama_model_profiles.md).
+
+It additionally contains `prompts`, `templates`, and `goals`: versioned,
+metadata-only discovery records. Goal entries are emitted only from records
+with explicit human approval. These records are for discovery and provenance;
+they cannot run a prompt, change a milestone, or expose private content.
 
 The [catalogue ingestion standard](catalogue_ingestion.md) governs how source
 records become this generated document. Maintainers never edit it directly.

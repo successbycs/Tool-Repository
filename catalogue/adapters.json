@@ -418,6 +418,19 @@
       }
     }
   ],
+  "goals": [
+    {
+      "approval_status": "approved",
+      "desired_outcome": "A user-approved goal reliably becomes governed milestone work, validated catalogue metadata, proof, and review without storing private execution content.",
+      "id": "tool-repository-goal-flow",
+      "milestones": [
+        "TR-M16"
+      ],
+      "source_sha256": "ee023cc5ec4dce35db7bb5f0331fb663a3c8caa6cb0d4218a89d9b4e41c19e49",
+      "title": "Governed goal-to-catalogue flow",
+      "version": "1.0.0"
+    }
+  ],
   "model_profiles": [
     {
       "digest": "dae161e27b0e90dd1856c8bb3209201fd6736d8eb66298e75ed87571486f4364",
@@ -466,6 +479,48 @@
     }
   ],
   "model_profiles_sha256": "65159545288d55410c95de84a34e173379bbbcfca1013bc25a3d8232fe669f53",
+  "prompt_template_assets_sha256": "09bb9e728333fa9f258673aab3096dceeb53d0e30e089896784360275c94b0ae",
+  "prompts": [
+    {
+      "data_classification": "internal",
+      "definition_sha256": "3d0ec55c3d7134c8653425baf7dce46cf8f4e1d359be126cd4af2e5ed2f7280c",
+      "id": "goal-definition-and-milestone-seed",
+      "owner": "Tool Repository maintainers",
+      "purpose": "Turn an approved business or engineering intent into a bounded goal candidate with scope, authority, evidence requirements, and candidate milestones for human approval.",
+      "title": "Goal definition and milestone seed",
+      "version": "1.0.0"
+    },
+    {
+      "data_classification": "internal",
+      "definition_sha256": "49517389be8aa987227ba088d3dbb28f9422b8f4b6e23647c6ecc673e5f36d0a",
+      "id": "repository-asset-assessment",
+      "owner": "Tool Repository maintainers",
+      "purpose": "Assess one candidate repository asset using supplied evidence and return a bounded reuse recommendation for the Tool Repository intake process.",
+      "title": "Repository asset assessment",
+      "version": "1.0.0"
+    }
+  ],
   "release_index_sha256": "7385586931e0da94bca27f168bb242133c07ad661c0264b902e1c458d86027b9",
-  "schema_version": "1.0.0"
+  "schema_version": "1.0.0",
+  "templates": [
+    {
+      "data_classification": "internal",
+      "id": "milestone-execution",
+      "owner": "Tool Repository maintainers",
+      "purpose": "Create a bounded milestone record with ingestion, verification, proof, and review requirements.",
+      "required_sections": [
+        "objective",
+        "context",
+        "non_goals",
+        "required_outputs",
+        "proof_requirements",
+        "verification_commands",
+        "stop_conditions",
+        "ingestion"
+      ],
+      "source_sha256": "8036bbbbf4bbcc6ee47c076ad976ca40d3d2f0c659966d384f2971f934ee0b92",
+      "title": "Governed milestone execution",
+      "version": "1.0.0"
+    }
+  ]
 }

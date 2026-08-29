@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0.0",
+  "id": "milestone-execution",
+  "version": "1.0.0",
+  "title": "Governed milestone execution",
+  "purpose": "Create a bounded milestone record with ingestion, verification, proof, and review requirements.",
+  "owner": "Tool Repository maintainers",
+  "data_classification": "internal",
+  "source_documents": ["docs/milestone_execution.md", "docs/milestone_review_triad.md", "docs/catalogue_ingestion.md"],
+  "required_sections": ["objective", "context", "non_goals", "required_outputs", "proof_requirements", "verification_commands", "stop_conditions", "ingestion"],
+  "constraints": ["Use concrete source records and verification commands.", "Never mark a milestone complete without proof and required reviews.", "Do not include secrets, customer data, or raw private prompt content."],
+  "validation": ["PYTHONPATH=src python3 -m tool_repository milestones validate"]
+}

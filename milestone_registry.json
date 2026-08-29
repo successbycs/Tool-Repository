@@ -67,6 +67,10 @@
         {
             "id": "TR-M15", "status": "complete",
             "title": "Ollama Readiness Adapter Ingestion"
+        },
+        {
+            "id": "TR-M16", "status": "in_progress",
+            "title": "Prompt and Template Catalogue Ingestion"
         }
     ],
     "milestones": [
@@ -1037,6 +1041,22 @@
             "proof_artifact": "runs/proofs/TR-M15_ollama_readiness_adapter.json",
             "verify": ["PYTHONPATH=src python3 -m tool_repository validate", "python3 -m unittest tests.test_conformance", "python3 scripts/verify_t480_ollama_profiles.py", "PYTHONPATH=src python3 -m tool_repository catalogue build", "PYTHONPATH=src python3 -m tool_repository milestones close-check TR-M15"],
             "execution_brief": {"objective": "Clean-room ingest a read-only Ollama readiness adapter from the assessed local CS AI Lab source patterns.", "context": {"source_revision": "551f1afe972172ba9eee707a81a12072c8473ee0", "runtime": "T480 loopback Ollama only"}, "non_goals": ["Do not copy source code, pull or delete models, proxy generation, change runtime configuration, or expose port 11434."], "required_outputs": ["clean-room adapter and descriptor", "fake-probe conformance tests", "real loopback readback", "immutable release index entry", "generated catalogue entry"], "proof_requirements": ["Proof demonstrates exact approved profiles through the local loopback inventory and proves the adapter rejects missing or mismatched inventory."], "verification_commands": ["PYTHONPATH=src python3 -m tool_repository validate", "python3 -m unittest tests.test_conformance", "python3 scripts/verify_t480_ollama_profiles.py", "PYTHONPATH=src python3 -m tool_repository catalogue build"], "stop_conditions": ["Stop if a design needs a non-loopback URL, mutable model identity, model installation, or arbitrary request execution."]}
+        },
+        {
+            "id": "TR-M16", "status": "in_progress",
+            "title": "Prompt and Template Catalogue Ingestion",
+            "delivery_type": "capability_delivering",
+            "proof_integrity_version": "2.0",
+            "capability_unblocked": "Solutions can discover approved reusable prompt definitions, human-approved goals, and governed operating templates from the read-only catalogue without receiving private execution content.",
+            "dependencies": ["TR-M07", "TR-M14", "TR-M15"],
+            "risk_level": "high",
+            "ingestion": {"applies": true, "asset_types": ["prompt", "template", "goal"], "source_records": ["catalogue/prompt-template-assets.json", "prompts/definitions/repository-asset-assessment-1.0.0.json", "prompts/definitions/goal-definition-and-milestone-seed-1.0.0.json", "templates/milestones/milestone-execution-1.0.0.json", "goals/approved/tool-repository-goal-flow-1.0.0.json", "schemas/goal-record.schema.json"], "verification": ["PYTHONPATH=src python3 -m tool_repository prompts validate", "PYTHONPATH=src python3 -m tool_repository milestones validate", "PYTHONPATH=src python3 -m tool_repository catalogue build"], "catalogue_effect": "publish"},
+            "review_requirements": {"required": true, "roles": ["ai_engineer", "solution_architect", "developer"]},
+            "write_scope": ["catalogue", "schemas", "src/tool_repository", "prompts", "templates", "goals", "docs", "tests", "reviews", "scripts", "runs/proofs", "milestone_registry.json"],
+            "required_artifacts": ["catalogue/prompt-template-assets.json", "prompts/definitions/goal-definition-and-milestone-seed-1.0.0.json", "templates/milestones/milestone-execution-1.0.0.json", "goals/approved/tool-repository-goal-flow-1.0.0.json", "schemas/goal-record.schema.json", "schemas/catalogue.schema.json", "src/tool_repository/catalogue.py", "docs/goal_prompt.md", "docs/catalogue_ingestion.md", "tests/test_catalogue_api.py", "scripts/prove_prompt_template_catalogue.py"],
+            "proof_artifact": "runs/proofs/TR-M16_prompt_template_catalogue.json",
+            "verify": ["PYTHONPATH=src python3 -m tool_repository prompts validate", "PYTHONPATH=src python3 -m tool_repository milestones validate", "PYTHONPATH=src python3 -m tool_repository catalogue build", "PYTHONPATH=src python3 -m tool_repository milestones close-check TR-M16"],
+            "execution_brief": {"objective": "Publish validated prompt, approved-goal, and operating-template metadata through the read-only catalogue.", "context": {"privacy": "No raw private execution content is catalogue data.", "approval_gate": "Only an explicitly human-approved goal record may be published."}, "non_goals": ["Do not execute prompts, store raw prompt executions, or ingest product-specific prompts without review.", "Do not publish a goal candidate before a human approval record exists."], "required_outputs": ["versioned goal prompt and template source", "human-approved goal record", "privacy-safe asset metadata", "catalogue integration", "tests and proof"], "proof_requirements": ["Build proves prompt definitions, templates, and approved goals are versioned, validated, and represented without raw execution content.", "A negative test proves an unapproved goal cannot be published."], "verification_commands": ["PYTHONPATH=src python3 -m tool_repository prompts validate", "PYTHONPATH=src python3 -m tool_repository milestones validate", "PYTHONPATH=src python3 -m tool_repository catalogue build"], "stop_conditions": ["Stop if a catalogue entry would contain raw inputs, outputs, hidden reasoning, credentials, or customer content.", "Stop if explicit human approval cannot be validated."]}
         }
     ]
 }

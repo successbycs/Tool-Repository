@@ -25,7 +25,7 @@ REQUIRED_PROOF_FIELDS = {
     "milestone_id", "implementation_revision", "generated_at", "environment", "status", "verification", "observed_result",
 }
 _COMMIT = re.compile(r"^[0-9a-f]{40,64}$")
-INGESTION_ASSET_TYPES = {"adapter", "local_model", "prompt", "harvested_asset"}
+INGESTION_ASSET_TYPES = {"adapter", "goal", "local_model", "prompt", "template", "harvested_asset"}
 INGESTION_EFFECTS = {"publish", "retire", "not_published"}
 
 

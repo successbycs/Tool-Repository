@@ -22,6 +22,10 @@ def model_profiles() -> dict[str, object]:
     return json.loads((ROOT / "catalogue" / "t480-ollama-model-profiles.json").read_text(encoding="utf-8"))
 
 
+def prompt_template_assets() -> dict[str, object]:
+    return json.loads((ROOT / "catalogue" / "prompt-template-assets.json").read_text(encoding="utf-8"))
+
+
 class CatalogueApiTests(unittest.TestCase):
     def test_builds_sorted_static_catalogue_from_current_descriptors(self) -> None:
         payload, issues = build_catalogue(ROOT)
@@ -46,6 +50,32 @@ class CatalogueApiTests(unittest.TestCase):
         self.assertEqual(by_id["qwen2.5-coder-7b-q4"]["ollama_model"], "qwen2.5-coder:7b")
         self.assertEqual(set(by_id), {"qwen3-4b-q4", "qwen2.5-coder-7b-q4"})
         self.assertTrue(all(len(profile["digest"]) == 64 for profile in profiles))
+
+    def test_includes_privacy_safe_prompts_templates_and_human_approved_goals(self) -> None:
+        payload, issues = build_catalogue(ROOT)
+        self.assertEqual(issues, [])
+        assert payload is not None
+        self.assertEqual([prompt["id"] for prompt in payload["prompts"]], ["goal-definition-and-milestone-seed", "repository-asset-assessment"])
+        self.assertEqual([template["id"] for template in payload["templates"]], ["milestone-execution"])
+        self.assertEqual([goal["id"] for goal in payload["goals"]], ["tool-repository-goal-flow"])
+        self.assertEqual(payload["goals"][0]["approval_status"], "approved")
+        self.assertEqual(payload["goals"][0]["milestones"], ["TR-M16"])
+        self.assertNotIn("rendering", payload["prompts"][0])
+        self.assertNotIn("approved_by", payload["goals"][0])
+
+    def test_rejects_goal_without_human_approval(self) -> None:
+        with tempfile.TemporaryDirectory(dir=ROOT) as temp:
+            directory = Path(temp)
+            source = directory / "unapproved-goal.json"
+            goal = json.loads((ROOT / "goals" / "approved" / "tool-repository-goal-flow-1.0.0.json").read_text(encoding="utf-8"))
+            goal["approval"]["status"] = "pending"
+            source.write_text(json.dumps(goal), encoding="utf-8")
+            assets = deepcopy(prompt_template_assets())
+            assets["goals"][0]["source"] = str(source.relative_to(ROOT))  # type: ignore[index]
+            config = directory / "prompt-template-assets.json"
+            config.write_text(json.dumps(assets), encoding="utf-8")
+            _, issues = build_catalogue(ROOT, prompt_template_assets_path=config)
+            self.assertTrue(any("approved" in issue for issue in issues))
 
     def test_rejects_a_model_profile_without_a_full_digest(self) -> None:
         with tempfile.TemporaryDirectory() as temp:

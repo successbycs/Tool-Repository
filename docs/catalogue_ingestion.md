@@ -44,13 +44,23 @@ the declared ingestion path.
 5. Run `python3 scripts/verify_t480_ollama_profiles.py`, build, test, and
    record the local readback in milestone proof.
 
-## Prompts and harvested assets
+## Prompts, goals, templates, and harvested assets
 
 Prompts first enter the prompt library with a stable ID, version, contract,
 owner, constraints, and privacy-safe provenance. Harvested assets remain
 candidates until intake establishes licence, provenance, safety, ownership,
 and an approved destination. Neither becomes a current adapter-catalogue entry
 without a dedicated approved discovery contract.
+
+Operating templates use the same versioned source, owner, privacy, validation,
+and proof requirements. They describe a reusable method; they must not contain
+customer data, credentials, raw private execution content, or hidden reasoning.
+
+Goals begin as a prompt-assisted candidate only. Before a goal can seed or
+publish governed work, a repository owner records an explicit human approval in
+a versioned goal record. The catalogue exposes only minimal approved-goal
+metadata and its source hash; it never exposes approval identities, private
+intent, raw conversations, or prompt execution content.
 
 ## Required catalogue commands
 

@@ -20,6 +20,8 @@ These documents govern delivery of this repository. They are intentionally small
   promotion path for reusable solution improvements.
 - [Prompt library standard](prompt_library_standard.md) defines versioned,
   privacy-safe reusable prompts and execution provenance.
+- [Goal prompt and approval flow](goal_prompt.md) defines how a prompt-assisted
+  goal becomes an explicitly human-approved milestone seed and catalogue entry.
 - [Prompt drift model](prompt_drift_model.md) and
   [evaluation policy](prompt_evaluation_policy.md) define reproducible
   regression detection and human-controlled correction proposals.
