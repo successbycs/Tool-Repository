@@ -101,11 +101,11 @@
             "title": "Pt Chev Calendar Asset Intake and Template Ingestion"
         },
         {
-            "id": "TR-M24", "status": "in_progress",
+            "id": "TR-M24", "status": "complete",
             "title": "Calendar Event Time-Normalisation Fixture and Template Ingestion"
         },
         {
-            "id": "TR-M25", "status": "in_progress",
+            "id": "TR-M25", "status": "complete",
             "title": "Public Read-only Data Proxy Control Pattern Ingestion"
         },
         {
@@ -1206,12 +1206,12 @@
             "execution_brief": {"objective": "Ingest the agreed Pt Chev public-calendar contract template, candidate knowledge, and reference pattern without promoting unverified executable source code.", "context": {"source": "Success by CS MIT-licensed Pt Chev Water Times", "external_gate": "calendar-feed terms and permitted fields require human approval"}, "non_goals": ["Do not copy the source Edge Function, publish an active calendar adapter, fetch an external feed, or ingest source environment values, user feedback, branded UI, or raw calendar data."], "required_outputs": ["validated intake assessment and lift plan", "candidate README/KB references", "catalogued contract template", "reference pattern", "tests, proof, and Review Triad"], "proof_requirements": ["Proof demonstrates source assessment validation and template catalogue inclusion while recording that executable promotion remains blocked on external-feed authority and clean-room tests."], "verification_commands": ["PYTHONPATH=src python3 -m tool_repository repositories validate-queue", "PYTHONPATH=src python3 -m tool_repository catalogue build", "python3 -m unittest tests.test_catalogue_api"], "stop_conditions": ["Stop if an unapproved external feed, source code, secret, user content, or executable adapter is published through this milestone."]}
         },
         {
-            "id": "TR-M24", "status": "in_progress",
+            "id": "TR-M24", "status": "complete",
             "title": "Calendar Event Time-Normalisation Fixture and Template Ingestion",
             "delivery_type": "capability_delivering",
             "capability_unblocked": "Solutions can discover an explicit calendar time-normalisation template and synthetic fixture set without relying on an executable source adapter.",
             "dependencies": ["TR-M23"],
-            "risk_level": "medium",
+            "risk_level": "moderate",
             "ingestion": {"applies": true, "asset_types": ["template", "harvested_asset"], "source_records": ["intake/assessments/pt-chev-water-times.json", "templates/integrations/calendar-event-time-normalisation-0.1.0.json", "fixtures/calendar-event-time-normalisation/expected.json", "docs/patterns/calendar-event-time-normalisation.md"], "verification": ["PYTHONPATH=src python3 -m tool_repository catalogue build", "python3 -m unittest tests.test_calendar_event_time_normalisation", "python3 -m unittest tests.test_catalogue_api"], "catalogue_effect": "publish"},
             "review_requirements": {"required": true, "roles": ["ai_engineer", "solution_architect", "developer"]},
             "write_scope": ["catalogue", "docs", "fixtures", "templates", "tests", "reviews", "scripts", "runs/proofs", "milestone_registry.json"],
@@ -1221,7 +1221,7 @@
             "execution_brief": {"objective": "Publish an explicit, testable normalisation template and synthetic fixtures for the Pt Chev calendar pattern.", "context": {"source": "MIT-licensed Pt Chev Water Times assessment", "boundary": "calendar presentation metadata only"}, "non_goals": ["Do not copy source code, fetch a live feed, infer timezones, or make editorial title text implicitly authoritative."], "required_outputs": ["catalogued template", "synthetic fixture set", "reference pattern", "tests, proof, and Review Triad"], "proof_requirements": ["Proof demonstrates catalogue inclusion and tests for DST, rollover, explicit title metadata, and fallback behaviour."], "verification_commands": ["PYTHONPATH=src python3 -m tool_repository catalogue build", "python3 -m unittest tests.test_calendar_event_time_normalisation", "python3 -m unittest tests.test_catalogue_api"], "stop_conditions": ["Stop if raw calendar data, a provider feed, source code, or implicit title-time inference enters the published asset."]}
         },
         {
-            "id": "TR-M25", "status": "in_progress",
+            "id": "TR-M25", "status": "complete",
             "title": "Public Read-only Data Proxy Control Pattern Ingestion",
             "delivery_type": "capability_delivering",
             "capability_unblocked": "Solutions can discover a reusable control template and pattern for a future clean-room, public-source, read-only proxy without centralising adapter execution.",
