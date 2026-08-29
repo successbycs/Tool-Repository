@@ -486,7 +486,7 @@
             }
         },
         {
-            "id": "TR-M06", "status": "in_progress",
+            "id": "TR-M06", "status": "complete",
             "title": "Solution Consumption and Contribution Loop",
             "delivery_type": "capability_delivering",
             "proof_integrity_version": "2.0",
