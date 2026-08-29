@@ -34,6 +34,11 @@ redacted/protected fingerprints, and outcome evidence. Raw prompts, private
 content, credentials, and hidden reasoning stay outside this repository and
 outside any central execution service.
 
+Prompt evaluation runs against versioned, non-sensitive fixtures with a
+calibrated evaluator profile and explicit rubric thresholds. Reports surface
+per-dimension and overall drift, a correction proposal, and a non-regression
+comparison. They never auto-promote a prompt version.
+
 ## Knowledge relationship
 
 Each active adapter links its user guide and JSON knowledge records from its

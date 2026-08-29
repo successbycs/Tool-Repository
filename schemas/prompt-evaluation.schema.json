@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tool-repository.local/schemas/prompt-evaluation-1.0.0.schema.json",
+  "title": "Tool Repository prompt evaluation fixture",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "fixture", "prompt", "rubric", "evaluator", "samples", "correction_proposal", "limitations"],
+  "properties": {
+    "schema_version": {"const": "1.0.0"},
+    "fixture": {"$ref": "#/$defs/fixture"},
+    "prompt": {"$ref": "#/$defs/prompt"},
+    "rubric": {"$ref": "#/$defs/rubric"},
+    "evaluator": {"$ref": "#/$defs/evaluator"},
+    "samples": {"type": "array", "minItems": 2, "items": {"$ref": "#/$defs/sample"}},
+    "correction_proposal": {"$ref": "#/$defs/correction"},
+    "limitations": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 10, "maxLength": 500}}
+  },
+  "$defs": {
+    "id": {"type": "string", "pattern": "^[a-z][a-z0-9]*(?:[._-][a-z0-9]+)*$"},
+    "semver": {"type": "string", "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$"},
+    "score": {"type": "number", "minimum": 0, "maximum": 1},
+    "fixture": {"type": "object", "additionalProperties": false, "required": ["id", "version", "data_classification"], "properties": {"id": {"$ref": "#/$defs/id"}, "version": {"$ref": "#/$defs/semver"}, "data_classification": {"const": "synthetic_non_sensitive"}}},
+    "prompt": {"type": "object", "additionalProperties": false, "required": ["id", "version"], "properties": {"id": {"$ref": "#/$defs/id"}, "version": {"$ref": "#/$defs/semver"}}},
+    "rubric": {"type": "object", "additionalProperties": false, "required": ["id", "version", "dimensions", "thresholds"], "properties": {"id": {"$ref": "#/$defs/id"}, "version": {"$ref": "#/$defs/semver"}, "dimensions": {"type": "array", "minItems": 2, "items": {"$ref": "#/$defs/dimension"}}, "thresholds": {"$ref": "#/$defs/thresholds"}}},
+    "dimension": {"type": "object", "additionalProperties": false, "required": ["id", "weight"], "properties": {"id": {"$ref": "#/$defs/id"}, "weight": {"type": "number", "exclusiveMinimum": 0, "maximum": 1}}},
+    "thresholds": {"type": "object", "additionalProperties": false, "required": ["overall_score_drop", "dimension_score_drop", "non_regression_max_drop"], "properties": {"overall_score_drop": {"type": "number", "exclusiveMinimum": 0, "maximum": 1}, "dimension_score_drop": {"type": "number", "exclusiveMinimum": 0, "maximum": 1}, "non_regression_max_drop": {"type": "number", "minimum": 0, "maximum": 1}}},
+    "evaluator": {"type": "object", "additionalProperties": false, "required": ["runtime", "settings_profile", "calibration"], "properties": {"runtime": {"type": "string", "minLength": 3, "maxLength": 200}, "settings_profile": {"type": "string", "pattern": "^[a-z][a-z0-9._-]{1,99}$"}, "calibration": {"type": "object", "additionalProperties": false, "required": ["status", "reference"], "properties": {"status": {"const": "passed"}, "reference": {"type": "string", "minLength": 3, "maxLength": 500}}}}},
+    "sample": {"type": "object", "additionalProperties": false, "required": ["id", "baseline_scores", "candidate_scores", "corrected_scores"], "properties": {"id": {"type": "string", "pattern": "^[a-z][a-z0-9_-]*$"}, "baseline_scores": {"$ref": "#/$defs/scoreSet"}, "candidate_scores": {"$ref": "#/$defs/scoreSet"}, "corrected_scores": {"$ref": "#/$defs/scoreSet"}}},
+    "scoreSet": {"type": "object", "minProperties": 2, "additionalProperties": {"$ref": "#/$defs/score"}},
+    "correction": {"type": "object", "additionalProperties": false, "required": ["id", "proposed_prompt_version", "status", "requires_human_review"], "properties": {"id": {"$ref": "#/$defs/id"}, "proposed_prompt_version": {"$ref": "#/$defs/semver"}, "status": {"const": "proposed"}, "requires_human_review": {"const": true}}}
+  }
+}

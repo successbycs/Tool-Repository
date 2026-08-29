@@ -76,3 +76,10 @@ records bind a definition hash, context reference, runtime, redacted or
 protected input/output fingerprints, and outcome evidence without retaining
 rendered prompts, raw private content, credentials, or hidden reasoning. The
 repository never becomes a central prompt-execution log.
+
+## 2026-08-29 — Prompt correction is evidence-backed and human-controlled
+
+TR-M08 evaluates versioned synthetic fixtures with explicit dimensions,
+thresholds, calibration metadata, and limitations. It reports candidate drift
+and a non-regression comparison for a proposed correction, but never
+auto-promotes a prompt definition or imports production prompt content.

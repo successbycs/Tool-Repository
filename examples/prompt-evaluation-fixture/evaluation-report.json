@@ -1,0 +1,103 @@
+{
+  "correction": {
+    "auto_promoted": false,
+    "events": [],
+    "non_regression_passed": true,
+    "proposal": {
+      "id": "require-evidence-and-risk-checklist",
+      "proposed_prompt_version": "1.1.0",
+      "requires_human_review": true,
+      "status": "proposed"
+    }
+  },
+  "dimensions": [
+    {
+      "baseline_mean": 1.0,
+      "candidate_drop": 0.6666666666666667,
+      "candidate_mean": 0.3333333333333333,
+      "corrected_drop": 0.0,
+      "corrected_mean": 1.0,
+      "id": "evidence_grounding"
+    },
+    {
+      "baseline_mean": 1.0,
+      "candidate_drop": 0.6666666666666667,
+      "candidate_mean": 0.3333333333333333,
+      "corrected_drop": 0.0,
+      "corrected_mean": 1.0,
+      "id": "risk_disclosure"
+    },
+    {
+      "baseline_mean": 1.0,
+      "candidate_drop": 0.0,
+      "candidate_mean": 1.0,
+      "corrected_drop": 0.0,
+      "corrected_mean": 1.0,
+      "id": "privacy_safety"
+    }
+  ],
+  "drift": {
+    "detected": true,
+    "events": [
+      {
+        "dimension": "evidence_grounding",
+        "drop": 0.6666666666666667,
+        "taxonomy": "dimension_regression",
+        "threshold": 0.2
+      },
+      {
+        "dimension": "risk_disclosure",
+        "drop": 0.6666666666666667,
+        "taxonomy": "dimension_regression",
+        "threshold": 0.2
+      },
+      {
+        "dimension": null,
+        "drop": 0.5,
+        "taxonomy": "overall_regression",
+        "threshold": 0.15
+      }
+    ]
+  },
+  "evaluator": {
+    "calibration": {
+      "reference": "docs/prompt_evaluation_policy.md#calibration",
+      "status": "passed"
+    },
+    "runtime": "deterministic-fixture-evaluator-1.0",
+    "sample_size": 3,
+    "settings_profile": "calibrated-static-v1"
+  },
+  "fixture": {
+    "data_classification": "synthetic_non_sensitive",
+    "id": "repository-asset-assessment-drift",
+    "sha256": "3ff8094107e8906e029be036c36f2a24ac4aba92c5a316425da9131a5dd7af99",
+    "version": "1.0.0"
+  },
+  "limitations": [
+    "Synthetic score fixtures demonstrate the evaluation mechanism, not real-world model quality.",
+    "Human review remains required before a prompt version is promoted."
+  ],
+  "overall": {
+    "baseline": 1.0,
+    "candidate": 0.5,
+    "candidate_drop": 0.5,
+    "corrected": 1.0,
+    "corrected_drop": 0.0
+  },
+  "prompt": {
+    "definition_sha256": "49517389be8aa987227ba088d3dbb28f9422b8f4b6e23647c6ecc673e5f36d0a",
+    "id": "repository-asset-assessment",
+    "version": "1.0.0"
+  },
+  "rubric": {
+    "id": "repository-assessment-quality",
+    "thresholds": {
+      "dimension_score_drop": 0.2,
+      "non_regression_max_drop": 0.05,
+      "overall_score_drop": 0.15
+    },
+    "version": "1.0.0"
+  },
+  "schema_version": "1.0.0"
+}

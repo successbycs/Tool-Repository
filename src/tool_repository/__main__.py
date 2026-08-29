@@ -9,6 +9,7 @@ from tool_repository.milestones import close_check, validate_registry
 from tool_repository.repository_intake import load_queue
 from tool_repository.catalogue import load_catalogue, write_catalogue
 from tool_repository.prompt_library import load_prompt_execution, load_prompt_library
+from tool_repository.prompt_evaluation import write_evaluation_report
 
 
 def main() -> int:
@@ -38,6 +39,9 @@ def main() -> int:
     validate_prompts = prompt_commands.add_parser("validate", help="Validate reusable prompt definitions and optional metadata-only execution records")
     validate_prompts.add_argument("--definitions", type=Path, default=Path("prompts/definitions"))
     validate_prompts.add_argument("--execution", action="append", type=Path, default=[])
+    evaluate_prompts = prompt_commands.add_parser("evaluate", help="Evaluate a fixed prompt score fixture and write a deterministic static report")
+    evaluate_prompts.add_argument("--fixture", type=Path, required=True)
+    evaluate_prompts.add_argument("--output", type=Path)
     args = parser.parse_args()
 
     if args.command == "milestones":
@@ -63,10 +67,17 @@ def main() -> int:
         else:
             _, issues = load_catalogue(Path.cwd() / args.path)
     elif args.command == "prompts":
-        definitions, issues = load_prompt_library(Path.cwd() / args.definitions)
-        for path in args.execution:
-            _, execution_issues = load_prompt_execution(Path.cwd() / path, definitions)
-            issues.extend(execution_issues)
+        if args.prompt_command == "validate":
+            definitions, issues = load_prompt_library(Path.cwd() / args.definitions)
+            for path in args.execution:
+                _, execution_issues = load_prompt_execution(Path.cwd() / path, definitions)
+                issues.extend(execution_issues)
+        else:
+            fixture = Path.cwd() / args.fixture
+            if fixture.is_dir():
+                fixture = fixture / "evaluation-set.json"
+            output = Path.cwd() / args.output if args.output else None
+            issues = write_evaluation_report(fixture, output_path=output, definitions_path=Path.cwd() / "prompts" / "definitions")
     else:  # pragma: no cover - argparse makes this unreachable
         issues = close_check(args.milestone_id)
     if issues:

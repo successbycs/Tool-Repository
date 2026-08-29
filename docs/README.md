@@ -18,6 +18,9 @@ These documents govern delivery of this repository. They are intentionally small
   promotion path for reusable solution improvements.
 - [Prompt library standard](prompt_library_standard.md) defines versioned,
   privacy-safe reusable prompts and execution provenance.
+- [Prompt drift model](prompt_drift_model.md) and
+  [evaluation policy](prompt_evaluation_policy.md) define reproducible
+  regression detection and human-controlled correction proposals.
 - [CS AI Lab deployment](cs_ai_lab_deployment.md) describes the non-root,
   versioned local release path and rollback contract.
 

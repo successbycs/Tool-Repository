@@ -1,0 +1,49 @@
+{
+  "schema_version": "1.0.0",
+  "fixture": {
+    "id": "repository-asset-assessment-drift",
+    "version": "1.0.0",
+    "data_classification": "synthetic_non_sensitive"
+  },
+  "prompt": {
+    "id": "repository-asset-assessment",
+    "version": "1.0.0"
+  },
+  "rubric": {
+    "id": "repository-assessment-quality",
+    "version": "1.0.0",
+    "dimensions": [
+      {"id": "evidence_grounding", "weight": 0.4},
+      {"id": "risk_disclosure", "weight": 0.35},
+      {"id": "privacy_safety", "weight": 0.25}
+    ],
+    "thresholds": {
+      "overall_score_drop": 0.15,
+      "dimension_score_drop": 0.2,
+      "non_regression_max_drop": 0.05
+    }
+  },
+  "evaluator": {
+    "runtime": "deterministic-fixture-evaluator-1.0",
+    "settings_profile": "calibrated-static-v1",
+    "calibration": {
+      "status": "passed",
+      "reference": "docs/prompt_evaluation_policy.md#calibration"
+    }
+  },
+  "samples": [
+    {"id": "asset-one", "baseline_scores": {"evidence_grounding": 1, "risk_disclosure": 1, "privacy_safety": 1}, "candidate_scores": {"evidence_grounding": 0, "risk_disclosure": 1, "privacy_safety": 1}, "corrected_scores": {"evidence_grounding": 1, "risk_disclosure": 1, "privacy_safety": 1}},
+    {"id": "asset-two", "baseline_scores": {"evidence_grounding": 1, "risk_disclosure": 1, "privacy_safety": 1}, "candidate_scores": {"evidence_grounding": 1, "risk_disclosure": 0, "privacy_safety": 1}, "corrected_scores": {"evidence_grounding": 1, "risk_disclosure": 1, "privacy_safety": 1}},
+    {"id": "asset-three", "baseline_scores": {"evidence_grounding": 1, "risk_disclosure": 1, "privacy_safety": 1}, "candidate_scores": {"evidence_grounding": 0, "risk_disclosure": 0, "privacy_safety": 1}, "corrected_scores": {"evidence_grounding": 1, "risk_disclosure": 1, "privacy_safety": 1}}
+  ],
+  "correction_proposal": {
+    "id": "require-evidence-and-risk-checklist",
+    "proposed_prompt_version": "1.1.0",
+    "status": "proposed",
+    "requires_human_review": true
+  },
+  "limitations": [
+    "Synthetic score fixtures demonstrate the evaluation mechanism, not real-world model quality.",
+    "Human review remains required before a prompt version is promoted."
+  ]
+}

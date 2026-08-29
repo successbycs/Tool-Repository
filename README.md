@@ -24,7 +24,10 @@ The practical test is simple: a developer starting a new solution can find a sui
   local CS AI Lab machine without privileged runtime access; and
 - validate versioned reusable prompts and privacy-safe, hash-bound execution
   provenance without retaining raw prompts, private content, credentials, or
-  hidden reasoning.
+  hidden reasoning; and
+- evaluate prompts against calibrated, versioned, synthetic fixtures; report
+  named drift and non-regression evidence; and keep corrections subject to
+  human approval.
 
 The catalogue is a discovery and release-verification document only. It never
 executes adapters, receives solution secrets, or becomes a central control
@@ -33,8 +36,7 @@ plane.
 ## Still to come
 
 - publish the generated catalogue through Cloudflare R2 and a stateless Worker
-  HTTPS endpoint; and
-- complete prompt evaluation and drift-correction capabilities.
+  HTTPS endpoint.
 
 ## What this repository owns
 

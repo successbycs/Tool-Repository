@@ -37,7 +37,7 @@
             "title": "Prompt Library and Execution Provenance"
         },
         {
-            "id": "TR-M08", "status": "not_started",
+            "id": "TR-M08", "status": "in_progress",
             "title": "Prompt Evaluation and Drift Correction"
         },
         {
@@ -670,9 +670,10 @@
             }
         },
         {
-            "id": "TR-M08", "status": "not_started",
+            "id": "TR-M08", "status": "in_progress",
             "title": "Prompt Evaluation and Drift Correction",
             "delivery_type": "capability_delivering",
+            "proof_integrity_version": "2.0",
             "capability_unblocked": "Prompt execution quality and drift are evidence-backed, measurable, visible, and corrected through controlled prompt versions.",
             "dependencies": [
                 "TR-M03",
@@ -693,6 +694,9 @@
                 "src/tool_repository",
                 "examples/prompt-evaluation-fixture",
                 "tests",
+                "README.md",
+                "scripts",
+                "reviews",
                 "runs/proofs",
                 "milestone_registry.json"
             ],
@@ -702,6 +706,7 @@
                 "docs/prompt_evaluation_policy.md",
                 "src/tool_repository/prompt_evaluation.py",
                 "examples/prompt-evaluation-fixture/evaluation-set.json",
+                "examples/prompt-evaluation-fixture/evaluation-report.json",
                 "tests/test_prompt_evaluation.py"
             ],
             "proof_artifact": "runs/proofs/TR-M08_prompt_evaluation_and_drift_correction.json",
