@@ -51,7 +51,7 @@ Do not change a milestone to `complete` because code was written, a prompt was s
 5. Run the declared verification commands. Do not substitute a similar command without recording the reason and updating the milestone.
 6. Write the proof artifact with commands, results, changed artifacts, and observable evidence.
 7. Run the policy/registry validator and required review. Only then transition the milestone.
-8. In the final milestone or iteration hand-off, show the review triad in the chat using `docs/milestone_review_triad.md`. Include all three roles even when one is not required or has not yet passed.
+8. In the final milestone or iteration hand-off, show the review triad in the chat using `docs/milestone_review_triad.md`. Include all three roles even when one is not required or has not yet passed, and give a clear summary of each reviewer's finding or advice.
 
 ## Proof standard
 
