@@ -1,0 +1,65 @@
+{
+  "milestone_id": "TR-M13",
+  "implementation_revision": "3a429a8a7e291429ad3d9ebed38579d2be99fc4c",
+  "generated_at": "2026-08-29T04:25:25.155986Z",
+  "environment": {
+    "python": "3.12.3",
+    "platform": "Linux-6.6.87.2-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+    "host": "Piwakawaka",
+    "runtime": "Ollama 0.19.0 loopback"
+  },
+  "status": "passed",
+  "verification": [
+    {
+      "command": "python3 scripts/verify_t480_ollama_profiles.py",
+      "exit_code": 0,
+      "output": "OK: 2 T480 Ollama profiles match exact local digests, sizes, and model details.\n",
+      "output_sha256": "422f5498a4ceee4e6b99ae96e9cf863ecc803c3f6cfa68774788845b0cb268c0"
+    },
+    {
+      "command": "PYTHONPATH=src python3 -m tool_repository catalogue build",
+      "exit_code": 0,
+      "output": "OK\n",
+      "output_sha256": "a12b7cb43c9d9134b5bb1b35e9096b66775d9e92e7611d1cc92b02edd6782a87"
+    },
+    {
+      "command": "python3 -m unittest tests.test_catalogue_api",
+      "exit_code": 0,
+      "output": "......\n----------------------------------------------------------------------\nRan 6 tests in 0.273s\n\nOK\n",
+      "output_sha256": "45a108b84d68347ea123347a61ebdb3500a65017227e083b0c5cc2c85ccebfdd"
+    },
+    {
+      "command": "loopback smoke qwen3:4b",
+      "exit_code": 0,
+      "output": "{\"done\": true, \"done_reason\": \"length\", \"eval_count\": 8, \"model\": \"qwen3:4b\", \"response_sha256\": \"4b1fcb4b456307f3644952c0514f1450bee0f5080bbb3025e90d5cbe70137679\"}",
+      "output_sha256": "8ef0003478a73d45d6d82d2a1199c75ab8bfd8b3b19fe53d063d56ca18c5d446"
+    },
+    {
+      "command": "loopback smoke qwen2.5-coder:7b",
+      "exit_code": 0,
+      "output": "{\"done\": true, \"done_reason\": \"stop\", \"eval_count\": 2, \"model\": \"qwen2.5-coder:7b\", \"response_sha256\": \"c2e3ac47f4a325469c1a2d5f117e463ec943c721986d5d9f09ac4540b7d80526\"}",
+      "output_sha256": "3c966db6380d5f08fc8998943f52540bf10319399b3ae696996ee49c71789619"
+    }
+  ],
+  "reviews": [
+    {
+      "role": "ai_engineer",
+      "status": "passed",
+      "reference": "reviews/TR-M13_ai_engineer.md",
+      "content_sha256": "ba8920de67ca2ba91db3902acb4187cd13954c733e4d8ed61e2feb884eea83e6"
+    },
+    {
+      "role": "solution_architect",
+      "status": "passed",
+      "reference": "reviews/TR-M13_solution_architect.md",
+      "content_sha256": "a3c09f77d0d41f4b646c89130a402b720e9b112e316fc1f4c06b9aba98b5fb48"
+    },
+    {
+      "role": "developer",
+      "status": "passed",
+      "reference": "reviews/TR-M13_developer.md",
+      "content_sha256": "4aa7cec3ffb501ea8d3ae38f4a783b22f955d03a9188daad4151367fcee6691f"
+    }
+  ],
+  "observed_result": "The active T480 profile set contains exactly Qwen 3 4B and Qwen 2.5 Coder 7B; both match local readback and produced bounded loopback-only smoke responses."
+}

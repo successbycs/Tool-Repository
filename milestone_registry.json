@@ -57,7 +57,7 @@
             "title": "T480 Local Model Profiles"
         },
         {
-            "id": "TR-M13", "status": "in_progress",
+            "id": "TR-M13", "status": "complete",
             "title": "T480 Core Model Rationalisation"
         }
     ],
@@ -969,7 +969,7 @@
             "execution_brief": {"objective": "Catalogue approved T480-local Ollama model profiles with exact installed digests and no remote execution endpoint.", "context": {"host": "Piwakawaka", "runtime": "Ollama local loopback service"}, "non_goals": ["Do not expose Ollama port 11434, proxy generation, store prompts, or represent a mutable tag without its digest."], "required_outputs": ["static profile set", "catalogue integration", "safe operating guide", "tests", "loopback inventory verifier"], "proof_requirements": ["Readback proves each published profile's exact local Ollama digest and local smoke evidence."], "verification_commands": ["python3 scripts/verify_t480_ollama_profiles.py", "PYTHONPATH=src python3 -m tool_repository catalogue build", "python3 -m unittest tests.test_catalogue_api"], "stop_conditions": ["Stop if a profile cannot be bound to an installed digest or the design requires exposing unauthenticated model execution."]}
         },
         {
-            "id": "TR-M13", "status": "in_progress",
+            "id": "TR-M13", "status": "complete",
             "title": "T480 Core Model Rationalisation",
             "delivery_type": "capability_delivering",
             "proof_integrity_version": "2.0",
