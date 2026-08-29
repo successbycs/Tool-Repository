@@ -6,6 +6,34 @@ Make trusted integration assets easy to discover, understand, test, consume, imp
 
 The practical test is simple: a developer starting a new solution can find a suitable asset, understand its value and limits, configure it safely, run its default tests, and use a pinned version in under ten minutes.
 
+## What it can do now
+
+- validate reusable adapter contracts, descriptors, guides, knowledge records,
+  provenance, safety boundaries, and isolated conformance tests;
+- provide three draft, read-only reference adapters for T480 target validation,
+  CS AI Lab readiness, and MP4-transcription environment readiness;
+- generate a static, read-only [adapter catalogue](catalogue/adapters.json)
+  that binds every listed adapter to a trusted publisher, immutable Git tag and
+  commit, release URI, and descriptor SHA-256;
+- let another solution resolve a catalogue entry, pin and verify the exact
+  release locally, then invoke the adapter within its own process. See the
+  [minimal consumption example](examples/minimal-solution/README.md);
+- retain provenance for solution-owned forks and provide a documented route to
+  promote genuinely reusable improvements back into this repository; and
+- install, verify, update, and roll back the versioned library release on the
+  local CS AI Lab machine without privileged runtime access.
+
+The catalogue is a discovery and release-verification document only. It never
+executes adapters, receives solution secrets, or becomes a central control
+plane.
+
+## Still to come
+
+- publish the generated catalogue through Cloudflare R2 and a stateless Worker
+  HTTPS endpoint; and
+- complete the prompt library, privacy-safe execution provenance, prompt
+  evaluation, and drift-correction capabilities.
+
 ## What this repository owns
 
 - reusable adapters, workflow recipes, solution templates, prompts, schemas, evaluation assets, and operational knowledge;
