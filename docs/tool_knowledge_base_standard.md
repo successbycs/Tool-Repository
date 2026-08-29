@@ -13,6 +13,11 @@ questions without blending them:
   validation still needed. It must not contain observed outcomes, dates, or
   evidence references, because it is not a proven result.
 
+Repository-wide operating knowledge is maintained as indexed documents in
+`docs/`. The [catalogue ingestion standard](catalogue_ingestion.md) defines
+how approved adapter, local-model, prompt, and harvested-asset knowledge
+becomes catalogue data without treating generated JSON as an editable source.
+
 The JSON contract is `schemas/knowledge-record.schema.json`. Validate the
 repository with:
 

@@ -99,3 +99,10 @@ Coder 7B local profiles. Gemma 3, Mistral, and Nomic Embed Text were removed
 from the T480 and must not be advertised as installed capabilities. Vision and
 local semantic retrieval can be added back only when a concrete solution needs
 them and their profile evidence is refreshed.
+
+## 2026-08-29 — Tool ingestion is a mandatory milestone concern
+
+Every milestone now declares whether it ingests reusable tool assets. Applicable
+milestones name the asset type, source records, validation, and catalogue effect
+and the closure validator requires their evidence. This makes catalogue
+population a governed promotion flow, not a manual JSON-editing task.

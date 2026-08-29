@@ -1,6 +1,6 @@
 # Milestone policy
 
-**Version:** 0.3.0
+**Version:** 0.4.0
 **Owner:** Tool Repository maintainers  
 **Review:** before the first release and whenever the delivery model changes  
 **Enforcement:** `schemas/milestone.schema.json` and milestone/policy validators delivered by `TR-M00`
@@ -17,10 +17,14 @@
 8. Major prompts and design reviews are execution evidence, not completion evidence.
 9. Every material milestone or iteration hand-off in the delivery chat must show the three-row review triad from `docs/milestone_review_triad.md`. It must show required, passed, pending, failed, and not-required states truthfully. The table communicates review state; it never substitutes for proof or the closure check.
 10. New integrity-v2 milestones record a full Git commit SHA, verification output with a matching hash, and hashes of each required saved review file. A historical proof is never overwritten to make it conform.
+11. Every milestone declares an ingestion assessment. When it ingests, promotes,
+    alters, or retires a reusable adapter, local model, prompt, or harvested
+    asset, it must declare the asset type, source records, verification, and
+    catalogue effect and follow `docs/catalogue_ingestion.md`.
 
 ## Closure check
 
-The validator must reject closure when dependencies, proof artifact, declared artifacts, required reviews, required verification records, or a dependency cycle are missing. A failing check keeps the milestone `in_progress` or `blocked`.
+The validator must reject closure when dependencies, proof artifact, declared artifacts, required reviews, required verification records, ingestion requirements, or a dependency cycle are missing. A failing check keeps the milestone `in_progress` or `blocked`.
 
 ## Chat hand-off
 

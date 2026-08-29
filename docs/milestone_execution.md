@@ -25,6 +25,9 @@ Every new or materially changed milestone must declare:
 - `dependencies` and an explicit `status`;
 - required artifacts and a single `proof_artifact` path;
 - reproducible `verify` commands;
+- an ingestion assessment: `not_applicable`, or the relevant asset type,
+  source records, validation, and catalogue effect defined by
+  `catalogue_ingestion.md`;
 - an execution brief: objective, relevant context, non-goals, required outputs, proof requirements, verification commands, and stop conditions;
 - write scope or a clear statement that no repository files may change;
 - for high-risk work, the owner, safety boundaries, and required review.
@@ -46,7 +49,9 @@ Do not change a milestone to `complete` because code was written, a prompt was s
 
 1. Read the milestone, its dependencies, the applicable policies, and prior related proofs.
 2. Check that dependencies are actually `complete` and their proof remains relevant.
-3. Write or validate the execution brief. State what will not be changed.
+3. Write or validate the execution brief and ingestion assessment. When tool
+   ingestion applies, follow `catalogue_ingestion.md` before changing source
+   records or generated catalogue data. State what will not be changed.
 4. Execute within the allowed scope. Preserve major rendered prompts and tool versions according to the prompt-data policy.
 5. Run the declared verification commands. Do not substitute a similar command without recording the reason and updating the milestone.
 6. Write the proof artifact with commands, results, changed artifacts, and observable evidence.

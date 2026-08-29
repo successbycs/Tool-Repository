@@ -30,6 +30,9 @@ consumer choose and verify a model; they do not provide a host, token, prompt
 API, proxy, or public inference service. See
 [`t480_ollama_model_profiles.md`](t480_ollama_model_profiles.md).
 
+The [catalogue ingestion standard](catalogue_ingestion.md) governs how source
+records become this generated document. Maintainers never edit it directly.
+
 ## Trust and publication
 
 The release index declares trusted publishers and binds every current

@@ -59,6 +59,10 @@
         {
             "id": "TR-M13", "status": "complete",
             "title": "T480 Core Model Rationalisation"
+        },
+        {
+            "id": "TR-M14", "status": "in_progress",
+            "title": "Unified Tool Ingestion Governance"
         }
     ],
     "milestones": [
@@ -69,6 +73,7 @@
             "capability_unblocked": "The repository has a small, versioned, executable policy layer for truthful milestone closure and safe future delivery.",
             "dependencies": [],
             "risk_level": "low",
+            "ingestion": {"applies": false, "asset_types": [], "source_records": [], "verification": [], "catalogue_effect": "not_applicable"},
             "review_requirements": {
                 "required": false,
                 "roles": []
@@ -147,6 +152,7 @@
                 "TR-M00"
             ],
             "risk_level": "moderate",
+            "ingestion": {"applies": false, "asset_types": [], "source_records": [], "verification": [], "catalogue_effect": "not_applicable"},
             "review_requirements": {
                 "required": true,
                 "roles": [
@@ -211,6 +217,7 @@
                 "TR-M01"
             ],
             "risk_level": "high",
+            "ingestion": {"applies": false, "asset_types": [], "source_records": [], "verification": [], "catalogue_effect": "not_applicable"},
             "review_requirements": {
                 "required": true,
                 "roles": [
@@ -280,6 +287,7 @@
                 "TR-M01"
             ],
             "risk_level": "moderate",
+            "ingestion": {"applies": false, "asset_types": [], "source_records": [], "verification": [], "catalogue_effect": "not_applicable"},
             "review_requirements": {
                 "required": true,
                 "roles": [
@@ -346,6 +354,7 @@
                 "TR-M02"
             ],
             "risk_level": "low",
+            "ingestion": {"applies": false, "asset_types": [], "source_records": [], "verification": [], "catalogue_effect": "not_applicable"},
             "review_requirements": {
                 "required": true,
                 "roles": [
@@ -415,6 +424,7 @@
                 "TR-M03"
             ],
             "risk_level": "high",
+            "ingestion": {"applies": true, "asset_types": ["adapter"], "source_records": ["adapters/t480-transport/adapter.json", "adapters/t480-lab/adapter.json", "adapters/mp4-transcription-t480/adapter.json", "catalogue/release-index.json"], "verification": ["PYTHONPATH=src python3 -m tool_repository catalogue build", "python3 -m unittest tests.test_catalogue_api"], "catalogue_effect": "publish"},
             "review_requirements": {
                 "required": true,
                 "roles": [
@@ -488,6 +498,7 @@
                 "TR-M11"
             ],
             "risk_level": "high",
+            "ingestion": {"applies": true, "asset_types": ["adapter"], "source_records": ["docs/af_migration_inventory.md", "adapters/t480-transport/adapter.json", "adapters/t480-lab/adapter.json", "adapters/mp4-transcription-t480/adapter.json"], "verification": ["PYTHONPATH=src python3 -m tool_repository validate", "python3 -m unittest tests.test_conformance"], "catalogue_effect": "publish"},
             "review_requirements": {
                 "required": true,
                 "roles": [
@@ -558,6 +569,7 @@
                 "TR-M05"
             ],
             "risk_level": "moderate",
+            "ingestion": {"applies": false, "asset_types": [], "source_records": [], "verification": [], "catalogue_effect": "not_applicable"},
             "review_requirements": {
                 "required": true,
                 "roles": [
@@ -621,6 +633,7 @@
                 "TR-M06"
             ],
             "risk_level": "high",
+            "ingestion": {"applies": true, "asset_types": ["prompt"], "source_records": ["prompts/definitions"], "verification": ["PYTHONPATH=src python3 -m tool_repository prompts validate", "python3 -m unittest tests.test_prompt_library"], "catalogue_effect": "not_published"},
             "review_requirements": {
                 "required": true,
                 "roles": [
@@ -688,6 +701,7 @@
                 "TR-M07"
             ],
             "risk_level": "high",
+            "ingestion": {"applies": false, "asset_types": [], "source_records": [], "verification": [], "catalogue_effect": "not_applicable"},
             "review_requirements": {
                 "required": true,
                 "roles": [
@@ -766,6 +780,7 @@
                 "TR-M03"
             ],
             "risk_level": "high",
+            "ingestion": {"applies": true, "asset_types": ["harvested_asset"], "source_records": ["intake/repository_queue.json", "intake/assessments"], "verification": ["PYTHONPATH=src python3 -m tool_repository repositories validate-queue", "python3 -m unittest tests.test_repository_intake"], "catalogue_effect": "not_published"},
             "review_requirements": {
                 "required": true,
                 "roles": [
@@ -840,6 +855,7 @@
                 "TR-M00"
             ],
             "risk_level": "high",
+            "ingestion": {"applies": false, "asset_types": [], "source_records": [], "verification": [], "catalogue_effect": "not_applicable"},
             "review_requirements": {
                 "required": true,
                 "roles": [
@@ -904,6 +920,7 @@
                 "TR-M10"
             ],
             "risk_level": "high",
+            "ingestion": {"applies": false, "asset_types": [], "source_records": [], "verification": [], "catalogue_effect": "not_applicable"},
             "review_requirements": {
                 "required": true,
                 "roles": [
@@ -961,6 +978,7 @@
             "capability_unblocked": "Solutions can discover approved local T480 Ollama model profiles, their exact installed digests, intended roles, and local-only safety boundary without treating mutable tags as sufficient identity.",
             "dependencies": ["TR-M04", "TR-M05", "TR-M10"],
             "risk_level": "high",
+            "ingestion": {"applies": true, "asset_types": ["local_model"], "source_records": ["catalogue/t480-ollama-model-profiles.json", "http://127.0.0.1:11434/api/tags"], "verification": ["python3 scripts/verify_t480_ollama_profiles.py", "PYTHONPATH=src python3 -m tool_repository catalogue build"], "catalogue_effect": "publish"},
             "review_requirements": {"required": true, "roles": ["ai_engineer", "solution_architect", "developer"]},
             "write_scope": ["catalogue", "schemas", "src/tool_repository", "tests", "docs", "reviews", "scripts", "runs/proofs", "milestone_registry.json"],
             "required_artifacts": ["catalogue/t480-ollama-model-profiles.json", "catalogue/adapters.json", "schemas/catalogue.schema.json", "src/tool_repository/catalogue.py", "docs/t480_ollama_model_profiles.md", "tests/test_catalogue_api.py", "scripts/verify_t480_ollama_profiles.py"],
@@ -976,12 +994,29 @@
             "capability_unblocked": "Solutions discover only the two owner-approved, installed T480 core models: Qwen 3 4B and Qwen 2.5 Coder 7B.",
             "dependencies": ["TR-M12"],
             "risk_level": "moderate",
+            "ingestion": {"applies": true, "asset_types": ["local_model"], "source_records": ["catalogue/t480-ollama-model-profiles.json", "http://127.0.0.1:11434/api/tags"], "verification": ["python3 scripts/verify_t480_ollama_profiles.py", "PYTHONPATH=src python3 -m tool_repository catalogue build"], "catalogue_effect": "retire"},
             "review_requirements": {"required": true, "roles": ["ai_engineer", "solution_architect", "developer"]},
             "write_scope": ["catalogue", "docs", "tests", "reviews", "scripts", "runs/proofs", "milestone_registry.json"],
             "required_artifacts": ["catalogue/t480-ollama-model-profiles.json", "catalogue/adapters.json", "docs/t480_ollama_model_profiles.md", "tests/test_catalogue_api.py", "scripts/verify_t480_ollama_profiles.py", "scripts/prove_t480_core_model_profiles.py"],
             "proof_artifact": "runs/proofs/TR-M13_t480_core_model_rationalisation.json",
             "verify": ["python3 scripts/verify_t480_ollama_profiles.py", "PYTHONPATH=src python3 -m tool_repository catalogue build", "python3 -m unittest tests.test_catalogue_api", "PYTHONPATH=src python3 -m tool_repository milestones close-check TR-M13"],
             "execution_brief": {"objective": "Remove non-core local models and publish only the owner-approved T480 Qwen core set.", "context": {"removed_models": ["gemma3:4b", "mistral:latest", "nomic-embed-text:latest"]}, "non_goals": ["Do not expose a model endpoint or retain removed models in the active catalogue."], "required_outputs": ["verified two-model local inventory", "updated static catalogue", "tests and proof"], "proof_requirements": ["Local readback proves exactly the two retained profile digests; bounded smokes prove both run locally."], "verification_commands": ["python3 scripts/verify_t480_ollama_profiles.py", "PYTHONPATH=src python3 -m tool_repository catalogue build", "python3 -m unittest tests.test_catalogue_api"], "stop_conditions": ["Stop if an unapproved model remains in the active catalogue or a retained digest fails local readback."]}
+        },
+        {
+            "id": "TR-M14", "status": "in_progress",
+            "title": "Unified Tool Ingestion Governance",
+            "delivery_type": "foundation_enabling",
+            "proof_integrity_version": "2.0",
+            "capability_unblocked": "Every milestone explicitly declares whether it ingests reusable tool assets, and applicable milestones have an enforceable source-to-proof-to-catalogue promotion path.",
+            "dependencies": ["TR-M00", "TR-M04", "TR-M09", "TR-M13"],
+            "risk_level": "high",
+            "ingestion": {"applies": false, "asset_types": [], "source_records": [], "verification": [], "catalogue_effect": "not_applicable"},
+            "review_requirements": {"required": true, "roles": ["ai_engineer", "solution_architect", "developer"]},
+            "write_scope": ["docs", "schemas", "src/tool_repository", "tests", "reviews", "scripts", "runs/proofs", "milestone_registry.json"],
+            "required_artifacts": ["docs/catalogue_ingestion.md", "docs/milestone_execution.md", "docs/policies/milestone-policy.md", "schemas/milestone.schema.json", "src/tool_repository/milestones.py", "tests/test_milestone_governance.py", "scripts/prove_unified_tool_ingestion_governance.py"],
+            "proof_artifact": "runs/proofs/TR-M14_unified_tool_ingestion_governance.json",
+            "verify": ["python3 scripts/validate_policy_docs.py", "python3 -m unittest tests.test_milestone_governance", "PYTHONPATH=src python3 -m tool_repository milestones close-check TR-M14"],
+            "execution_brief": {"objective": "Make the catalogue ingestion flow a mandatory, verifiable concern for every milestone that promotes or retires reusable tool assets.", "context": {"standard": "docs/catalogue_ingestion.md"}, "non_goals": ["Do not add a central execution service or retroactively alter historical proof observations."], "required_outputs": ["indexed ingestion standard", "policy and schema requirement", "registry migration", "closure validation", "negative tests"], "proof_requirements": ["Validator rejects incomplete applicable ingestion declarations and requires their declared verification evidence in closure proof."], "verification_commands": ["python3 scripts/validate_policy_docs.py", "python3 -m unittest tests.test_milestone_governance"], "stop_conditions": ["Stop if applicable ingestion can be marked complete without declared source records and proof verification evidence."]}
         }
     ]
 }

@@ -4,7 +4,7 @@ Policies turn the delivery plan into enforceable operating rules. They are versi
 
 | Policy | Governs | Enforcement target |
 | --- | --- | --- |
-| [Milestone policy](milestone-policy.md) | status transitions and closure | milestone schema and validator |
+| [Milestone policy](milestone-policy.md) | status transitions, closure, and ingestion declarations | milestone schema and validator |
 | [Adapter admission policy](adapter-admission-policy.md) | active/deprecated adapters | manifest and conformance validation |
 | [Knowledge policy](knowledge-policy.md) | tool guides and usage learning | knowledge/manifest validation |
 | [Prompt data policy](prompt-data-policy.md) | prompt capture and privacy | prompt-record validation |

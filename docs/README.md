@@ -12,6 +12,8 @@ These documents govern delivery of this repository. They are intentionally small
   defines GitHub-to-Cloudflare R2 publication for the future read-only catalogue.
 - [Catalogue API](catalogue_api.md) defines the generated read-only discovery
   document and consumer pinning contract.
+- [Catalogue ingestion standard](catalogue_ingestion.md) defines the required
+  promotion flow for adapters, local models, prompts, and harvested assets.
 - [Adapter lifecycle](adapter_lifecycle.md) defines how solutions consume,
   upgrade, fork, and retire immutable adapter releases.
 - [Contributing adapters](contributing_adapters.md) defines the provenance and

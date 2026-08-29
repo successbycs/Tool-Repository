@@ -15,7 +15,7 @@ VALID_STATUSES = {"not_started", "in_progress", "blocked", "complete"}
 REQUIRED_MILESTONE_FIELDS = {
     "id", "title", "delivery_type", "status", "capability_unblocked", "dependencies",
     "risk_level", "review_requirements", "write_scope", "required_artifacts", "proof_artifact",
-    "verify", "execution_brief",
+    "verify", "execution_brief", "ingestion",
 }
 REQUIRED_BRIEF_FIELDS = {
     "objective", "context", "non_goals", "required_outputs", "proof_requirements",
@@ -25,6 +25,8 @@ REQUIRED_PROOF_FIELDS = {
     "milestone_id", "implementation_revision", "generated_at", "environment", "status", "verification", "observed_result",
 }
 _COMMIT = re.compile(r"^[0-9a-f]{40,64}$")
+INGESTION_ASSET_TYPES = {"adapter", "local_model", "prompt", "harvested_asset"}
+INGESTION_EFFECTS = {"publish", "retire", "not_published"}
 
 
 def _load_json(path: Path) -> Any:
@@ -52,6 +54,31 @@ def _validate_brief(milestone: dict[str, Any], issues: list[str]) -> None:
     for key in REQUIRED_BRIEF_FIELDS - {"objective", "context"}:
         if not _is_string_list(brief[key]):
             issues.append(f"{label}: execution_brief.{key} must be a non-empty string list")
+
+
+def _validate_ingestion(milestone: dict[str, Any], issues: list[str]) -> None:
+    label = milestone.get("id", "<unknown>")
+    ingestion = milestone.get("ingestion")
+    required = {"applies", "asset_types", "source_records", "verification", "catalogue_effect"}
+    if not isinstance(ingestion, dict) or set(ingestion) != required:
+        issues.append(f"{label}: ingestion must contain only applies, asset_types, source_records, verification, and catalogue_effect")
+        return
+    applies = ingestion["applies"]
+    if not isinstance(applies, bool):
+        issues.append(f"{label}: ingestion.applies must be a boolean")
+        return
+    for key in ("asset_types", "source_records", "verification"):
+        if not isinstance(ingestion[key], list) or any(not isinstance(item, str) or not item.strip() for item in ingestion[key]):
+            issues.append(f"{label}: ingestion.{key} must be a string list")
+    if applies:
+        if not ingestion["asset_types"] or not set(ingestion["asset_types"]).issubset(INGESTION_ASSET_TYPES):
+            issues.append(f"{label}: ingestion.asset_types must name supported ingested asset types")
+        if not ingestion["source_records"] or not ingestion["verification"]:
+            issues.append(f"{label}: applicable ingestion requires source_records and verification")
+        if ingestion["catalogue_effect"] not in INGESTION_EFFECTS:
+            issues.append(f"{label}: applicable ingestion.catalogue_effect must be publish, retire, or not_published")
+    elif ingestion["asset_types"] or ingestion["source_records"] or ingestion["verification"] or ingestion["catalogue_effect"] != "not_applicable":
+        issues.append(f"{label}: non-applicable ingestion must use empty lists and catalogue_effect not_applicable")
 
 
 def validate_registry(root: Path = ROOT) -> list[str]:
@@ -91,6 +118,7 @@ def validate_registry(root: Path = ROOT) -> list[str]:
         if not isinstance(review, dict) or not isinstance(review.get("required"), bool) or not _is_string_list(review.get("roles", [])):
             issues.append(f"{identifier}: review_requirements must contain boolean required and string-list roles")
         _validate_brief(milestone, issues)
+        _validate_ingestion(milestone, issues)
     for identifier, milestone in records.items():
         for dependency in milestone.get("dependencies", []):
             if dependency not in records:
@@ -268,6 +296,14 @@ def close_check(
         for command in expected:
             if command not in recorded:
                 issues.append(f"{identifier}: proof is missing verification record for {command}")
+        ingestion = milestone["ingestion"]
+        if ingestion["applies"]:
+            for source in ingestion["source_records"]:
+                if "://" not in source and not (root / source).exists():
+                    issues.append(f"{identifier}: ingestion source record is missing {source}")
+            for command in ingestion["verification"]:
+                if command not in recorded:
+                    issues.append(f"{identifier}: proof is missing ingestion verification record for {command}")
         review = milestone["review_requirements"]
         if review["required"]:
             completed_roles = {
